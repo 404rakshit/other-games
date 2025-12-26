@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://d1w5ccem33kle"]
+[gd_scene load_steps=6 format=3 uid="uid://d1w5ccem33kle"]
 
 [ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="1_8afob"]
 [ext_resource type="Script" uid="uid://6iyonbfy33sl" path="res://scripts/player/player.gd" id="1_dovo2"]
 [ext_resource type="PackedScene" uid="uid://bs8eogk6v0q13" path="res://scenes/weapon/gun.tscn" id="3_gmlin"]
+[ext_resource type="PackedScene" uid="uid://c16gcgs04xwm8" path="res://scenes/comp/health_component.tscn" id="4_lvxji"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dovo2"]
 radius = 30.68
@@ -24,3 +25,7 @@ shape = SubResource("CircleShape2D_dovo2")
 
 [node name="Gun" parent="." instance=ExtResource("3_gmlin")]
 light_mask = 2
+
+[node name="HealthComponent" parent="." instance=ExtResource("4_lvxji")]
+
+[connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]

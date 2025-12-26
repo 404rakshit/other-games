@@ -10,8 +10,7 @@ func _on_timer_timeout() -> void:
 
 func shoot():
 	var enemies_in_range = range_area.get_overlapping_bodies()
-	
-	print("enemies_in_range", enemies_in_range)
+	#print("enemies_in_range", enemies_in_range)
 	
 	if enemies_in_range.size() > 0:
 		

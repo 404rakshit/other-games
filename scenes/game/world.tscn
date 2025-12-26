@@ -1,11 +1,18 @@
-[gd_scene load_steps=3 format=3 uid="uid://6wubinngqbf8"]
+[gd_scene load_steps=4 format=3 uid="uid://6wubinngqbf8"]
 
+[ext_resource type="Script" uid="uid://cw8g2bodtrtdp" path="res://scripts/game/world.gd" id="1_d8brc"]
 [ext_resource type="PackedScene" uid="uid://d1w5ccem33kle" path="res://scenes/player/player.tscn" id="1_g5t8f"]
 [ext_resource type="PackedScene" uid="uid://drhkcd78218ty" path="res://scenes/enemy/enemy.tscn" id="2_d8brc"]
 
 [node name="World" type="Node2D"]
+script = ExtResource("1_d8brc")
 
 [node name="Player" parent="." instance=ExtResource("1_g5t8f")]
 
 [node name="Enemy" parent="." instance=ExtResource("2_d8brc")]
 position = Vector2(85, 49)
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
