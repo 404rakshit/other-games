@@ -9,10 +9,21 @@ script = ExtResource("1_d8brc")
 
 [node name="Player" parent="." instance=ExtResource("1_g5t8f")]
 
-[node name="Enemy" parent="." instance=ExtResource("2_d8brc")]
-position = Vector2(85, 49)
-
 [node name="Timer" type="Timer" parent="."]
 autostart = true
+
+[node name="EnemyGroup" type="Node2D" parent="."]
+
+[node name="Enemy" parent="EnemyGroup" instance=ExtResource("2_d8brc")]
+position = Vector2(445, 235)
+
+[node name="Enemy2" parent="EnemyGroup" instance=ExtResource("2_d8brc")]
+position = Vector2(-458, 238)
+
+[node name="Enemy3" parent="EnemyGroup" instance=ExtResource("2_d8brc")]
+position = Vector2(513, -245)
+
+[node name="Enemy4" parent="EnemyGroup" instance=ExtResource("2_d8brc")]
+position = Vector2(-458, -260)
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -4,6 +4,7 @@ extends CharacterBody2D
 @export var speed : float = 300.0
 
 @onready var health_component: HealthComponent = $HealthComponent
+@onready var damage_interval_timer: Timer = $DamageIntervalTimer 
 
 func _process(_delta: float) -> void:
 	
@@ -17,8 +18,18 @@ func _process(_delta: float) -> void:
 	move_and_slide()
 	
 func take_damage(amount: int):
+	
+	if not damage_interval_timer.is_stopped():
+		return
+	
 	health_component.damage(amount)
 	print("Player got damage: ", health_component.current_health)
+	
+	damage_interval_timer.start()
+	
+	modulate = Color.RED
+	var tween = create_tween()
+	tween.tween_property(self, "modulate", Color.WHITE, 0.2)
 
 func _on_health_component_died() -> void:
 	print("Game Over!")

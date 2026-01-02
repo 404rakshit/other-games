@@ -1,12 +1,13 @@
 [gd_scene load_steps=6 format=3 uid="uid://d1w5ccem33kle"]
 
-[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="1_8afob"]
 [ext_resource type="Script" uid="uid://6iyonbfy33sl" path="res://scripts/player/player.gd" id="1_dovo2"]
+[ext_resource type="Texture2D" uid="uid://bwoejmvf6woex" path="res://assets/player/idle.png" id="2_lvxji"]
 [ext_resource type="PackedScene" uid="uid://bs8eogk6v0q13" path="res://scenes/weapon/gun.tscn" id="3_gmlin"]
 [ext_resource type="PackedScene" uid="uid://c16gcgs04xwm8" path="res://scenes/comp/health_component.tscn" id="4_lvxji"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_dovo2"]
-radius = 30.68
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p47bc"]
+radius = 22.0
+height = 92.0
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 collision_mask = 2
@@ -15,17 +16,24 @@ script = ExtResource("1_dovo2")
 [node name="Visuals" type="Node2D" parent="."]
 
 [node name="Skin" type="Sprite2D" parent="Visuals"]
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("1_8afob")
+position = Vector2(10.999999, -5)
+scale = Vector2(0.5602923, 0.5602923)
+texture = ExtResource("2_lvxji")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_dovo2")
+shape = SubResource("CapsuleShape2D_p47bc")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(0, -1)
 
 [node name="Gun" parent="." instance=ExtResource("3_gmlin")]
 light_mask = 2
 
 [node name="HealthComponent" parent="." instance=ExtResource("4_lvxji")]
+max_health = 100
+
+[node name="DamageIntervalTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
 
 [connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]
