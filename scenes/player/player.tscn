@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://d1w5ccem33kle"]
+[gd_scene load_steps=7 format=3 uid="uid://d1w5ccem33kle"]
 
 [ext_resource type="Script" uid="uid://6iyonbfy33sl" path="res://scripts/player/player.gd" id="1_dovo2"]
 [ext_resource type="Texture2D" uid="uid://bwoejmvf6woex" path="res://assets/player/idle.png" id="2_lvxji"]
@@ -8,6 +8,9 @@
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_p47bc"]
 radius = 22.0
 height = 92.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_lvxji"]
+radius = 100.0
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 collision_mask = 2
@@ -36,4 +39,14 @@ max_health = 100
 wait_time = 0.5
 one_shot = true
 
+[node name="Magnet" type="Node2D" parent="."]
+
+[node name="ScanArea" type="Area2D" parent="Magnet"]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Magnet/ScanArea"]
+shape = SubResource("CircleShape2D_lvxji")
+
 [connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]
+[connection signal="area_entered" from="Magnet/ScanArea" to="." method="_on_scan_area_area_entered"]

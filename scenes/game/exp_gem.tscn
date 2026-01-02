@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://cy7yd44dvc8rm"]
+
+[ext_resource type="Script" uid="uid://bglkq3iaa4uyb" path="res://scripts/game/exp_gem.gd" id="1_gw27n"]
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="1_hmaj1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gw27n"]
+size = Vector2(42, 42)
+
+[node name="ExpGem" type="Area2D"]
+collision_layer = 8
+script = ExtResource("1_gw27n")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_gw27n")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("1_hmaj1")

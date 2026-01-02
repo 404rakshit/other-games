@@ -14,6 +14,9 @@ const player_group_name = "player"
 # refs (states)
 var player: Node2D = null
 
+# scenes
+const GEM_SCENE = preload("res://scenes/game/exp_gem.tscn")
+
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group(player_group_name)
 
@@ -37,6 +40,14 @@ func take_damage(amount: int):
 	tween.tween_property(self, "modulate", Color.WHITE, 0.1)
 
 func _on_health_component_died() -> void:
+	
+	var new_gem: Area2D = GEM_SCENE.instantiate()
+	new_gem.global_position = global_position
+	
+	# We use call_deferred to safely add nodes during a physics callback
+	get_parent().call_deferred("add_child", new_gem)
+	
+	# remove enemy from the tree
 	queue_free()
 
 #func _on_damage_zone_body_entered(body: Node2D) -> void:
