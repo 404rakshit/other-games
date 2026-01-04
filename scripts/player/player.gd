@@ -9,6 +9,11 @@ extends CharacterBody2D
 
 # states
 var current_experience: int = 0
+var current_level: int = 1
+var xp_to_next_level: int = 100
+
+# signal
+signal experience_gained(current_xp: int, max_xp: int)
 
 func _process(_delta: float) -> void:
 	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
@@ -35,6 +40,13 @@ func take_damage(amount: int):
 
 func gain_experience(exp_amount: int):
 	current_experience += exp_amount
+	
+	if current_experience >= xp_to_next_level:
+		current_level += 1
+		xp_to_next_level += 50
+		print("LEVEL UP")
+		
+	experience_gained.emit(current_experience, xp_to_next_level)
 
 func _on_health_component_died() -> void:
 	print("Game Over!")

@@ -24,6 +24,7 @@ func _physics_process(delta: float) -> void:
 func collect():
 	if target.has_method("gain_experience"):
 		target.gain_experience(experience_amount)
+		queue_free()
 
 func start_magnet(player_node):
 	target = player_node

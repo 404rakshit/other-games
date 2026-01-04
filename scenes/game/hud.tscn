@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=3 uid="uid://r7xccx21navk"]
+
+[ext_resource type="Script" uid="uid://bx6mikmxu6hbk" path="res://scripts/game/hud.gd" id="1_kqgwg"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_77e6q"]
+bg_color = Color(0.19793722, 0.19793725, 0.19793713, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5645d"]
+bg_color = Color(0.8007044, 0.0044856416, 2.8878452e-07, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kqgwg"]
+bg_color = Color(0.20568871, 0.41277438, 1, 1)
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_kqgwg")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HealthBar" type="ProgressBar" parent="Control"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 220.0
+offset_bottom = 47.0
+theme_override_styles/background = SubResource("StyleBoxFlat_77e6q")
+theme_override_styles/fill = SubResource("StyleBoxFlat_5645d")
+show_percentage = false
+
+[node name="XPBar" type="ProgressBar" parent="Control"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 56.0
+offset_right = 220.0
+offset_bottom = 83.0
+theme_override_styles/background = SubResource("StyleBoxFlat_77e6q")
+theme_override_styles/fill = SubResource("StyleBoxFlat_kqgwg")
+show_percentage = false

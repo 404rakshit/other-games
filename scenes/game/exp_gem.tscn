@@ -8,11 +8,13 @@ size = Vector2(42, 42)
 
 [node name="ExpGem" type="Area2D"]
 collision_layer = 8
+collision_mask = 0
 script = ExtResource("1_gw27n")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_gw27n")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.14117648, 0.78039217, 0, 1)
 scale = Vector2(0.3, 0.3)
 texture = ExtResource("1_hmaj1")

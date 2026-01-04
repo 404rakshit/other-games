@@ -2,8 +2,18 @@ extends Node2D
 
 const ENEMY_SCENE = preload("res://scenes/enemy/enemy.tscn")
 
+@onready var player = $Player
+@onready var hud = $HUD
+
 func _on_timer_timeout() -> void:
 	spawn_enwmy()
+
+func _ready() -> void:
+	var max_health = player.health_component.max_health
+	hud.set_max_health(max_health)
+	
+	player.health_component.health_changed.connect(hud.update_health)
+	player.experience_gained.connect(hud.update_xp)
 
 func spawn_enwmy():
 	var new_enemy : CharacterBody2D = ENEMY_SCENE.instantiate()
