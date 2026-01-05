@@ -1,5 +1,10 @@
 extends CharacterBody2D
 
+# signal
+signal experience_gained(current_xp: int, max_xp: int)
+signal leveled_up(new_level: int)
+signal player_died()
+
 # exports
 @export var speed : float = 300.0
 
@@ -11,10 +16,6 @@ extends CharacterBody2D
 var current_experience: int = 0
 var current_level: int = 1
 var xp_to_next_level: int = 100
-
-# signal
-signal experience_gained(current_xp: int, max_xp: int)
-signal leveled_up(new_level: int)
 
 func _process(_delta: float) -> void:
 	handle_movement()
@@ -75,7 +76,8 @@ func gain_experience(exp_amount: int):
 
 func _on_health_component_died() -> void:
 	print("Game Over!")
-	get_tree().paused = true
+	player_died.emit()
+	#get_tree().paused = true
 
 func _on_scan_area_area_entered(area: Area2D) -> void:
 	if area.has_method("start_magnet"):

@@ -5,6 +5,7 @@ const ENEMY_SCENE = preload("res://scenes/enemy/enemy.tscn")
 @onready var player = $Player
 @onready var hud = $HUD
 @onready var level_up_screen = $LevelUpScreen
+@onready var game_over_screen = $GameOverScreen
 
 func _on_timer_timeout() -> void:
 	spawn_enwmy()
@@ -27,8 +28,11 @@ func spawn_enwmy():
 
 func _on_player_leveled_up(_new_level: int):
 	level_up_screen.show_options()
-	
 
 
 func _on_level_up_screen_upgrade_selected(upgrade_item: Upgrade) -> void:
 	player.apply_upgrade(upgrade_item)
+
+
+func _on_player_player_died() -> void:
+	game_over_screen.game_over()
