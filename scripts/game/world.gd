@@ -28,3 +28,7 @@ func spawn_enwmy():
 func _on_player_leveled_up(_new_level: int):
 	level_up_screen.show_options()
 	
+
+
+func _on_level_up_screen_upgrade_selected(upgrade_item: Upgrade) -> void:
+	player.apply_upgrade(upgrade_item)

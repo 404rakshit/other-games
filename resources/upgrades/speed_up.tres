@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Upgrade" load_steps=2 format=3 uid="uid://b3ejkxqyjubfn"]
+
+[ext_resource type="Script" uid="uid://ch7d5opl7bjbg" path="res://scripts/upgrade.gd" id="1_yhk7n"]
+
+[resource]
+script = ExtResource("1_yhk7n")
+title = "Lightning Fast"
+description = "Increases movement speed by 20%"
+upgrade_id = "move_speed"
+value = 0.2
+metadata/_custom_type_script = "uid://ch7d5opl7bjbg"

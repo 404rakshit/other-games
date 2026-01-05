@@ -10,6 +10,7 @@ size = Vector2(42, 42)
 collision_layer = 8
 collision_mask = 0
 script = ExtResource("1_gw27n")
+experience_amount = 50
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_gw27n")

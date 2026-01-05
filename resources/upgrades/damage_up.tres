@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Upgrade" load_steps=2 format=3 uid="uid://p7xuxcs8y68h"]
+
+[ext_resource type="Script" uid="uid://ch7d5opl7bjbg" path="res://scripts/upgrade.gd" id="1_k2jb4"]
+
+[resource]
+script = ExtResource("1_k2jb4")
+title = "Power Shot"
+description = "Increases damage by 1"
+upgrade_id = "damage"
+value = 1.0
+metadata/_custom_type_script = "uid://ch7d5opl7bjbg"

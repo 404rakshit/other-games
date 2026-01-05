@@ -34,3 +34,4 @@ position = Vector2(-458, -260)
 
 [connection signal="leveled_up" from="Player" to="." method="_on_player_leveled_up"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="upgrade_selected" from="LevelUpScreen" to="." method="_on_level_up_screen_upgrade_selected"]

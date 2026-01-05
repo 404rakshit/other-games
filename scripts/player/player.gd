@@ -17,6 +17,9 @@ signal experience_gained(current_xp: int, max_xp: int)
 signal leveled_up(new_level: int)
 
 func _process(_delta: float) -> void:
+	handle_movement()
+	
+func handle_movement():
 	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	
 	if direction:
@@ -25,7 +28,25 @@ func _process(_delta: float) -> void:
 		velocity = Vector2.ZERO
 	
 	move_and_slide()
+
+func apply_upgrade(upgrade: Upgrade):
+	print("Apply upgrade: ", upgrade.title)
 	
+	match upgrade.upgrade_id:
+		"move_speed":
+			speed += speed * upgrade.value
+			print("New Speed: ", speed)
+			
+		"damage":
+			var gun = $Gun
+			if gun:
+				gun.increase_damage(upgrade.value)
+				
+		"attack_rate":
+			var gun = $Gun
+			if gun:
+				gun.increase_attack_rate(upgrade.value)
+
 func take_damage(amount: int):
 	if not damage_interval_timer.is_stopped():
 		return
@@ -50,10 +71,11 @@ func gain_experience(exp_amount: int):
 		
 	experience_gained.emit(current_experience, xp_to_next_level)
 
+# signal func triggers
+
 func _on_health_component_died() -> void:
 	print("Game Over!")
 	get_tree().paused = true
-
 
 func _on_scan_area_area_entered(area: Area2D) -> void:
 	if area.has_method("start_magnet"):
