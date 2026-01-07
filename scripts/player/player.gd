@@ -12,9 +12,9 @@ signal player_died()
 @onready var health_component: HealthComponent = $HealthComponent
 @onready var damage_interval_timer: Timer = $DamageIntervalTimer 
 @onready var animated_sprite = $Visuals/AnimatedSprite2D
+@onready var gem_collect_sfx: AudioStreamPlayer2D = $Sound/GemCollect
 
 # enum
-
 enum State { IDLE, RUN, HURT, DEAD }
 
 # states
@@ -111,7 +111,8 @@ func gain_experience(exp_amount: int):
 		xp_to_next_level += 50
 		leveled_up.emit(current_level)
 		print("LEVEL UP")
-		
+	
+	gem_collect_sfx.play()
 	experience_gained.emit(current_experience, xp_to_next_level)
 
 # signal func triggers
@@ -124,7 +125,6 @@ func _on_health_component_died() -> void:
 func _on_scan_area_area_entered(area: Area2D) -> void:
 	if area.has_method("start_magnet"):
 		area.start_magnet(self)
-
 
 func _on_animated_sprite_2d_animation_finished() -> void:
 	if current_state == State.HURT:

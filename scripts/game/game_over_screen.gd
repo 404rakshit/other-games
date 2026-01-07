@@ -7,6 +7,7 @@ func _ready() -> void:
 func game_over():
 	visible = true
 	get_tree().paused =  true
+	$Music/GameOver.play()
 
 func _on_restart_button_pressed() -> void:
 	get_tree().paused =  false

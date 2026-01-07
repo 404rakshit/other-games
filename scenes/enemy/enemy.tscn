@@ -1,9 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://drhkcd78218ty"]
+[gd_scene load_steps=13 format=3 uid="uid://drhkcd78218ty"]
 
 [ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="1_4a83h"]
 [ext_resource type="Script" uid="uid://kixbm1ob1e7s" path="res://scripts/enemy/enemy.gd" id="1_a3pup"]
 [ext_resource type="PackedScene" uid="uid://c16gcgs04xwm8" path="res://scenes/comp/health_component.tscn" id="3_40wdo"]
 [ext_resource type="Texture2D" uid="uid://rp2bi21qp2f1" path="res://assets/enemy/run sprite.png" id="3_tjssy"]
+[ext_resource type="AudioStream" uid="uid://mxyxintr0s1d" path="res://assets/enemy/death_groan.wav" id="5_cwlon"]
+[ext_resource type="AudioStream" uid="uid://ttpgef4e7gu7" path="res://assets/enemy/hit.wav" id="6_nbhyu"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gl05p"]
 atlas = ExtResource("3_tjssy")
@@ -60,6 +62,16 @@ sprite_frames = SubResource("SpriteFrames_13gj6")
 animation = &"run"
 autoplay = "run"
 frame_progress = 0.94910544
+
+[node name="Sound" type="Node2D" parent="."]
+
+[node name="DeadSound" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("5_cwlon")
+bus = &"SFX"
+
+[node name="HitSound" type="AudioStreamPlayer2D" parent="Sound"]
+stream = ExtResource("6_nbhyu")
+bus = &"SFX"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2(1, 0.9879728)

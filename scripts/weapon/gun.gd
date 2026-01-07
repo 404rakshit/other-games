@@ -6,6 +6,7 @@ const BULLET_SCENE = preload("res://scenes/weapon/projectile.tscn")
 @onready var shooting_point: Marker2D = $ShootingPoint
 @onready var range_area: Area2D = $Range
 @onready var timer: Timer = $Timer
+@onready var shoot_sound : AudioStreamPlayer2D = $ShootingSound
 
 # states
 var current_damage = 1
@@ -40,5 +41,7 @@ func shoot():
 		bullet.rotation = global_rotation
 		
 		bullet.damage = current_damage
-		
 		bullet.direction = Vector2.RIGHT.rotated(global_rotation)
+		
+		shoot_sound.pitch_scale = randf_range(0.9, 1.2)
+		shoot_sound.play()
