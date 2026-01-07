@@ -10,7 +10,7 @@ const player_group_name = "player"
 # components
 @onready var health_component = $HealthComponent
 @onready var damage_zone = $DamageZone
-
+@onready var animated_sprite = $Visuals/AnimatedSprite2D
 # refs (states)
 var player: Node2D = null
 
@@ -19,11 +19,22 @@ const GEM_SCENE = preload("res://scenes/game/exp_gem.tscn")
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group(player_group_name)
+	
+	var random_shade = randf_range(0.8, 1.2)
+	modulate = Color(random_shade, random_shade, random_shade, 1.0)
+	
+func change_dir(direction: Vector2):
+		if direction.x > 0:
+			animated_sprite.flip_h = false
+		elif direction.x < 0:
+			animated_sprite.flip_h = true
 
 func _physics_process(_delta: float) -> void:
 	if player:
 		var direction = global_position.direction_to(player.global_position)
 		velocity = direction * speed
+		
+		change_dir(direction)
 		move_and_slide()
 		
 	var overlapping_bodies = damage_zone.get_overlapping_bodies()

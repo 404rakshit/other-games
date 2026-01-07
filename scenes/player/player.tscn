@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://d1w5ccem33kle"]
+[gd_scene load_steps=17 format=3 uid="uid://d1w5ccem33kle"]
 
 [ext_resource type="Script" uid="uid://6iyonbfy33sl" path="res://scripts/player/player.gd" id="1_dovo2"]
 [ext_resource type="Texture2D" uid="uid://bwoejmvf6woex" path="res://assets/player/idle.png" id="2_lvxji"]
@@ -9,23 +9,7 @@
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_75vfm"]
 atlas = ExtResource("4_0owmy")
-region = Rect2(0, 0, 336, 340)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_0owmy"]
-atlas = ExtResource("4_0owmy")
-region = Rect2(336, 0, 336, 340)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ugbui"]
-atlas = ExtResource("4_0owmy")
 region = Rect2(672, 0, 336, 340)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_fcs02"]
-atlas = ExtResource("4_0owmy")
-region = Rect2(1008, 0, 336, 340)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_myrg7"]
-atlas = ExtResource("4_0owmy")
-region = Rect2(1344, 0, 336, 340)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_qek5x"]
 atlas = ExtResource("3_75vfm")
@@ -56,18 +40,6 @@ animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_75vfm")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_0owmy")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ugbui")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_fcs02")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_myrg7")
 }],
 "loop": true,
 "name": &"died",
@@ -127,12 +99,11 @@ scale = Vector2(0.5602923, 0.5602923)
 texture = ExtResource("2_lvxji")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals"]
-position = Vector2(14, -7.999999)
+position = Vector2(14.000001, -8)
 scale = Vector2(0.61040974, 0.61040974)
 sprite_frames = SubResource("SpriteFrames_ugbui")
-animation = &"hurt"
+animation = &"died"
 autoplay = "idle"
-frame_progress = 0.3065823
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_p47bc")

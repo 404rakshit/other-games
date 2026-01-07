@@ -1,10 +1,14 @@
-[gd_scene load_steps=4 format=3 uid="uid://bvpl4gt0hie0k"]
+[gd_scene load_steps=5 format=3 uid="uid://bvpl4gt0hie0k"]
 
-[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="1_m8aw3"]
 [ext_resource type="Script" uid="uid://b88k37q8setlx" path="res://scripts/weapon/projectile.gd" id="1_qg78g"]
+[ext_resource type="Texture2D" uid="uid://dyie2dq7hoxth" path="res://assets/player/projectile.png" id="2_qg78g"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_qg78g"]
-radius = 13.038404
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_r0f3c"]
+radius = 3.0
+height = 38.0
+
+[sub_resource type="Gradient" id="Gradient_qg78g"]
+colors = PackedColorArray(1, 1, 0, 1, 0.53333336, 0.53333336, 0.53333336, 0)
 
 [node name="Projectile" type="Area2D"]
 collision_layer = 4
@@ -15,13 +19,24 @@ script = ExtResource("1_qg78g")
 
 [node name="Skins" type="Sprite2D" parent="Visuals"]
 modulate = Color(1, 1, 0, 1)
-scale = Vector2(0.2, 0.2)
-texture = ExtResource("1_m8aw3")
+rotation = 1.5707964
+scale = Vector2(0.114465214, 0.114465214)
+texture = ExtResource("2_qg78g")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_qg78g")
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_r0f3c")
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(3, -4)
+rect = Rect2(-22, 1, 37.34, 6.4699993)
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+amount = 10
+gravity = Vector2(0, 0)
+scale_amount_min = 3.0
+scale_amount_max = 3.0
+color_ramp = SubResource("Gradient_qg78g")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

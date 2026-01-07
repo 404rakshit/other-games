@@ -1,14 +1,44 @@
-[gd_scene load_steps=6 format=3 uid="uid://drhkcd78218ty"]
+[gd_scene load_steps=11 format=3 uid="uid://drhkcd78218ty"]
 
 [ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="1_4a83h"]
 [ext_resource type="Script" uid="uid://kixbm1ob1e7s" path="res://scripts/enemy/enemy.gd" id="1_a3pup"]
 [ext_resource type="PackedScene" uid="uid://c16gcgs04xwm8" path="res://scenes/comp/health_component.tscn" id="3_40wdo"]
+[ext_resource type="Texture2D" uid="uid://rp2bi21qp2f1" path="res://assets/enemy/run sprite.png" id="3_tjssy"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gl05p"]
+atlas = ExtResource("3_tjssy")
+region = Rect2(0, 0, 339, 340)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cwlon"]
+atlas = ExtResource("3_tjssy")
+region = Rect2(339, 0, 339, 340)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nbhyu"]
+atlas = ExtResource("3_tjssy")
+region = Rect2(339, 340, 339, 340)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_13gj6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gl05p")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cwlon")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nbhyu")
+}],
+"loop": true,
+"name": &"run",
+"speed": 5.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4a83h"]
-size = Vector2(66, 62)
+size = Vector2(54, 94)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_40wdo"]
-size = Vector2(68, 64)
+size = Vector2(58, 96)
 
 [node name="Enemy" type="CharacterBody2D"]
 collision_layer = 2
@@ -17,12 +47,22 @@ script = ExtResource("1_a3pup")
 [node name="Visuals" type="Node2D" parent="."]
 
 [node name="Skin" type="Sprite2D" parent="Visuals"]
+visible = false
 modulate = Color(0.69779396, 0.053501815, 9.62615e-08, 1)
 self_modulate = Color(2.4318616, 2.4318616, 2.4318616, 1)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("1_4a83h")
 
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals"]
+position = Vector2(0, -1)
+scale = Vector2(0.34219635, 0.34219635)
+sprite_frames = SubResource("SpriteFrames_13gj6")
+animation = &"run"
+autoplay = "run"
+frame_progress = 0.94910544
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(1, 0.9879728)
 shape = SubResource("RectangleShape2D_4a83h")
 
 [node name="HealthComponent" parent="." instance=ExtResource("3_40wdo")]

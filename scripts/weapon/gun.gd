@@ -37,7 +37,7 @@ func shoot():
 		
 		get_tree().root.add_child(bullet)
 		bullet.global_position = shooting_point.global_position
-		#bullet.rotation = global_rotation
+		bullet.rotation = global_rotation
 		
 		bullet.damage = current_damage
 		
