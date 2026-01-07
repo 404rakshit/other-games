@@ -8,7 +8,7 @@ const ENEMY_SCENE = preload("res://scenes/enemy/enemy.tscn")
 @onready var game_over_screen = $GameOverScreen
 
 func _on_timer_timeout() -> void:
-	spawn_enwmy()
+	spawn_enemy()
 
 func _ready() -> void:
 	var max_health = player.health_component.max_health
@@ -18,7 +18,7 @@ func _ready() -> void:
 	player.experience_gained.connect(hud.update_xp)
 	#player.leveled_up.connect(_on_player_leveled_up)
 
-func spawn_enwmy():
+func spawn_enemy():
 	var new_enemy : CharacterBody2D = ENEMY_SCENE.instantiate()
 	
 	var random_pos := Vector2(randf_range(0, 1000), randf_range(0, 600))

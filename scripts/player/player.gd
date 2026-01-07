@@ -11,22 +11,61 @@ signal player_died()
 # comp
 @onready var health_component: HealthComponent = $HealthComponent
 @onready var damage_interval_timer: Timer = $DamageIntervalTimer 
+@onready var animated_sprite = $Visuals/AnimatedSprite2D
+
+# enum
+
+enum State { IDLE, RUN, HURT, DEAD }
 
 # states
 var current_experience: int = 0
 var current_level: int = 1
+var current_state: State = State.IDLE
 var xp_to_next_level: int = 100
 
 func _process(_delta: float) -> void:
-	handle_movement()
 	
+	if current_state == State.DEAD:
+		return
+	
+	handle_movement()
+
+func set_state(new_state: State):
+	
+	if current_state == State.DEAD:
+		return
+		
+	current_state = new_state
+	
+	match current_state:
+		State.IDLE:
+			animated_sprite.play("idle")
+		State.HURT:
+			animated_sprite.play("hurt")
+		State.RUN:
+			animated_sprite.play("run")
+		#State.DEAD:
+			#animated_sprite.play("idle")
+
 func handle_movement():
 	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
 	
 	if direction:
 		velocity = direction * speed
+		if direction.x > 0:
+			animated_sprite.flip_h = false
+		elif direction.x < 0:
+			animated_sprite.flip_h = true
+		
+		if current_state != State.RUN or current_state != State.HURT:
+			set_state(State.RUN)
+		
+		#animated_sprite.play("run")
 	else:
 		velocity = Vector2.ZERO
+		if current_state != State.IDLE or current_state != State.HURT:
+			set_state(State.IDLE)
+		#animated_sprite.play("idle")
 	
 	move_and_slide()
 
@@ -60,6 +99,9 @@ func take_damage(amount: int):
 	modulate = Color.RED
 	var tween = create_tween()
 	tween.tween_property(self, "modulate", Color.WHITE, 0.2)
+	
+	set_state(State.HURT)
+
 
 func gain_experience(exp_amount: int):
 	current_experience += exp_amount
@@ -82,3 +124,8 @@ func _on_health_component_died() -> void:
 func _on_scan_area_area_entered(area: Area2D) -> void:
 	if area.has_method("start_magnet"):
 		area.start_magnet(self)
+
+
+func _on_animated_sprite_2d_animation_finished() -> void:
+	if current_state == State.HURT:
+		set_state(State.IDLE)
