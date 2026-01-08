@@ -108,7 +108,7 @@ func gain_experience(exp_amount: int):
 	
 	if current_experience >= xp_to_next_level:
 		current_level += 1
-		xp_to_next_level += 50
+		xp_to_next_level += 500
 		leveled_up.emit(current_level)
 		print("LEVEL UP")
 	

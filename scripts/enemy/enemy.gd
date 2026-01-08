@@ -58,6 +58,8 @@ func take_damage(amount: int):
 func drop_exp_gem():
 	var new_gem: Area2D = GEM_SCENE.instantiate()
 	new_gem.global_position = global_position
+	new_gem.rotate(randf_range(1.57, 1.84))
+	new_gem.z_index = -1
 	
 	# We use call_deferred to safely add nodes during a physics callback
 	get_parent().call_deferred("add_child", new_gem)

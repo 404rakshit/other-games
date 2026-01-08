@@ -1,14 +1,14 @@
 [gd_scene load_steps=5 format=3 uid="uid://bvpl4gt0hie0k"]
 
 [ext_resource type="Script" uid="uid://b88k37q8setlx" path="res://scripts/weapon/projectile.gd" id="1_qg78g"]
-[ext_resource type="Texture2D" uid="uid://dyie2dq7hoxth" path="res://assets/player/projectile.png" id="2_qg78g"]
+[ext_resource type="Texture2D" uid="uid://c40hwntrl1jnh" path="res://assets/player/laser.png" id="2_qg78g"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_r0f3c"]
 radius = 3.0
 height = 38.0
 
 [sub_resource type="Gradient" id="Gradient_qg78g"]
-colors = PackedColorArray(1, 1, 0, 1, 0.53333336, 0.53333336, 0.53333336, 0)
+colors = PackedColorArray(0.91764706, 0.101960786, 0, 1, 0.53333336, 0.53333336, 0.53333336, 0)
 
 [node name="Projectile" type="Area2D"]
 collision_layer = 4
@@ -20,7 +20,7 @@ script = ExtResource("1_qg78g")
 [node name="Skins" type="Sprite2D" parent="Visuals"]
 modulate = Color(1, 1, 0, 1)
 rotation = 1.5707964
-scale = Vector2(0.114465214, 0.114465214)
+scale = Vector2(0.37607798, 0.8698258)
 texture = ExtResource("2_qg78g")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
