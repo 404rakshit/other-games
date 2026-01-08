@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://buwkyt05a55mi" path="res://assets/game/exp-logo.png" id="3_xu0sl"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_77e6q"]
-bg_color = Color(0.19793722, 0.19793725, 0.19793713, 1)
+bg_color = Color(0.07284262, 0.072842635, 0.072842576, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5645d"]
 bg_color = Color(0.59207714, 0.002009904, 1.4439226e-07, 1)
@@ -66,7 +66,8 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -20.0
-offset_right = 20.0
-offset_bottom = 23.0
+offset_top = -1.0
+offset_right = 21.0
+offset_bottom = 22.0
 grow_horizontal = 2
 text = "00:00"
