@@ -1,15 +1,26 @@
-[gd_scene load_steps=8 format=3 uid="uid://6wubinngqbf8"]
+[gd_scene load_steps=10 format=3 uid="uid://6wubinngqbf8"]
 
 [ext_resource type="Script" uid="uid://cw8g2bodtrtdp" path="res://scripts/game/world.gd" id="1_d8brc"]
 [ext_resource type="PackedScene" uid="uid://d1w5ccem33kle" path="res://scenes/player/player.tscn" id="1_g5t8f"]
+[ext_resource type="Texture2D" uid="uid://c3ua7i6r5mq3y" path="res://assets/game/bg-tile.png" id="2_a33jj"]
 [ext_resource type="PackedScene" uid="uid://drhkcd78218ty" path="res://scenes/enemy/enemy.tscn" id="2_d8brc"]
 [ext_resource type="PackedScene" uid="uid://r7xccx21navk" path="res://scenes/game/hud.tscn" id="2_qd3kh"]
 [ext_resource type="PackedScene" uid="uid://b3drmsj7pkxmw" path="res://scenes/game/level_up_screen.tscn" id="5_w1nur"]
 [ext_resource type="PackedScene" uid="uid://sb4722pdh5mj" path="res://scenes/game/game_over_screen.tscn" id="6_q5tta"]
 [ext_resource type="AudioStream" uid="uid://j2e577nx6jjc" path="res://assets/game/gamemusic2.mp3" id="8_a33jj"]
+[ext_resource type="PackedScene" uid="uid://c3xf1nti60pf6" path="res://scenes/game/stopwatch.tscn" id="9_68iyn"]
 
 [node name="World" type="Node2D"]
 script = ExtResource("1_d8brc")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+z_index = -2
+offset_left = -50526.65
+offset_top = -49110.0
+offset_right = 50389.203
+offset_bottom = 48354.0
+texture = ExtResource("2_a33jj")
+stretch_mode = 1
 
 [node name="HUD" parent="." instance=ExtResource("2_qd3kh")]
 
@@ -46,6 +57,8 @@ stream = ExtResource("8_a33jj")
 volume_db = -5.0
 autoplay = true
 bus = &"Music"
+
+[node name="Stopwatch" parent="." groups=["stopwatch"] instance=ExtResource("9_68iyn")]
 
 [connection signal="leveled_up" from="Player" to="." method="_on_player_leveled_up"]
 [connection signal="player_died" from="Player" to="." method="_on_player_player_died"]
