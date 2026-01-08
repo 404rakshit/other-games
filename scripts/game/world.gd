@@ -7,6 +7,7 @@ const ENEMY_SCENE = preload("res://scenes/enemy/enemy.tscn")
 @onready var stopwatch_label: Label = $HUD/Control/TimerLabel
 @onready var level_up_screen = $LevelUpScreen
 @onready var game_over_screen = $GameOverScreen
+@onready var pause_menu_screen = $PauseMenuScreen
 
 var stopwatch : Stopwatch
 
@@ -15,6 +16,10 @@ func _on_timer_timeout() -> void:
 	
 func _process(_delta: float) -> void:
 	update_stopwatch_label()
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if event is InputEvent and Input.is_key_pressed(KEY_ESCAPE):
+		pause_menu_screen.toggle_puase_menu()
 
 func _ready() -> void:
 	var max_health = player.health_component.max_health

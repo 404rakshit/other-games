@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://6wubinngqbf8"]
+[gd_scene load_steps=11 format=3 uid="uid://6wubinngqbf8"]
 
 [ext_resource type="Script" uid="uid://cw8g2bodtrtdp" path="res://scripts/game/world.gd" id="1_d8brc"]
 [ext_resource type="PackedScene" uid="uid://d1w5ccem33kle" path="res://scenes/player/player.tscn" id="1_g5t8f"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://b3drmsj7pkxmw" path="res://scenes/game/level_up_screen.tscn" id="5_w1nur"]
 [ext_resource type="PackedScene" uid="uid://sb4722pdh5mj" path="res://scenes/game/game_over_screen.tscn" id="6_q5tta"]
 [ext_resource type="AudioStream" uid="uid://j2e577nx6jjc" path="res://assets/game/gamemusic2.mp3" id="8_a33jj"]
+[ext_resource type="PackedScene" uid="uid://ctow8mq71t4so" path="res://scenes/game/pause_menu_screen.tscn" id="8_sexec"]
 [ext_resource type="PackedScene" uid="uid://c3xf1nti60pf6" path="res://scenes/game/stopwatch.tscn" id="9_68iyn"]
 
 [node name="World" type="Node2D"]
@@ -49,6 +50,8 @@ visible = false
 
 [node name="GameOverScreen" parent="." instance=ExtResource("6_q5tta")]
 visible = false
+
+[node name="PauseMenuScreen" parent="." instance=ExtResource("8_sexec")]
 
 [node name="Sound" type="Node2D" parent="."]
 
