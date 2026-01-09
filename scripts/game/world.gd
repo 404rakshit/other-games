@@ -18,7 +18,7 @@ func _process(_delta: float) -> void:
 	update_stopwatch_label()
 
 func _unhandled_key_input(event: InputEvent) -> void:
-	if event is InputEvent and Input.is_key_pressed(KEY_ESCAPE):
+	if event is InputEvent and Input.is_key_pressed(KEY_P):
 		pause_menu_screen.toggle_puase_menu()
 
 func _ready() -> void:

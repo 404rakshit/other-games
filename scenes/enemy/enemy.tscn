@@ -67,6 +67,7 @@ frame_progress = 0.94910544
 
 [node name="DeadSound" type="AudioStreamPlayer2D" parent="Sound"]
 stream = ExtResource("5_cwlon")
+volume_db = -5.0
 bus = &"SFX"
 
 [node name="HitSound" type="AudioStreamPlayer2D" parent="Sound"]
