@@ -2,10 +2,13 @@ extends CanvasLayer
 
 @onready var health_bar = $Control/HealthBar
 @onready var xp_bar = $Control/XPBar
+@onready var joystick = $"Virtual Joystick"
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	if DisplayServer.is_touchscreen_available():
+		joystick.visible = true
+	else:
+		joystick.visible = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta: float) -> void:
