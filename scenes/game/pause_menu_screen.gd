@@ -1,5 +1,7 @@
 extends CanvasLayer
 
+const TARGET_SCENE = "res://scenes/game/main_menu.tscn"
+
 func _ready() -> void:
 	visible = false
 
@@ -14,3 +16,7 @@ func _on_resume_button_pressed() -> void:
 func _on_restart_button_pressed() -> void:
 	get_tree().paused = false
 	get_tree().reload_current_scene()
+
+
+func _on_exit_to_main_menu_btn_pressed() -> void:
+	get_tree().change_scene_to_file(TARGET_SCENE)

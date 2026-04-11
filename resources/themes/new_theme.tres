@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://c26jam44t4fks"]
+
+[ext_resource type="FontFile" uid="uid://matdckviys11" path="res://assets/fonts/Silkscreen-Regular.ttf" id="1_8k588"]
+
+[resource]
+default_font = ExtResource("1_8k588")
+default_font_size = 23

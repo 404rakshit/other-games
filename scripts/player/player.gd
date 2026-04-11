@@ -43,7 +43,7 @@ func set_state(new_state: State):
 		State.HURT:
 			animated_sprite.play("hurt")
 		State.RUN:
-			animated_sprite.play("run")
+			animated_sprite.play("fly2")
 		#State.DEAD:
 			#animated_sprite.play("idle")
 
