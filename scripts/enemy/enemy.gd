@@ -3,9 +3,15 @@ extends CharacterBody2D
 # exports
 @export var speed: float = 150.0
 @export var damage_amount: int = 10
+@export var attack_windup_time: float = 0.3 # Time before damage hits
+@export var attack_cooldown_time: float = 1.0 # Time between attacks
 
 # variables
 const player_group_name = "player"
+
+# ENUM for State Machine
+enum State { CHASING, ATTACKING }
+var current_state: State = State.CHASING
 
 # components
 @onready var health_component = $HealthComponent
@@ -13,38 +19,85 @@ const player_group_name = "player"
 @onready var animated_sprite = $Visuals/AnimatedSprite2D
 @onready var hit_sfx : AudioStreamPlayer2D = $Sound/HitSound
 @onready var dead_sfx : AudioStreamPlayer2D = $Sound/DeadSound
-# refs (states)
+
+# Timers (Add these nodes to your scene or create them in code like this)
+var windup_timer: Timer
+var cooldown_timer: Timer
+
+# refs
 var player: Node2D = null
 
-# scenes
 const GEM_SCENE = preload("res://scenes/game/exp_gem.tscn")
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group(player_group_name)
 	
+	# Setup Timers via code so you don't have to add them manually in the editor
+	setup_timers()
+	
 	var random_shade = randf_range(0.8, 1.2)
 	modulate = Color(random_shade, random_shade, random_shade, 1.0)
 	
-func change_dir(direction: Vector2):
-		if direction.x > 0:
-			animated_sprite.flip_h = false
-		elif direction.x < 0:
-			animated_sprite.flip_h = true
+func setup_timers():
+	windup_timer = Timer.new()
+	windup_timer.one_shot = true
+	windup_timer.timeout.connect(_on_windup_timer_timeout)
+	add_child(windup_timer)
+	
+	cooldown_timer = Timer.new()
+	cooldown_timer.one_shot = true
+	#cooldown_timer.timeout.connect(_on_cooldown_timer_timeout)
+	add_child(cooldown_timer)
 
 func _physics_process(_delta: float) -> void:
-	if player:
-		var direction = global_position.direction_to(player.global_position)
-		velocity = direction * speed
+	if not player:
+		return
 		
-		change_dir(direction)
-		move_and_slide()
-		
-	var overlapping_bodies = damage_zone.get_overlapping_bodies()
-	
-	for body in overlapping_bodies:
-		if body.has_method("take_damage"):
-			body.take_damage(damage_amount)
+	match current_state:
+		State.CHASING:
+			process_chasing()
+		State.ATTACKING:
+			# Stop moving while attacking
+			velocity = Vector2.ZERO
+			move_and_slide()
 
+func process_chasing():
+	# Movement logic
+	var direction = global_position.direction_to(player.global_position)
+	velocity = direction * speed
+	change_dir(direction)
+	move_and_slide()
+	
+	# Check if player is in range to start an attack
+	if is_player_in_range() and cooldown_timer.is_stopped():
+		start_attack()
+
+func is_player_in_range() -> bool:
+	var overlapping_bodies = damage_zone.get_overlapping_bodies()
+	return player in overlapping_bodies
+
+func start_attack():
+	current_state = State.ATTACKING
+	animated_sprite.play("attack") # Play your attack animation here!
+	windup_timer.start(attack_windup_time)
+
+func _on_windup_timer_timeout():
+	# The animation reached the "hit" frame. 
+	# Check if the player is STILL in range before dealing damage!
+	if is_player_in_range():
+		if player.has_method("take_damage"):
+			player.take_damage(damage_amount)
+	
+	# Start cooldown and go back to chasing
+	cooldown_timer.start(attack_cooldown_time)
+	animated_sprite.play("run") # or idle, depending on your animations
+	current_state = State.CHASING
+
+func change_dir(direction: Vector2):
+	if direction.x > 0:
+		animated_sprite.flip_h = false
+	elif direction.x < 0:
+		animated_sprite.flip_h = true
 func take_damage(amount: int):
 	health_component.damage(amount)
 	

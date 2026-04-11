@@ -1,6 +1,9 @@
 extends Node2D
 
 const ENEMY_SCENE = preload("res://scenes/enemy/enemy.tscn")
+const DETONATOR_SCENE = preload("res://scenes/enemy/varients/detonator_enemy.tscn")
+const RANGED_ENEMY = preload("res://scenes/enemy/varients/ranged_enemy.tscn")
+
 
 @onready var player = $Player
 @onready var hud = $HUD
@@ -36,7 +39,7 @@ func update_stopwatch_label():
 	stopwatch_label.text = stopwatch.time_to_str()
 
 func spawn_enemy():
-	var new_enemy : CharacterBody2D = ENEMY_SCENE.instantiate()
+	var new_enemy : CharacterBody2D = RANGED_ENEMY.instantiate()
 	
 	var random_pos := Vector2(randf_range(0, 1000), randf_range(0, 600))
 	new_enemy.global_position = random_pos
