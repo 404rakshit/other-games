@@ -18,8 +18,8 @@ var recovery_speed: float = 15.0
 var current_recoil: float = 0.0
 
 # Orbit & Bobbing Variables 
-var orbit_radius: float = 55.0   
-var orbit_angle: float = 0.0     
+@export var orbit_radius: float = 55.0   
+@export var orbit_angle: float = 0.0     
 var bob_speed: float = 5.0       
 var bob_amount: float = 4.0      
 var time_passed: float = 0.0

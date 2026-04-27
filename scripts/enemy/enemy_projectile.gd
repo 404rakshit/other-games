@@ -11,7 +11,7 @@ func _ready():
 
 func _physics_process(delta: float):
 	position += direction * speed * delta
-	rotation += rad_to_deg(0.08)
+	rotation += rad_to_deg(0.121)
 
 # Connect the "body_entered" signal of the Area2D to this function
 func _on_body_entered(body: Node2D):

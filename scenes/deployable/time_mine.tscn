@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://doxvv6btd5ceh"]
+
+[ext_resource type="Script" uid="uid://c3qo1ijym0wfr" path="res://scripts/deployable/time_mine.gd" id="1_gflne"]
+[ext_resource type="Texture2D" uid="uid://desavv13mcs2v" path="res://assets/game/time-bomb-asset.png" id="1_jn3js"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_olrk6"]
+radius = 200.12247
+
+[node name="TimeMine" type="Node2D"]
+script = ExtResource("1_gflne")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_jn3js")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="DetonationTimer" type="Timer" parent="."]
+
+[node name="BlastRadius" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BlastRadius"]
+shape = SubResource("CircleShape2D_olrk6")
+
+[node name="ExplosionSound" type="AudioStreamPlayer2D" parent="."]
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]

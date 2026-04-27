@@ -1,69 +1,35 @@
-[gd_scene load_steps=18 format=3 uid="uid://dg1krnv2yg8nw"]
+[gd_scene load_steps=13 format=3 uid="uid://dg1krnv2yg8nw"]
 
 [ext_resource type="Script" uid="uid://bvug83asa7cda" path="res://scripts/enemy/varients/ranged_enemy.gd" id="1_3lp7d"]
 [ext_resource type="PackedScene" uid="uid://gpem0t06s5vp" path="res://scenes/enemy/enemy_projectile.tscn" id="2_egasa"]
-[ext_resource type="Texture2D" uid="uid://cv2c7x5jcph1b" path="res://assets/enemy/enemy-sprite-animation.png" id="2_lm6or"]
-[ext_resource type="Texture2D" path="res://assets/enemy/enemy-runing-sprite-animation.png" id="3_lpsjl"]
 [ext_resource type="AudioStream" uid="uid://mxyxintr0s1d" path="res://assets/enemy/death_groan.wav" id="4_1wk8e"]
+[ext_resource type="Texture2D" uid="uid://ccfxgbvgxbwwn" path="res://assets/enemy/spitter-walk.png" id="4_egasa"]
 [ext_resource type="AudioStream" uid="uid://ttpgef4e7gu7" path="res://assets/enemy/hit.wav" id="5_44utj"]
 [ext_resource type="PackedScene" uid="uid://c16gcgs04xwm8" path="res://scenes/comp/health_component.tscn" id="6_epuhi"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_nbhyu"]
-atlas = ExtResource("2_lm6or")
-region = Rect2(0, 0, 250, 250)
+[sub_resource type="AtlasTexture" id="AtlasTexture_3lp7d"]
+atlas = ExtResource("4_egasa")
+region = Rect2(680, 0, 340, 340)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_13gj6"]
-atlas = ExtResource("2_lm6or")
-region = Rect2(250, 0, 250, 250)
+[sub_resource type="AtlasTexture" id="AtlasTexture_egasa"]
+atlas = ExtResource("4_egasa")
+region = Rect2(340, 0, 340, 340)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_4efjx"]
-atlas = ExtResource("2_lm6or")
-region = Rect2(0, 250, 250, 250)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_hvxgb"]
-atlas = ExtResource("2_lm6or")
-region = Rect2(250, 250, 250, 250)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_peoo5"]
-atlas = ExtResource("3_lpsjl")
-region = Rect2(0, 0, 166, 250)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_2f3il"]
-atlas = ExtResource("3_lpsjl")
-region = Rect2(0, 250, 166, 250)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_dtxhd"]
-atlas = ExtResource("3_lpsjl")
-region = Rect2(166, 250, 166, 250)
+[sub_resource type="AtlasTexture" id="AtlasTexture_nqcn2"]
+atlas = ExtResource("4_egasa")
+region = Rect2(0, 0, 340, 340)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_owx42"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_nbhyu")
+"texture": SubResource("AtlasTexture_3lp7d")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_13gj6")
+"texture": SubResource("AtlasTexture_egasa")
 }, {
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_4efjx")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_hvxgb")
-}],
-"loop": true,
-"name": &"attack",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_peoo5")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_2f3il")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_dtxhd")
+"texture": SubResource("AtlasTexture_nqcn2")
 }],
 "loop": true,
 "name": &"run",
@@ -73,23 +39,26 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q3djr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i7gor"]
-size = Vector2(49, 54)
+size = Vector2(82.00489, 83.72258)
 
 [node name="RangedEnemy" type="CharacterBody2D"]
+collision_layer = 2
 script = ExtResource("1_3lp7d")
 projectile_scene = ExtResource("2_egasa")
 
 [node name="Visuals" type="Node2D" parent="."]
+position = Vector2(0, -1)
+scale = Vector2(3.2370427, 3.2370427)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals"]
-self_modulate = Color(1, 0.2848445, 0.34308314, 1)
 position = Vector2(0, -1)
-scale = Vector2(0.34219635, 0.34219635)
+scale = Vector2(0.118843034, 0.118843034)
 sprite_frames = SubResource("SpriteFrames_owx42")
 animation = &"run"
 autoplay = "run"
 
 [node name="Sound" type="Node2D" parent="."]
+scale = Vector2(1.4878578, 1.4878578)
 
 [node name="DeadSound" type="AudioStreamPlayer2D" parent="Sound"]
 stream = ExtResource("4_1wk8e")
@@ -101,13 +70,16 @@ stream = ExtResource("5_44utj")
 bus = &"SFX"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-scale = Vector2(1, 0.9879728)
+position = Vector2(0, -1)
+scale = Vector2(4.8162594, 4.758333)
 shape = SubResource("RectangleShape2D_q3djr")
 
 [node name="HealthComponent" parent="." instance=ExtResource("6_epuhi")]
 max_health = 3
 
 [node name="DamageZone" type="Area2D" parent="."]
+position = Vector2(0, -1)
+scale = Vector2(1.595418, 1.595418)
 collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DamageZone"]
@@ -119,3 +91,5 @@ shape = SubResource("RectangleShape2D_i7gor")
 [node name="AttackCooldownTimer" type="Timer" parent="."]
 
 [node name="ShootPoint" type="Marker2D" parent="."]
+
+[connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]

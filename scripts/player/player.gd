@@ -5,11 +5,14 @@ signal experience_gained(current_xp: int, max_xp: int)
 signal leveled_up(new_level: int)
 signal player_died()
 
+const TIME_MINE_SCENE = preload("res://scenes/deployable/time_mine.tscn")
+
 # exports
 @export var speed : float = 300.0
 
 # comp
 @onready var health_component: HealthComponent = $HealthComponent
+@onready var deploy_component: DeployComponent = $DeployComponent
 @onready var damage_interval_timer: Timer = $DamageIntervalTimer 
 @onready var animated_sprite = $Visuals/AnimatedSprite2D
 @onready var gem_collect_sfx: AudioStreamPlayer2D = $Sound/GemCollect
@@ -29,6 +32,12 @@ func _process(_delta: float) -> void:
 		return
 	
 	handle_movement()
+	
+	handle_ability()
+
+func handle_ability():
+	if Input.is_action_just_pressed("use_ability"):
+		deploy_component.trigger_deployment()
 
 func set_state(new_state: State):
 	
@@ -46,6 +55,19 @@ func set_state(new_state: State):
 			animated_sprite.play("fly2")
 		#State.DEAD:
 			#animated_sprite.play("idle")
+
+func deploy_mine():
+	var new_mine = TIME_MINE_SCENE.instantiate()
+	
+	# Pass the player as the creator (useful if powers scale off player stats later!)
+	new_mine.creator = self 
+	
+	# Drop it exactly where the player is standing
+	new_mine.global_position = global_position
+	
+	# Add it to the main game world (not as a child of the player, 
+	# otherwise it will follow the player around!)
+	get_tree().root.add_child(new_mine)
 
 func handle_movement():
 	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
@@ -101,7 +123,6 @@ func take_damage(amount: int):
 	tween.tween_property(self, "modulate", Color.WHITE, 0.2)
 	
 	set_state(State.HURT)
-
 
 func gain_experience(exp_amount: int):
 	current_experience += exp_amount

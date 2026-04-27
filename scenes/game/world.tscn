@@ -4,7 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://d1w5ccem33kle" path="res://scenes/player/player.tscn" id="1_g5t8f"]
 [ext_resource type="PackedScene" uid="uid://drhkcd78218ty" path="res://scenes/enemy/enemy.tscn" id="2_d8brc"]
 [ext_resource type="PackedScene" uid="uid://r7xccx21navk" path="res://scenes/game/hud.tscn" id="2_qd3kh"]
-[ext_resource type="Texture2D" uid="uid://b8avjseuff7r4" path="res://assets/game/desert-bg.jpeg" id="2_sexec"]
+[ext_resource type="Texture2D" uid="uid://j0jfgm1fle3x" path="res://assets/game/desert bg.webp" id="2_sexec"]
 [ext_resource type="PackedScene" uid="uid://b3drmsj7pkxmw" path="res://scenes/game/level_up_screen.tscn" id="5_w1nur"]
 [ext_resource type="PackedScene" uid="uid://sb4722pdh5mj" path="res://scenes/game/game_over_screen.tscn" id="6_q5tta"]
 [ext_resource type="AudioStream" uid="uid://j2e577nx6jjc" path="res://assets/game/gamemusic2.mp3" id="8_a33jj"]
@@ -20,6 +20,7 @@ offset_left = -50526.65
 offset_top = -49110.0
 offset_right = 50389.203
 offset_bottom = 48354.0
+scale = Vector2(1.0001065, 1)
 texture = ExtResource("2_sexec")
 stretch_mode = 1
 
@@ -28,6 +29,7 @@ stretch_mode = 1
 [node name="Player" parent="." instance=ExtResource("1_g5t8f")]
 
 [node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
 autostart = true
 
 [node name="EnemyGroup" type="Node2D" parent="."]

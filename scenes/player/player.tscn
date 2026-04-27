@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://d1w5ccem33kle"]
+[gd_scene load_steps=30 format=3 uid="uid://d1w5ccem33kle"]
 
 [ext_resource type="Script" uid="uid://6iyonbfy33sl" path="res://scripts/player/player.gd" id="1_dovo2"]
 [ext_resource type="Texture2D" uid="uid://bwoejmvf6woex" path="res://assets/player/idle.png" id="2_lvxji"]
@@ -9,6 +9,8 @@
 [ext_resource type="Texture2D" uid="uid://cd70vfanai682" path="res://assets/player/Levitation-frame1.png" id="4_qek5x"]
 [ext_resource type="Texture2D" uid="uid://baepam54guhc" path="res://assets/player/Levitation-frame 2.png" id="5_5gtgg"]
 [ext_resource type="AudioStream" uid="uid://c5uo0xnhgyvjx" path="res://assets/game/coin.wav" id="7_0owmy"]
+[ext_resource type="Script" uid="uid://cq38djn5eahht" path="res://scripts/comp/deploy_component.gd" id="10_je7p5"]
+[ext_resource type="PackedScene" uid="uid://doxvv6btd5ceh" path="res://scenes/deployable/time_mine.tscn" id="11_fm80t"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_75vfm"]
 atlas = ExtResource("4_0owmy")
@@ -205,6 +207,10 @@ shape = SubResource("CircleShape2D_lvxji")
 
 [node name="GemCollect" type="AudioStreamPlayer2D" parent="Sound"]
 stream = ExtResource("7_0owmy")
+
+[node name="DeployComponent" type="Node2D" parent="."]
+script = ExtResource("10_je7p5")
+current_deployable = ExtResource("11_fm80t")
 
 [connection signal="animation_finished" from="Visuals/AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]

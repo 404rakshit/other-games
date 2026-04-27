@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://b20i7tuihgeeg"]
+
+[node name="DeployableComponent" type="Node2D"]
