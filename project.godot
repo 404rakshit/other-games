@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="2d-game"
-run/main_scene="uid://bq5hvcw15grsq"
+run/main_scene="uid://b3wbxia4iil73"
 config/features=PackedStringArray("4.5", "Forward Plus")
 boot_splash/show_image=false
 config/icon="res://icon.svg"

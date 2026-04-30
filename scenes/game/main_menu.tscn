@@ -77,9 +77,14 @@ alignment = 0
 [node name="Menu2" type="VBoxContainer" parent="UI/MarginContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Level!Btn" type="Button" parent="UI/MarginContainer/HBoxContainer/VBoxContainer/Menu2"]
+[node name="LevelBtn" type="Button" parent="UI/MarginContainer/HBoxContainer/VBoxContainer/Menu2"]
 layout_mode = 2
 text = "Level 1"
+alignment = 0
+
+[node name="LevelBtn2" type="Button" parent="UI/MarginContainer/HBoxContainer/VBoxContainer/Menu2"]
+layout_mode = 2
+text = "Forest"
 alignment = 0
 
 [node name="BackToMenuBtn" type="Button" parent="UI/MarginContainer/HBoxContainer/VBoxContainer/Menu2"]
@@ -94,5 +99,6 @@ autoplay = true
 [connection signal="pressed" from="UI/MarginContainer/HBoxContainer/VBoxContainer/Menu1/StartBtn" to="UI" method="_on_start_btn_pressed"]
 [connection signal="button_up" from="UI/MarginContainer/HBoxContainer/VBoxContainer/Menu1/OptionBtn" to="UI" method="_on_option_btn_button_up"]
 [connection signal="pressed" from="UI/MarginContainer/HBoxContainer/VBoxContainer/Menu1/ExitBtn" to="UI" method="_on_exit_btn_pressed"]
-[connection signal="pressed" from="UI/MarginContainer/HBoxContainer/VBoxContainer/Menu2/Level!Btn" to="UI" method="_on_level_btn_pressed"]
+[connection signal="pressed" from="UI/MarginContainer/HBoxContainer/VBoxContainer/Menu2/LevelBtn" to="UI" method="_on_level_btn_pressed"]
+[connection signal="pressed" from="UI/MarginContainer/HBoxContainer/VBoxContainer/Menu2/LevelBtn2" to="UI" method="_on_level_btn_2_pressed"]
 [connection signal="pressed" from="UI/MarginContainer/HBoxContainer/VBoxContainer/Menu2/BackToMenuBtn" to="UI" method="_on_back_to_menu_btn_pressed"]

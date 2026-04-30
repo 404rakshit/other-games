@@ -70,6 +70,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_q3djr"]
+size = Vector2(68, 85.02258)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i7gor"]
 size = Vector2(58, 96)
@@ -86,7 +87,7 @@ script = ExtResource("1_q3djr")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals"]
 self_modulate = Color(0.2, 0.15294118, 1, 1)
 position = Vector2(0, -1)
-scale = Vector2(0.34219635, 0.34219635)
+scale = Vector2(0.5419355, 0.5419355)
 sprite_frames = SubResource("SpriteFrames_owx42")
 animation = &"run"
 autoplay = "run"
@@ -103,7 +104,7 @@ stream = ExtResource("6_lace2")
 bus = &"SFX"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-scale = Vector2(1, 0.9879728)
+scale = Vector2(1.0529984, 0.9879728)
 shape = SubResource("RectangleShape2D_q3djr")
 
 [node name="HealthComponent" parent="." instance=ExtResource("7_5e0h7")]

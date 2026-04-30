@@ -1,8 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://6wubinngqbf8"]
+[gd_scene load_steps=10 format=3 uid="uid://6wubinngqbf8"]
 
 [ext_resource type="Script" uid="uid://cw8g2bodtrtdp" path="res://scripts/game/world.gd" id="1_d8brc"]
 [ext_resource type="PackedScene" uid="uid://d1w5ccem33kle" path="res://scenes/player/player.tscn" id="1_g5t8f"]
-[ext_resource type="PackedScene" uid="uid://drhkcd78218ty" path="res://scenes/enemy/enemy.tscn" id="2_d8brc"]
 [ext_resource type="PackedScene" uid="uid://r7xccx21navk" path="res://scenes/game/hud.tscn" id="2_qd3kh"]
 [ext_resource type="Texture2D" uid="uid://j0jfgm1fle3x" path="res://assets/game/desert bg.webp" id="2_sexec"]
 [ext_resource type="PackedScene" uid="uid://b3drmsj7pkxmw" path="res://scenes/game/level_up_screen.tscn" id="5_w1nur"]
@@ -20,7 +19,7 @@ offset_left = -50526.65
 offset_top = -49110.0
 offset_right = 50389.203
 offset_bottom = 48354.0
-scale = Vector2(1.0001065, 1)
+scale = Vector2(1.0000771, 0.99997)
 texture = ExtResource("2_sexec")
 stretch_mode = 1
 
@@ -31,20 +30,6 @@ stretch_mode = 1
 [node name="Timer" type="Timer" parent="."]
 wait_time = 2.0
 autostart = true
-
-[node name="EnemyGroup" type="Node2D" parent="."]
-
-[node name="Enemy" parent="EnemyGroup" instance=ExtResource("2_d8brc")]
-position = Vector2(445, 235)
-
-[node name="Enemy2" parent="EnemyGroup" instance=ExtResource("2_d8brc")]
-position = Vector2(-458, 238)
-
-[node name="Enemy3" parent="EnemyGroup" instance=ExtResource("2_d8brc")]
-position = Vector2(513, -245)
-
-[node name="Enemy4" parent="EnemyGroup" instance=ExtResource("2_d8brc")]
-position = Vector2(-458, -260)
 
 [node name="LevelUpScreen" parent="." instance=ExtResource("5_w1nur")]
 visible = false

@@ -109,3 +109,7 @@ func _on_level_btn_pressed() -> void:
 		#get_tree().change_scene_to_file(world_path)
 	#else:
 		#printerr("ERROR: Scene not found at ", world_path)
+
+
+func _on_level_btn_2_pressed() -> void:
+	_fade_out_and_load("res://scenes/game/world-forest.tscn")
