@@ -29,6 +29,7 @@ func _ready() -> void:
 		
 	var max_health = player.health_component.max_health
 	hud.set_max_health(max_health)
+	hud.menu_paused.connect(pause_menu_screen.toggle_puase_menu)
 	
 	stopwatch = get_tree().get_first_node_in_group("stopwatch")
 	

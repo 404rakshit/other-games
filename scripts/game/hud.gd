@@ -4,6 +4,8 @@ extends CanvasLayer
 @onready var xp_bar = $Control/XPBar
 @onready var joystick = $"Virtual Joystick"
 
+signal menu_paused()
+
 func _ready() -> void:
 	if DisplayServer.is_touchscreen_available():
 		joystick.visible = true
@@ -24,3 +26,7 @@ func update_health(new_value: int):
 func update_xp(current_xp: int, max_xp_for_level: int):
 	xp_bar.value = current_xp
 	xp_bar.max_value = max_xp_for_level
+
+
+func _on_button_pressed() -> void:
+	menu_paused.emit()
