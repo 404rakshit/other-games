@@ -64,9 +64,10 @@ func take_damage(amount: int):
 	hit_sfx.pitch_scale = randf_range(0.8, 1.2)
 	hit_sfx.play()
 	
-	current_state = State.STUNNED
-	animated_sprite.play("take_damage")
-	stun_timer.start(stun_time)
+	if current_state != State.ATTACKING:
+		current_state = State.STUNNED
+		animated_sprite.play("take_damage")
+		stun_timer.start(stun_time)
 	
 	# Damage Flash
 	modulate = Color.RED

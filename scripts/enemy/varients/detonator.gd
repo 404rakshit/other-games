@@ -3,11 +3,15 @@ extends BaseEnemy # Notice we are extending our custom class!
 # --- DETONATOR EXPORTS ---
 @export var explosion_damage: int = 30
 @export var explosion_delay: float = 0.8 # Time between stopping and exploding
-@export var trigger_range: float = 60.0 # How close the player needs to be to trigger it
+@export var trigger_range: float = 100.0 # How close the player needs to be to trigger it
 
 # --- REFS ---
 @onready var explosion_zone : Area2D = $ExplosionZone
 var explosion_timer: Timer
+
+func _process(delta: float) -> void:
+	if explosion_timer and !explosion_timer.is_stopped():
+		queue_redraw()
 
 # 1. We override _custom_setup to add our specific timers
 func _custom_setup():
@@ -26,16 +30,28 @@ func _check_attack_triggers():
 		_start_detonation()
 
 func _draw():
-	if current_state == State.ATTACKING:
-		# Calculate how far along the fuse is (0.0 to 1.0)
+	# Only draw if the timer is counting down
+	if explosion_timer and !explosion_timer.is_stopped():
+		# 1. Get the radius dynamically from the Area2D's CollisionShape
+		var shape_owner = explosion_zone.shape_owner_get_owner(0)
+		var radius = 50.0 # Default fallback
+		
+		if shape_owner is CollisionShape2D and shape_owner.shape is CircleShape2D:
+			radius = shape_owner.shape.radius
+		
+		# 2. Calculate progress (0.0 to 1.0)
 		var progress = 1.0 - (explosion_timer.time_left / explosion_delay)
 		
-		# Draw the outer boundary (outline)
-		draw_arc(Vector2.ZERO, trigger_range, 0, TAU, 64, Color.ORANGE, 2.0)
+		# 3. Drawing coordinates (relative to the enemy)
+		var center = explosion_zone.position 
 		
-		# Draw the filling "warning" circle
-		var fill_color = Color(1, 0, 0, 0.4) # Semi-transparent Red
-		draw_circle(Vector2.ZERO, trigger_range * progress, fill_color)
+		# Draw the static "Limit" border so the player knows the max range
+		draw_arc(center, radius, 0, TAU, 64, Color(1, 0.3, 0, 0.8), 2.0)
+		
+		# Draw the filling warning circle
+		# It starts transparent and gets more opaque/red as it nears detonation
+		var warning_color = Color(1, 0, 0, 0.2 + (progress * 0.4)) 
+		draw_circle(center, radius * progress, warning_color)
 
 # 3. Custom logic for the Detonator
 func _start_detonation():

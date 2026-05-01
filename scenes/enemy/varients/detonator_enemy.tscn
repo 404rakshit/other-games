@@ -125,7 +125,7 @@ height = 93.11998
 size = Vector2(58, 96)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_q3djr"]
-radius = 161.0
+radius = 160.0
 
 [node name="DetonatorEnemy" type="CharacterBody2D" groups=["enemy"]]
 collision_layer = 2
@@ -156,6 +156,7 @@ scale = Vector2(1.0529984, 0.9879728)
 shape = SubResource("CapsuleShape2D_goy0e")
 
 [node name="HealthComponent" parent="." instance=ExtResource("7_5e0h7")]
+max_health = 20
 
 [node name="DamageZone" type="Area2D" parent="."]
 collision_layer = 0
