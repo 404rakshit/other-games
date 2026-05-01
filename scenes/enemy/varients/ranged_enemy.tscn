@@ -1,9 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://dg1krnv2yg8nw"]
+[gd_scene load_steps=25 format=3 uid="uid://dg1krnv2yg8nw"]
 
 [ext_resource type="Script" uid="uid://bvug83asa7cda" path="res://scripts/enemy/varients/ranged_enemy.gd" id="1_3lp7d"]
 [ext_resource type="PackedScene" uid="uid://gpem0t06s5vp" path="res://scenes/enemy/enemy_projectile.tscn" id="2_egasa"]
+[ext_resource type="Texture2D" uid="uid://dc27pt3g7alln" path="res://assets/enemy/ranged-attack-sprite.png" id="3_nqcn2"]
 [ext_resource type="AudioStream" uid="uid://mxyxintr0s1d" path="res://assets/enemy/death_groan.wav" id="4_1wk8e"]
 [ext_resource type="Texture2D" uid="uid://ccfxgbvgxbwwn" path="res://assets/enemy/spitter-walk.png" id="4_egasa"]
+[ext_resource type="Texture2D" uid="uid://dwsw2drjfph5b" path="res://assets/enemy/ranged-hit-sprite.png" id="4_nqcn2"]
 [ext_resource type="AudioStream" uid="uid://ttpgef4e7gu7" path="res://assets/enemy/hit.wav" id="5_44utj"]
 [ext_resource type="PackedScene" uid="uid://c16gcgs04xwm8" path="res://scenes/comp/health_component.tscn" id="6_epuhi"]
 
@@ -18,6 +20,46 @@ region = Rect2(340, 0, 340, 340)
 [sub_resource type="AtlasTexture" id="AtlasTexture_nqcn2"]
 atlas = ExtResource("4_egasa")
 region = Rect2(0, 0, 340, 340)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_851uc"]
+atlas = ExtResource("3_nqcn2")
+region = Rect2(36, 0, 323, 340)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fbdms"]
+atlas = ExtResource("3_nqcn2")
+region = Rect2(370, 0, 323, 340)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cdkb4"]
+atlas = ExtResource("3_nqcn2")
+region = Rect2(704, 0, 323, 340)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ittax"]
+atlas = ExtResource("3_nqcn2")
+region = Rect2(1038, 0, 323, 340)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cf774"]
+atlas = ExtResource("3_nqcn2")
+region = Rect2(1372, 0, 323, 340)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tc58x"]
+atlas = ExtResource("4_nqcn2")
+region = Rect2(0, 0, 340, 341)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ey18s"]
+atlas = ExtResource("4_nqcn2")
+region = Rect2(340, 0, 340, 341)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1adem"]
+atlas = ExtResource("4_nqcn2")
+region = Rect2(680, 0, 340, 341)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1mvjp"]
+atlas = ExtResource("4_nqcn2")
+region = Rect2(1020, 0, 340, 341)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8t4dv"]
+atlas = ExtResource("4_nqcn2")
+region = Rect2(1360, 0, 340, 341)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_owx42"]
 animations = [{
@@ -34,9 +76,51 @@ animations = [{
 "loop": true,
 "name": &"run",
 "speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_851uc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fbdms")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cdkb4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ittax")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cf774")
+}],
+"loop": true,
+"name": &"shoot",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tc58x")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ey18s")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1adem")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1mvjp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8t4dv")
+}],
+"loop": true,
+"name": &"take_damage",
+"speed": 5.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_q3djr"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3lp7d"]
+radius = 8.616463
+height = 19.754818
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i7gor"]
 size = Vector2(82.00489, 83.72258)
@@ -54,8 +138,9 @@ scale = Vector2(3.2370427, 3.2370427)
 position = Vector2(0, -1)
 scale = Vector2(0.118843034, 0.118843034)
 sprite_frames = SubResource("SpriteFrames_owx42")
-animation = &"run"
+animation = &"shoot"
 autoplay = "run"
+frame_progress = 0.3457046
 
 [node name="Sound" type="Node2D" parent="."]
 scale = Vector2(1.4878578, 1.4878578)
@@ -72,10 +157,10 @@ bus = &"SFX"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -1)
 scale = Vector2(4.8162594, 4.758333)
-shape = SubResource("RectangleShape2D_q3djr")
+shape = SubResource("CapsuleShape2D_3lp7d")
 
 [node name="HealthComponent" parent="." instance=ExtResource("6_epuhi")]
-max_health = 3
+max_health = 8
 
 [node name="DamageZone" type="Area2D" parent="."]
 position = Vector2(0, -1)

@@ -4,13 +4,15 @@ extends CharacterBody2D
 # --- EXPORTS ---
 @export var speed: float = 150.0
 @export var max_health: int = 50
+@export var stun_time: float = 0.2
 
 # --- VARIABLES & REFS ---
 const player_group_name = "player"
 var player: Node2D = null
+var stun_timer: Timer
 
 # State Machine
-enum State { CHASING, ATTACKING, DEAD }
+enum State { CHASING, ATTACKING, DEAD, STUNNED }
 var current_state: State = State.CHASING
 
 # Components (Assumes these exist in your Base Enemy scene)
@@ -27,6 +29,7 @@ func _ready() -> void:
 	if health_component and health_component.has_method("set_max_health"):
 		health_component.set_max_health(max_health)
 	
+	setup_timers()
 	_custom_setup() # A hook for child classes to run their own ready logic
 
 func _physics_process(delta: float) -> void:
@@ -39,6 +42,9 @@ func _physics_process(delta: float) -> void:
 			_check_attack_triggers()
 		State.ATTACKING:
 			_process_attack_state(delta)
+		State.STUNNED:
+			velocity = Vector2.ZERO 
+			move_and_slide()
 
 # --- BASE BEHAVIORS ---
 
@@ -57,6 +63,10 @@ func take_damage(amount: int):
 	health_component.damage(amount)
 	hit_sfx.pitch_scale = randf_range(0.8, 1.2)
 	hit_sfx.play()
+	
+	current_state = State.STUNNED
+	animated_sprite.play("take_damage")
+	stun_timer.start(stun_time)
 	
 	# Damage Flash
 	modulate = Color.RED
@@ -78,6 +88,15 @@ func drop_exp_gem():
 	new_gem.z_index = -1
 	get_parent().call_deferred("add_child", new_gem)
 
+func setup_timers():	
+	stun_timer = Timer.new()
+	stun_timer.one_shot = true
+	stun_timer.timeout.connect(_on_stun_timer_timeout)
+	add_child(stun_timer)
+
+func _on_stun_timer_timeout():
+	current_state = State.CHASING
+	animated_sprite.play("run")
 
 # --- VIRTUAL FUNCTIONS (To be overridden by child classes) ---
 
@@ -88,4 +107,7 @@ func _check_attack_triggers():
 	pass # Override in child to check distances or cooldowns
 
 func _process_attack_state(_delta: float):
+	pass # Override in child to handle the actual attack animation/logic
+
+func _process_stunned_state(_delta: float):
 	pass # Override in child to handle the actual attack animation/logic

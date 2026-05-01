@@ -5,7 +5,7 @@ extends CharacterBody2D
 @export var damage_amount: int = 10
 @export var attack_windup_time: float = 0.3 # Time before damage hits
 @export var attack_cooldown_time: float = 1.0 # Time between attacks
-@export var stun_time: float = 0.4
+@export var stun_time: float = 0.2
 
 # variables
 const player_group_name = "player"

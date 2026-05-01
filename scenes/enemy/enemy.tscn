@@ -118,8 +118,9 @@ animations = [{
 "speed": 8.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_4a83h"]
-size = Vector2(54, 94)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_13gj6"]
+radius = 22.080605
+height = 57.9429
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_40wdo"]
 size = Vector2(58, 96)
@@ -162,10 +163,10 @@ bus = &"SFX"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2(1.2227926, 1.2080859)
-shape = SubResource("RectangleShape2D_4a83h")
+shape = SubResource("CapsuleShape2D_13gj6")
 
 [node name="HealthComponent" parent="." instance=ExtResource("3_40wdo")]
-max_health = 3
+max_health = 5
 
 [node name="DamageZone" type="Area2D" parent="."]
 scale = Vector2(1.2227926, 1.2227926)

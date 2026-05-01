@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dciaflfw2suwu"
-path="res://.godot/imported/melee-attack.png-d1e199da1c05b7f733074b51dc735f98.ctex"
+uid="uid://yx8mshf4epbl"
+path="res://.godot/imported/bloater-walk-sprite.png-be1be810c9bfdb3c913148016e1e23ea.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/enemy/melee-attack.png"
-dest_files=["res://.godot/imported/melee-attack.png-d1e199da1c05b7f733074b51dc735f98.ctex"]
+source_file="res://assets/enemy/bloater-walk-sprite.png"
+dest_files=["res://.godot/imported/bloater-walk-sprite.png-be1be810c9bfdb3c913148016e1e23ea.ctex"]
 
 [params]
 

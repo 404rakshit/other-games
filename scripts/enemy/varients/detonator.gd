@@ -15,12 +15,27 @@ func _custom_setup():
 	explosion_timer.one_shot = true
 	explosion_timer.timeout.connect(_explode)
 	add_child(explosion_timer)
+	
+	if current_state == State.ATTACKING:
+		queue_redraw()
 
 # 2. We override _check_attack_triggers to define when to attack
 func _check_attack_triggers():
 	# Check distance to the player
 	if global_position.distance_to(player.global_position) <= trigger_range:
 		_start_detonation()
+
+func _draw():
+	if current_state == State.ATTACKING:
+		# Calculate how far along the fuse is (0.0 to 1.0)
+		var progress = 1.0 - (explosion_timer.time_left / explosion_delay)
+		
+		# Draw the outer boundary (outline)
+		draw_arc(Vector2.ZERO, trigger_range, 0, TAU, 64, Color.ORANGE, 2.0)
+		
+		# Draw the filling "warning" circle
+		var fill_color = Color(1, 0, 0, 0.4) # Semi-transparent Red
+		draw_circle(Vector2.ZERO, trigger_range * progress, fill_color)
 
 # 3. Custom logic for the Detonator
 func _start_detonation():
