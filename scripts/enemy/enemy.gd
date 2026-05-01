@@ -5,12 +5,13 @@ extends CharacterBody2D
 @export var damage_amount: int = 10
 @export var attack_windup_time: float = 0.3 # Time before damage hits
 @export var attack_cooldown_time: float = 1.0 # Time between attacks
+@export var stun_time: float = 0.4
 
 # variables
 const player_group_name = "player"
 
 # ENUM for State Machine
-enum State { CHASING, ATTACKING }
+enum State { CHASING, ATTACKING, STUNNED }
 var current_state: State = State.CHASING
 
 # components
@@ -23,6 +24,7 @@ var current_state: State = State.CHASING
 # Timers (Add these nodes to your scene or create them in code like this)
 var windup_timer: Timer
 var cooldown_timer: Timer
+var stun_timer: Timer
 
 # refs
 var player: Node2D = null
@@ -44,6 +46,11 @@ func setup_timers():
 	windup_timer.timeout.connect(_on_windup_timer_timeout)
 	add_child(windup_timer)
 	
+	stun_timer = Timer.new()
+	stun_timer.one_shot = true
+	stun_timer.timeout.connect(_on_stun_timer_timeout)
+	add_child(stun_timer)
+	
 	cooldown_timer = Timer.new()
 	cooldown_timer.one_shot = true
 	#cooldown_timer.timeout.connect(_on_cooldown_timer_timeout)
@@ -59,6 +66,9 @@ func _physics_process(_delta: float) -> void:
 		State.ATTACKING:
 			# Stop moving while attacking
 			velocity = Vector2.ZERO
+			move_and_slide()
+		State.STUNNED:
+			velocity = Vector2.ZERO 
 			move_and_slide()
 
 func process_chasing():
@@ -98,16 +108,31 @@ func change_dir(direction: Vector2):
 		animated_sprite.flip_h = false
 	elif direction.x < 0:
 		animated_sprite.flip_h = true
+
 func take_damage(amount: int):
 	health_component.damage(amount)
+	
+	spawn_hit_particles()
 	
 	hit_sfx.pitch_scale = randf_range(0.8, 1.2)
 	hit_sfx.play()
 	
+	current_state = State.STUNNED
+	animated_sprite.play("take_damage")
+	stun_timer.start(stun_time)
+	
 	modulate = Color.RED
 	var tween = create_tween()
 	tween.tween_property(self, "modulate", Color.WHITE, 0.1)
+
+func spawn_hit_particles():
+# Trigger the particle burst
+	$HitParticles.emitting = true
 	
+	# Optional: Randomize the rotation so the spray 
+	# doesn't look identical every time
+	$HitParticles.rotation = randf_range(0, TAU)
+
 func drop_exp_gem():
 	var new_gem: Area2D = GEM_SCENE.instantiate()
 	new_gem.global_position = global_position
@@ -127,8 +152,6 @@ func _on_health_component_died() -> void:
 	# remove enemy from the tree
 	queue_free()
 
-#func _on_damage_zone_body_entered(body: Node2D) -> void:
-	#print("body: ", body)
-	#if body.has_method("take_damage"):
-		#print("entered if check")
-		#body.take_damage(damage_amount)
+func _on_stun_timer_timeout():
+	current_state = State.CHASING
+	animated_sprite.play("run")

@@ -1,10 +1,11 @@
-[gd_scene load_steps=19 format=3 uid="uid://drhkcd78218ty"]
+[gd_scene load_steps=26 format=3 uid="uid://drhkcd78218ty"]
 
 [ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="1_4a83h"]
 [ext_resource type="Script" uid="uid://kixbm1ob1e7s" path="res://scripts/enemy/enemy.gd" id="1_a3pup"]
 [ext_resource type="PackedScene" uid="uid://c16gcgs04xwm8" path="res://scenes/comp/health_component.tscn" id="3_40wdo"]
 [ext_resource type="Texture2D" uid="uid://dn38k5a7jbic2" path="res://assets/enemy/melee-group.png" id="3_nbhyu"]
 [ext_resource type="Texture2D" uid="uid://c5jlbmrkomjes" path="res://assets/enemy/running-sprite.png" id="4_13gj6"]
+[ext_resource type="Texture2D" uid="uid://n32qcaosd2vw" path="res://assets/enemy/melee-hit-sprite.png" id="5_13gj6"]
 [ext_resource type="AudioStream" uid="uid://mxyxintr0s1d" path="res://assets/enemy/death_groan.wav" id="5_cwlon"]
 [ext_resource type="AudioStream" uid="uid://ttpgef4e7gu7" path="res://assets/enemy/hit.wav" id="6_nbhyu"]
 
@@ -40,6 +41,26 @@ region = Rect2(1020, 0, 340, 342)
 atlas = ExtResource("4_13gj6")
 region = Rect2(1360, 0, 340, 342)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_prup0"]
+atlas = ExtResource("5_13gj6")
+region = Rect2(0, 0, 339, 340)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dxjon"]
+atlas = ExtResource("5_13gj6")
+region = Rect2(339, 0, 339, 340)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f5q6l"]
+atlas = ExtResource("5_13gj6")
+region = Rect2(678, 0, 339, 340)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8ed2q"]
+atlas = ExtResource("5_13gj6")
+region = Rect2(1017, 0, 339, 340)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wk82e"]
+atlas = ExtResource("5_13gj6")
+region = Rect2(1356, 0, 339, 340)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_13gj6"]
 animations = [{
 "frames": [{
@@ -54,7 +75,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"attack",
-"speed": 5.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -74,7 +95,27 @@ animations = [{
 }],
 "loop": true,
 "name": &"run",
-"speed": 5.0
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_prup0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dxjon")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f5q6l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8ed2q")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wk82e")
+}],
+"loop": false,
+"name": &"take_damage",
+"speed": 8.0
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4a83h"]
@@ -82,6 +123,10 @@ size = Vector2(54, 94)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_40wdo"]
 size = Vector2(58, 96)
+
+[sub_resource type="Curve" id="Curve_13gj6"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [node name="Enemy" type="CharacterBody2D"]
 collision_layer = 2
@@ -101,7 +146,7 @@ texture = ExtResource("1_4a83h")
 position = Vector2(0, -1)
 scale = Vector2(0.23305734, 0.23305734)
 sprite_frames = SubResource("SpriteFrames_13gj6")
-animation = &"attack"
+animation = &"run"
 autoplay = "run"
 
 [node name="Sound" type="Node2D" parent="."]
@@ -132,5 +177,20 @@ shape = SubResource("RectangleShape2D_40wdo")
 [node name="AttackWindupTimer" type="Timer" parent="."]
 
 [node name="AttackCooldownTimer" type="Timer" parent="." groups=["enemy"]]
+
+[node name="HitParticles" type="CPUParticles2D" parent="."]
+emitting = false
+lifetime = 0.3
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 30
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 150.0
+initial_velocity_max = 150.0
+scale_amount_min = 3.0
+scale_amount_max = 3.0
+scale_amount_curve = SubResource("Curve_13gj6")
+color = Color(1, 0, 0, 1)
 
 [connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]
