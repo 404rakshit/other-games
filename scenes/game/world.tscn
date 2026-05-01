@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://j0jfgm1fle3x" path="res://assets/game/desert bg.webp" id="2_sexec"]
 [ext_resource type="PackedScene" uid="uid://b3drmsj7pkxmw" path="res://scenes/game/level_up_screen.tscn" id="5_w1nur"]
 [ext_resource type="PackedScene" uid="uid://sb4722pdh5mj" path="res://scenes/game/game_over_screen.tscn" id="6_q5tta"]
-[ext_resource type="AudioStream" uid="uid://j2e577nx6jjc" path="res://assets/game/gamemusic2.mp3" id="8_a33jj"]
+[ext_resource type="AudioStream" uid="uid://txftdhqbmx72" path="res://assets/audio/Boss_Room_Sprint.mp3" id="8_68iyn"]
 [ext_resource type="PackedScene" uid="uid://b6s6irqp7cw2m" path="res://scenes/game/pause_menu_screen.tscn" id="8_sexec"]
 [ext_resource type="PackedScene" uid="uid://c3xf1nti60pf6" path="res://scenes/game/stopwatch.tscn" id="9_68iyn"]
 
@@ -42,8 +42,8 @@ visible = false
 [node name="Sound" type="Node2D" parent="."]
 
 [node name="ThemeMusic" type="AudioStreamPlayer" parent="Sound"]
-stream = ExtResource("8_a33jj")
-volume_db = -5.0
+stream = ExtResource("8_68iyn")
+volume_db = -15.0
 autoplay = true
 bus = &"Music"
 

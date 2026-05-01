@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://b3drmsj7pkxmw" path="res://scenes/game/level_up_screen.tscn" id="5_m3mss"]
 [ext_resource type="PackedScene" uid="uid://sb4722pdh5mj" path="res://scenes/game/game_over_screen.tscn" id="6_13ybu"]
 [ext_resource type="PackedScene" uid="uid://b6s6irqp7cw2m" path="res://scenes/game/pause_menu_screen.tscn" id="7_kceo7"]
-[ext_resource type="AudioStream" uid="uid://j2e577nx6jjc" path="res://assets/game/gamemusic2.mp3" id="8_n5m25"]
+[ext_resource type="AudioStream" uid="uid://cewg584go7wkh" path="res://assets/audio/8-bit-drum-loop.wav" id="8_qyqik"]
 [ext_resource type="PackedScene" uid="uid://c3xf1nti60pf6" path="res://scenes/game/stopwatch.tscn" id="9_wadv5"]
 
 [node name="World" type="Node2D"]
@@ -40,7 +40,7 @@ autostart = true
 [node name="Sound" type="Node2D" parent="."]
 
 [node name="ThemeMusic" type="AudioStreamPlayer" parent="Sound"]
-stream = ExtResource("8_n5m25")
+stream = ExtResource("8_qyqik")
 volume_db = -5.0
 autoplay = true
 bus = &"Music"

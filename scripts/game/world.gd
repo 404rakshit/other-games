@@ -16,9 +16,9 @@ var stopwatch : Stopwatch
 # --- NEW: Spawn Weights ---
 # Higher number = more common. 
 var enemy_spawn_weights = {
-	ENEMY_SCENE: 0,       # 65% relative chance
-	RANGED_ENEMY: 0,      # 25% relative chance
-	DETONATOR_SCENE: 100    # 10% relative chance
+	ENEMY_SCENE: 60,       # 65% relative chance
+	RANGED_ENEMY: 25,      # 25% relative chance
+	DETONATOR_SCENE: 15    # 10% relative chance
 }
 var total_weight: int = 0
 

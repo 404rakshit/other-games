@@ -9,7 +9,7 @@ extends BaseEnemy # Notice we are extending our custom class!
 @onready var explosion_zone : Area2D = $ExplosionZone
 var explosion_timer: Timer
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if explosion_timer and !explosion_timer.is_stopped():
 		queue_redraw()
 

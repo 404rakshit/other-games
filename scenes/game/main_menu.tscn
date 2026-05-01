@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://bq5hvcw15grsq"]
+[gd_scene load_steps=4 format=3 uid="uid://bq5hvcw15grsq"]
 
 [ext_resource type="Theme" uid="uid://c26jam44t4fks" path="res://resources/themes/new_theme.tres" id="1_e66b0"]
 [ext_resource type="Script" uid="uid://d08h6tla41gt3" path="res://scripts/game/ui.gd" id="1_ngy02"]
 [ext_resource type="Texture2D" uid="uid://d3qt3xgpxk4k5" path="res://assets/ui/helmet-bg.png" id="3_e66b0"]
-[ext_resource type="AudioStream" uid="uid://y4g2q7g240ta" path="res://assets/audio/The_Unresolved_Threshold.mp3" id="4_3r4tm"]
 
 [node name="MainMenu" type="CanvasLayer"]
 
@@ -91,10 +90,6 @@ alignment = 0
 layout_mode = 2
 text = "< Back"
 alignment = 0
-
-[node name="BackgroundMusic" type="AudioStreamPlayer" parent="UI"]
-stream = ExtResource("4_3r4tm")
-autoplay = true
 
 [connection signal="pressed" from="UI/MarginContainer/HBoxContainer/VBoxContainer/Menu1/StartBtn" to="UI" method="_on_start_btn_pressed"]
 [connection signal="button_up" from="UI/MarginContainer/HBoxContainer/VBoxContainer/Menu1/OptionBtn" to="UI" method="_on_option_btn_button_up"]

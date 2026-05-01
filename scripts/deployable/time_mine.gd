@@ -76,13 +76,13 @@ extends Deployable
 var is_exploding: bool = false
 
 func _ready() -> void:
-	base_damage = 50.0 
+	base_damage = 5.0 
 	detonation_timer.timeout.connect(_on_timer_timeout)
 	activate()
 
 func activate() -> void:
 	# Debug print so you know it actually spawned
-	print("⏱️ Mine Armed! Counting down 2 seconds...")
+	#print("⏱️ Mine Armed! Counting down 2 seconds...")
 	detonation_timer.start(2.0)
 	
 	if animation_player.has_animation("blink"):
@@ -100,7 +100,7 @@ func trigger_effect() -> void:
 	var bodies_in_blast = blast_radius.get_overlapping_bodies()
 	
 	# Debug print exactly what the mine sees
-	print("💥 MINE DETONATED! Total bodies caught in blast: ", bodies_in_blast.size())
+	#print("💥 MINE DETONATED! Total bodies caught in blast: ", bodies_in_blast.size())
 	
 	# 3. Deal Damage
 	for body in bodies_in_blast:
@@ -109,7 +109,7 @@ func trigger_effect() -> void:
 			
 		if body.has_method("take_damage"):
 			# Debug print to confirm damage is firing
-			print("   -> 🩸 Dealt ", base_damage, " damage to: ", body.name)
+			#print("   -> 🩸 Dealt ", base_damage, " damage to: ", body.name)
 			body.take_damage(base_damage)
 			
 	# 4. Cleanup
