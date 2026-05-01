@@ -30,38 +30,38 @@ theme = ExtResource("2_3k67c")
 
 [node name="HealthBar" type="ProgressBar" parent="Control"]
 layout_mode = 0
-offset_left = 20.0
-offset_top = 20.0
-offset_right = 220.0
-offset_bottom = 47.0
+offset_left = 32.0
+offset_top = 19.0
+offset_right = 232.0
+offset_bottom = 46.0
 theme_override_styles/background = SubResource("StyleBoxFlat_77e6q")
 theme_override_styles/fill = SubResource("StyleBoxFlat_5645d")
 show_percentage = false
 
 [node name="XPBar" type="ProgressBar" parent="Control"]
 layout_mode = 0
-offset_left = 20.0
-offset_top = 56.0
-offset_right = 220.0
-offset_bottom = 83.0
+offset_left = 32.0
+offset_top = 55.0
+offset_right = 232.0
+offset_bottom = 82.0
 theme_override_styles/background = SubResource("StyleBoxFlat_77e6q")
 theme_override_styles/fill = SubResource("StyleBoxFlat_kqgwg")
 show_percentage = false
 
 [node name="Health" type="TextureRect" parent="Control"]
 layout_mode = 0
-offset_left = -1.0
-offset_top = 9.0
-offset_right = 44.0
-offset_bottom = 54.0
+offset_left = 11.0
+offset_top = 8.0
+offset_right = 56.0
+offset_bottom = 53.0
 texture = ExtResource("2_5645d")
 
 [node name="Exp" type="TextureRect" parent="Control"]
 layout_mode = 0
-offset_left = 1.0
-offset_top = 47.0
-offset_right = 42.0
-offset_bottom = 88.0
+offset_left = 13.0
+offset_top = 46.0
+offset_right = 54.0
+offset_bottom = 87.0
 texture = ExtResource("3_xu0sl")
 
 [node name="TimerLabel" type="Label" parent="Control"]
@@ -69,10 +69,10 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -20.0
-offset_top = -1.0
-offset_right = 21.0
-offset_bottom = 22.0
+offset_left = -43.5
+offset_top = 26.0
+offset_right = 44.5
+offset_bottom = 60.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 26
 text = "00:00"
@@ -82,12 +82,18 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -80.0
-offset_bottom = 80.0
+offset_left = -91.0
+offset_top = 8.0
+offset_right = -11.0
+offset_bottom = 88.0
 grow_horizontal = 0
 texture_normal = ExtResource("5_fecso")
 
 [node name="Virtual Joystick" parent="." instance=ExtResource("4_xu0sl")]
+offset_top = -429.0
+offset_right = 421.0
+pressed_color = Color(0.5286342, 0.8083488, 0.76498055, 1)
+clampzone_size = 142.0
 action_left = "move_left"
 action_right = "move_right"
 action_up = "move_up"
