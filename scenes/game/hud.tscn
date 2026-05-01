@@ -4,8 +4,8 @@
 [ext_resource type="Theme" uid="uid://c26jam44t4fks" path="res://resources/themes/new_theme.tres" id="2_3k67c"]
 [ext_resource type="Texture2D" uid="uid://cm5rsamg7uy5" path="res://assets/game/health-logo.png" id="2_5645d"]
 [ext_resource type="Texture2D" uid="uid://buwkyt05a55mi" path="res://assets/game/exp-logo.png" id="3_xu0sl"]
-[ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://addons/virtual_joystick/virtual_joystick_scene.tscn" id="4_xu0sl"]
 [ext_resource type="Texture2D" uid="uid://cc6dwm3no8cxq" path="res://assets/menu/pause_small.png" id="5_fecso"]
+[ext_resource type="PackedScene" uid="uid://dgivpdx48bkrl" path="res://scenes/joy_stick.tscn" id="6_fecso"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_77e6q"]
 bg_color = Color(0.07284262, 0.072842635, 0.072842576, 1)
@@ -89,14 +89,6 @@ offset_bottom = 88.0
 grow_horizontal = 0
 texture_normal = ExtResource("5_fecso")
 
-[node name="Virtual Joystick" parent="." instance=ExtResource("4_xu0sl")]
-offset_top = -429.0
-offset_right = 421.0
-pressed_color = Color(0.5286342, 0.8083488, 0.76498055, 1)
-clampzone_size = 142.0
-action_left = "move_left"
-action_right = "move_right"
-action_up = "move_up"
-action_down = "move_down"
+[node name="JoyStick" parent="." instance=ExtResource("6_fecso")]
 
 [connection signal="pressed" from="Control/Button" to="." method="_on_button_pressed"]

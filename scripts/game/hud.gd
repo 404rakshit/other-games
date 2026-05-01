@@ -2,7 +2,7 @@ extends CanvasLayer
 
 @onready var health_bar = $Control/HealthBar
 @onready var xp_bar = $Control/XPBar
-@onready var joystick = $"Virtual Joystick"
+@onready var joystick = $"JoyStick"
 
 signal menu_paused()
 
