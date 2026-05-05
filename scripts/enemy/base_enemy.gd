@@ -5,11 +5,13 @@ extends CharacterBody2D
 @export var speed: float = 150.0
 @export var max_health: int = 50
 @export var stun_time: float = 0.2
+@export var path_update_interval: float = 0.1
 
 # --- VARIABLES & REFS ---
 const player_group_name = "player"
 var player: Node2D = null
 var stun_timer: Timer
+var path_timer: float = 0.0
 
 # State Machine
 enum State { CHASING, ATTACKING, DEAD, STUNNED }
@@ -20,8 +22,9 @@ var current_state: State = State.CHASING
 @onready var animated_sprite = $Visuals/AnimatedSprite2D
 @onready var hit_sfx : AudioStreamPlayer2D = $Sound/HitSound
 @onready var dead_sfx : AudioStreamPlayer2D = $Sound/DeadSound
+@onready var nav_agent: NavigationAgent2D = $NavigationAgent2D
 
-const GEM_SCENE = preload("res://scenes/game/exp_gem.tscn")
+const GEM_SCENE = preload("res://scenes/map/desert/gem.tscn")
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group(player_group_name)
@@ -30,7 +33,15 @@ func _ready() -> void:
 		health_component.set_max_health(max_health)
 	
 	setup_timers()
+	setup_nav_agent()
 	_custom_setup() # A hook for child classes to run their own ready logic
+
+func setup_nav_agent():
+	if nav_agent:
+		nav_agent.path_desired_distance = 15.0
+		nav_agent.target_desired_distance = 15.0
+		# Optional: Avoidance makes them move around each other
+		nav_agent.avoidance_enabled = true
 
 func _physics_process(delta: float) -> void:
 	if not player or current_state == State.DEAD:
@@ -48,15 +59,28 @@ func _physics_process(delta: float) -> void:
 
 # --- BASE BEHAVIORS ---
 
-func _process_movement(_delta: float):
-	var direction = global_position.direction_to(player.global_position)
+func _process_movement(delta: float):
+	# Optimization: Only recalculate the path occasionally
+	path_timer += delta
+	if path_timer >= path_update_interval:
+		nav_agent.target_position = player.global_position
+		path_timer = 0.0
+
+	if nav_agent.is_navigation_finished():
+		velocity = Vector2.ZERO
+		return
+
+	# Navigation Logic
+	var next_path_pos = nav_agent.get_next_path_position()
+	var direction = global_position.direction_to(next_path_pos)
+	
 	velocity = direction * speed
 	
+	# Flip sprite based on movement direction
 	if direction.x != 0:
 		animated_sprite.flip_h = direction.x < 0
 		
 	move_and_slide()
-
 func take_damage(amount: int):
 	if current_state == State.DEAD: return
 	
@@ -85,7 +109,7 @@ func _on_health_component_died() -> void:
 func drop_exp_gem():
 	var new_gem: Area2D = GEM_SCENE.instantiate()
 	new_gem.global_position = global_position
-	new_gem.rotate(randf_range(1.57, 1.84))
+	#new_gem.rotate(randf_range(1.57, 1.84))
 	new_gem.z_index = -1
 	get_parent().call_deferred("add_child", new_gem)
 

@@ -173,4 +173,7 @@ shape = SubResource("RectangleShape2D_i7gor")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ExplosionZone"]
 shape = SubResource("CircleShape2D_q3djr")
 
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+avoidance_enabled = true
+
 [connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]

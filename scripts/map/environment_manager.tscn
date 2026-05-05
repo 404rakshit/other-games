@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=3 uid="uid://y2yaodsr4aht"]
+
+[ext_resource type="Script" uid="uid://bl6w4edhopcd2" path="res://scripts/environment_manager.gd" id="1_kfuiq"]
+[ext_resource type="PackedScene" uid="uid://bj8ybrxe6xgg2" path="res://scenes/map/desert/tree.tscn" id="2_qtdhj"]
+
+[node name="EnvironmentManager" type="Node2D"]
+script = ExtResource("1_kfuiq")
+tree_scene = ExtResource("2_qtdhj")

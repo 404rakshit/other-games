@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://ric1tqdeokxn"]
+
+[ext_resource type="Texture2D" uid="uid://bass31p5ftjda" path="res://assets/map/desert/bush.png" id="1_nv2sf"]
+
+[node name="Bush" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+y_sort_enabled = true
+texture = ExtResource("1_nv2sf")

@@ -56,7 +56,7 @@ region = Rect2(0, 0, 414, 418)
 atlas = ExtResource("3_75vfm")
 region = Rect2(414, 0, 414, 418)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_0owmy"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_3j4b4"]
 atlas = ExtResource("2_lvxji")
 region = Rect2(0, 0, 340, 340)
 
@@ -129,7 +129,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_0owmy")
+"texture": SubResource("AtlasTexture_3j4b4")
 }],
 "loop": true,
 "name": &"idle",
@@ -170,12 +170,12 @@ scale = Vector2(0.5602923, 0.5602923)
 texture = ExtResource("2_lvxji")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals"]
-position = Vector2(14.000001, -8)
+position = Vector2(1.0000019, 36.999996)
 scale = Vector2(0.3619169, 0.3619169)
 sprite_frames = SubResource("SpriteFrames_ugbui")
-animation = &"fly2"
+animation = &"idle"
 autoplay = "idle"
-frame_progress = 0.025291044
+offset = Vector2(0, -118)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_p47bc")

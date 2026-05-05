@@ -27,6 +27,16 @@ var time_passed: float = 0.0
 # Fluid Aiming Variables
 var aim_speed: float = 12.0 
 
+var valid_targets = []
+	
+func _on_range_body_entered(body: Node2D) -> void:
+	if body.is_in_group("enemy") and not valid_targets.has(body):
+		valid_targets.append(body)
+
+func _on_range_body_exited(body: Node2D) -> void:
+	if valid_targets.has(body):
+		valid_targets.erase(body)
+
 func _process(delta: float) -> void:
 	# ---------------------------------------------------------
 	# 1. ORBIT & HOVERING
@@ -38,21 +48,22 @@ func _process(delta: float) -> void:
 	var target_position = orbit_position + Vector2(0, bob_offset_y)
 	position = position.lerp(target_position, 10.0 * delta)
 
+# ---------------------------------------------------------
+	# 2. FLUID AIMING & RESTING STATE (OPTIMIZED)
 	# ---------------------------------------------------------
-	# 2. FLUID AIMING & RESTING STATE
-	# ---------------------------------------------------------
-	var enemies_in_range = range_area.get_overlapping_bodies()
-	var target_angle: float = 0.0 # Variable to hold where we SHOULD be pointing
+	var target_angle: float = 0.0 
 	
-	if enemies_in_range.size() > 0:
-		# If enemies exist, point at the closest one
-		var target_enemy = enemies_in_range[0]
-		target_angle = global_position.direction_to(target_enemy.global_position).angle()
+	# REPLACEMENT: Check the list instead of scanning physics
+	if valid_targets.size() > 0:
+		# If the enemy we were targeting died or became invalid, clean the list
+		if not is_instance_valid(valid_targets[0]):
+			valid_targets.remove_at(0)
+		else:
+			var target_enemy = valid_targets[0]
+			target_angle = global_position.direction_to(target_enemy.global_position).angle()
 	else:
-		# If no enemies, default to pointing outward from the orbit
 		target_angle = orbit_angle
 		
-	# Smoothly rotate toward whatever the target_angle is
 	global_rotation = lerp_angle(global_rotation, target_angle, aim_speed * delta)
 		
 	# Sprite Flip Logic
@@ -85,10 +96,13 @@ func increase_attack_rate(attack_rate: float):
 	timer.wait_time = max(timer.wait_time, 0.05)
 
 func shoot():
-	var enemies_in_range = range_area.get_overlapping_bodies()
-	
-	# Only shoot if we actually have an enemy to shoot at
-	if enemies_in_range.size() > 0:
+	# REPLACEMENT: Use the list we are already maintaining
+	if valid_targets.size() > 0:
+		# Double check the enemy still exists in memory
+		if not is_instance_valid(valid_targets[0]):
+			valid_targets.remove_at(0)
+			return # Exit and wait for next shot
+			
 		current_recoil = recoil_distance
 		
 		var bullet: Area2D = BULLET_SCENE.instantiate()

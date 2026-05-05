@@ -10,15 +10,16 @@ const RANGED_ENEMY = preload("res://scenes/enemy/varients/ranged_enemy.tscn")
 @onready var level_up_screen = $LevelUpScreen
 @onready var game_over_screen = $GameOverScreen
 @onready var pause_menu_screen = $PauseMenuScreen
+@onready var navigation_region_2d: NavigationRegion2D = $NavigationRegion2D
 
 var stopwatch : Stopwatch
 
 # --- NEW: Spawn Weights ---
 # Higher number = more common. 
 var enemy_spawn_weights = {
-	ENEMY_SCENE: 60,       # 65% relative chance
-	RANGED_ENEMY: 25,      # 25% relative chance
-	DETONATOR_SCENE: 15    # 10% relative chance
+	ENEMY_SCENE: 75,      
+	RANGED_ENEMY: 20,      
+	DETONATOR_SCENE: 05    
 }
 var total_weight: int = 0
 
@@ -60,7 +61,7 @@ func spawn_enemy():
 	# 3. Position it dynamically around the player
 	new_enemy.global_position = get_spawn_position()
 	
-	add_child(new_enemy)
+	navigation_region_2d.add_child(new_enemy)
 
 # --- HELPER FUNCTIONS ---
 

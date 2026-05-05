@@ -21,6 +21,8 @@ var current_state: State = State.CHASING
 @onready var hit_sfx : AudioStreamPlayer2D = $Sound/HitSound
 @onready var dead_sfx : AudioStreamPlayer2D = $Sound/DeadSound
 
+@onready var navigation_agent: NavigationAgent2D = $NavigationAgent2D
+
 # Timers (Add these nodes to your scene or create them in code like this)
 var windup_timer: Timer
 var cooldown_timer: Timer
@@ -29,16 +31,26 @@ var stun_timer: Timer
 # refs
 var player: Node2D = null
 
-const GEM_SCENE = preload("res://scenes/game/exp_gem.tscn")
+const GEM_SCENE = preload("res://scenes/map/desert/gem.tscn")
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group(player_group_name)
 	
 	# Setup Timers via code so you don't have to add them manually in the editor
+	call_deferred("setup_navigation")
 	setup_timers()
 	
 	var random_shade = randf_range(0.8, 1.2)
 	modulate = Color(random_shade, random_shade, random_shade, 1.0)
+	
+	navigation_agent.path_desired_distance = 15.0
+	navigation_agent.target_desired_distance = 15.0
+	
+func setup_navigation():
+	# Wait for the first physics frame so the map is ready
+	await get_tree().physics_frame
+	if player:
+		navigation_agent.target_position = player.global_position
 	
 func setup_timers():
 	windup_timer = Timer.new()
@@ -72,16 +84,26 @@ func _physics_process(_delta: float) -> void:
 			move_and_slide()
 
 func process_chasing():
-	# Movement logic
-	var direction = global_position.direction_to(player.global_position)
-	velocity = direction * speed
-	change_dir(direction)
+	# 1. Update the navigation target to the player's current position
+	navigation_agent.target_position = player.global_position
+	
+	# 2. Check if we are already close enough or the path is finished
+	if navigation_agent.is_navigation_finished():
+		velocity = Vector2.ZERO
+	else:
+		# 3. Calculate direction toward the NEXT point in the path
+		var next_path_pos = navigation_agent.get_next_path_position()
+		var direction = global_position.direction_to(next_path_pos)
+		
+		velocity = direction * speed
+		change_dir(direction)
+	
 	move_and_slide()
 	
-	# Check if player is in range to start an attack
+	# Attack Trigger
 	if is_player_in_range() and cooldown_timer.is_stopped():
 		start_attack()
-
+		
 func is_player_in_range() -> bool:
 	var overlapping_bodies = damage_zone.get_overlapping_bodies()
 	return player in overlapping_bodies
@@ -111,7 +133,6 @@ func change_dir(direction: Vector2):
 
 func take_damage(amount: int):
 	health_component.damage(amount)
-	
 	spawn_hit_particles()
 	
 	hit_sfx.pitch_scale = randf_range(0.8, 1.2)
@@ -136,7 +157,7 @@ func spawn_hit_particles():
 func drop_exp_gem():
 	var new_gem: Area2D = GEM_SCENE.instantiate()
 	new_gem.global_position = global_position
-	new_gem.rotate(randf_range(1.57, 1.84))
+	#new_gem.rotate(randf_range(1.57, 1.84))
 	new_gem.z_index = -1
 	
 	# We use call_deferred to safely add nodes during a physics callback

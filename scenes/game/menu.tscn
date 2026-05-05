@@ -1,11 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://b3wbxia4iil73"]
+[gd_scene load_steps=6 format=3 uid="uid://b3wbxia4iil73"]
 
 [ext_resource type="Theme" uid="uid://c26jam44t4fks" path="res://resources/themes/new_theme.tres" id="1_w6tk6"]
 [ext_resource type="Texture2D" uid="uid://c3dt08w8ymumm" path="res://assets/logo/logoshadow.png" id="2_37mct"]
 [ext_resource type="Script" uid="uid://bkhd0hw4tldyq" path="res://scripts/game/menu.gd" id="2_rnkyv"]
 [ext_resource type="Texture2D" uid="uid://cxlc4vojl41mn" path="res://assets/menu/desert-cover.webp" id="4_5rkwa"]
 [ext_resource type="Texture2D" uid="uid://cuhj67g05p2vj" path="res://assets/menu/forest-cover.webp" id="5_tbgai"]
-[ext_resource type="PackedScene" uid="uid://dgivpdx48bkrl" path="res://scenes/joy_stick.tscn" id="6_5rkwa"]
 
 [node name="CanvasLayer" type="CanvasLayer"]
 
@@ -124,8 +123,6 @@ offset_bottom = 13.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Loading..."
-
-[node name="JoyStick" parent="." instance=ExtResource("6_5rkwa")]
 
 [connection signal="pressed" from="Control/CenterContainer/MainMenu/Play" to="Control" method="_on_play_pressed"]
 [connection signal="pressed" from="Control/CenterContainer/MainMenu/Settings" to="Control" method="_on_settings_pressed"]

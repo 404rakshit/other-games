@@ -1,27 +1,30 @@
-[gd_scene load_steps=10 format=3 uid="uid://6wubinngqbf8"]
+[gd_scene load_steps=16 format=3 uid="uid://6wubinngqbf8"]
 
 [ext_resource type="Script" uid="uid://cw8g2bodtrtdp" path="res://scripts/game/world.gd" id="1_d8brc"]
 [ext_resource type="PackedScene" uid="uid://d1w5ccem33kle" path="res://scenes/player/player.tscn" id="1_g5t8f"]
 [ext_resource type="PackedScene" uid="uid://r7xccx21navk" path="res://scenes/game/hud.tscn" id="2_qd3kh"]
 [ext_resource type="Texture2D" uid="uid://j0jfgm1fle3x" path="res://assets/game/desert bg.webp" id="2_sexec"]
+[ext_resource type="PackedScene" uid="uid://bj8ybrxe6xgg2" path="res://scenes/map/desert/tree.tscn" id="3_ry5kt"]
 [ext_resource type="PackedScene" uid="uid://b3drmsj7pkxmw" path="res://scenes/game/level_up_screen.tscn" id="5_w1nur"]
 [ext_resource type="PackedScene" uid="uid://sb4722pdh5mj" path="res://scenes/game/game_over_screen.tscn" id="6_q5tta"]
 [ext_resource type="AudioStream" uid="uid://txftdhqbmx72" path="res://assets/audio/Boss_Room_Sprint.mp3" id="8_68iyn"]
 [ext_resource type="PackedScene" uid="uid://b6s6irqp7cw2m" path="res://scenes/game/pause_menu_screen.tscn" id="8_sexec"]
 [ext_resource type="PackedScene" uid="uid://c3xf1nti60pf6" path="res://scenes/game/stopwatch.tscn" id="9_68iyn"]
+[ext_resource type="PackedScene" uid="uid://y2yaodsr4aht" path="res://scripts/map/environment_manager.tscn" id="11_wcixa"]
+[ext_resource type="PackedScene" uid="uid://d4g4mirgs3uav" path="res://scenes/map/desert/bones.tscn" id="12_7jg8g"]
+[ext_resource type="PackedScene" uid="uid://ric1tqdeokxn" path="res://scenes/map/desert/bush.tscn" id="13_740o0"]
+[ext_resource type="PackedScene" uid="uid://cw4t72wv8hmte" path="res://scenes/map/desert/cactus.tscn" id="14_iby7u"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_wcixa"]
+vertices = PackedVector2Array(44450.92, 43501.33, -43640.758, 42350.64, -43257.22, -38703.29, 44323.07, -41004.67)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-43307, -38752, -43691, 42400, 44501, 43552, 44373, -41056)])
+cell_size = 4.0
+agent_radius = 50.0
 
 [node name="World" type="Node2D"]
+y_sort_enabled = true
 script = ExtResource("1_d8brc")
-
-[node name="TextureRect" type="TextureRect" parent="."]
-z_index = -2
-offset_left = -50526.65
-offset_top = -49110.0
-offset_right = 50389.203
-offset_bottom = 48354.0
-scale = Vector2(1.0000771, 0.99997)
-texture = ExtResource("2_sexec")
-stretch_mode = 1
 
 [node name="HUD" parent="." instance=ExtResource("2_qd3kh")]
 
@@ -48,6 +51,23 @@ autoplay = true
 bus = &"Music"
 
 [node name="Stopwatch" parent="." groups=["stopwatch"] instance=ExtResource("9_68iyn")]
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("NavigationPolygon_wcixa")
+
+[node name="TextureRect" type="TextureRect" parent="NavigationRegion2D"]
+z_index = -2
+offset_left = -50526.65
+offset_top = -49110.0
+offset_right = 50389.203
+offset_bottom = 48354.0
+scale = Vector2(1.0000771, 0.99997)
+texture = ExtResource("2_sexec")
+stretch_mode = 1
+
+[node name="EnvironmentManager" parent="." node_paths=PackedStringArray("nav_region") instance=ExtResource("11_wcixa")]
+environment_objects = Array[PackedScene]([ExtResource("3_ry5kt"), ExtResource("12_7jg8g"), ExtResource("13_740o0"), ExtResource("14_iby7u")])
+nav_region = NodePath("../NavigationRegion2D")
 
 [connection signal="leveled_up" from="Player" to="." method="_on_player_leveled_up"]
 [connection signal="player_died" from="Player" to="." method="_on_player_player_died"]

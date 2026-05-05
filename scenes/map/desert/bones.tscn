@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://d4g4mirgs3uav"]
+
+[ext_resource type="Texture2D" uid="uid://bj1ijpyll8dd0" path="res://assets/map/desert/bones.png" id="1_26nnj"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8uv6m"]
+radius = 25.0
+height = 128.0
+
+[node name="Bones" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_26nnj")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 3
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_8uv6m")

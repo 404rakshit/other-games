@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://d12aahwbb4uve"]
+
+[ext_resource type="Texture2D" uid="uid://v7xihw31trxk" path="res://assets/map/desert/gem.png" id="1_qpxrq"]
+[ext_resource type="Script" uid="uid://bglkq3iaa4uyb" path="res://scripts/game/exp_gem.gd" id="2_5jyiu"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8uv6m"]
+radius = 14.0
+
+[node name="Gem" type="Area2D"]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("2_5jyiu")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_qpxrq")
+
+[node name="Area" type="CollisionShape2D" parent="."]
+position = Vector2(1, -8)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_8uv6m")
