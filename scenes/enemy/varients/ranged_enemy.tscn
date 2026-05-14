@@ -127,6 +127,7 @@ size = Vector2(82.00489, 83.72258)
 
 [node name="RangedEnemy" type="CharacterBody2D" groups=["enemy"]]
 collision_layer = 2
+collision_mask = 3
 script = ExtResource("1_3lp7d")
 projectile_scene = ExtResource("2_egasa")
 
@@ -178,6 +179,10 @@ shape = SubResource("RectangleShape2D_i7gor")
 [node name="ShootPoint" type="Marker2D" parent="."]
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+path_desired_distance = 30.0
+target_desired_distance = 30.0
 avoidance_enabled = true
+radius = 160.0
+neighbor_distance = 200.0
 
 [connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]

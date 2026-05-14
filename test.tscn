@@ -1,0 +1,23 @@
+[gd_scene load_steps=6 format=3 uid="uid://cydewb52uc2fd"]
+
+[ext_resource type="PackedScene" uid="uid://d1w5ccem33kle" path="res://scenes/player/player.tscn" id="1_ykrsh"]
+[ext_resource type="PackedScene" uid="uid://bj8ybrxe6xgg2" path="res://scenes/map/desert/tree.tscn" id="2_g14j6"]
+[ext_resource type="PackedScene" uid="uid://d4g4mirgs3uav" path="res://scenes/map/desert/bones.tscn" id="3_vbegm"]
+[ext_resource type="PackedScene" uid="uid://cw4t72wv8hmte" path="res://scenes/map/desert/cactus.tscn" id="4_ehkex"]
+[ext_resource type="PackedScene" uid="uid://ric1tqdeokxn" path="res://scenes/map/desert/bush.tscn" id="5_xersf"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_ykrsh")]
+
+[node name="Tree" parent="." instance=ExtResource("2_g14j6")]
+position = Vector2(782, -2)
+
+[node name="Bones" parent="." instance=ExtResource("3_vbegm")]
+position = Vector2(1473, -3)
+
+[node name="Cactus" parent="." instance=ExtResource("4_ehkex")]
+position = Vector2(1169, -2)
+
+[node name="Bush" parent="." instance=ExtResource("5_xersf")]
+position = Vector2(963, -1)

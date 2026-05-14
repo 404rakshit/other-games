@@ -29,6 +29,7 @@ func _check_attack_triggers():
 	if global_position.distance_to(player.global_position) <= trigger_range:
 		_start_detonation()
 
+
 func _draw():
 	# Only draw if the timer is counting down
 	if explosion_timer and !explosion_timer.is_stopped():

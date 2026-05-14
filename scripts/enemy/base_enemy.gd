@@ -81,6 +81,7 @@ func _process_movement(delta: float):
 		animated_sprite.flip_h = direction.x < 0
 		
 	move_and_slide()
+	
 func take_damage(amount: int):
 	if current_state == State.DEAD: return
 	
