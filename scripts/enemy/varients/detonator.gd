@@ -20,6 +20,9 @@ func _custom_setup():
 	explosion_timer.timeout.connect(_explode)
 	add_child(explosion_timer)
 	
+	if nav_agent:  
+		nav_agent.velocity_computed.connect(_on_velocity_computed)
+	
 	if current_state == State.ATTACKING:
 		queue_redraw()
 
@@ -28,6 +31,36 @@ func _check_attack_triggers():
 	# Check distance to the player
 	if global_position.distance_to(player.global_position) <= trigger_range:
 		_start_detonation()
+
+#func _physics_process(_delta):
+	#if nav_agent.is_navigation_finished():
+		#return
+	#var next_path_pos = nav_agent.get_next_path_position()
+	#var new_velocity = global_position.direction_to(next_path_pos) * speed
+	#nav_agent.set_velocity(new_velocity)
+	
+func _physics_process(_delta: float) -> void:
+	if current_state == State.ATTACKING:
+		# If exploding, we want to stay still and ignore avoidance
+		velocity = Vector2.ZERO
+		move_and_slide()
+		return
+
+	if player:
+		nav_agent.target_position = player.global_position
+		var next_path_pos = nav_agent.get_next_path_position()
+		var intended_velocity = 		global_position.direction_to(next_path_pos) * speed
+		
+		# This triggers the 'velocity_computed' signal
+		nav_agent.set_velocity(intended_velocity)
+
+# This function is the "Secret Sauce" to stop overlapping
+func _on_velocity_computed(safe_velocity: Vector2):
+	if current_state != State.ATTACKING:
+		velocity = safe_velocity
+		move_and_slide()
+
+
 
 func _draw():
 	# Only draw if the timer is counting down
