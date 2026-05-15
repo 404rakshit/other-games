@@ -79,18 +79,25 @@ func get_random_enemy_scene() -> PackedScene:
 	return ENEMY_SCENE # Fallback
 
 func get_spawn_position() -> Vector2:
-	# 1. Define how far away the enemies should spawn (adjust this so they spawn just off-screen)
+	# 1. Define how far away the enemies should spawn (just off-screen)
 	var spawn_radius: float = 700.0 
 	
-	# 2. Pick a random angle between 0 and 360 degrees (TAU is 2 * PI radians in Godot)
+	# 2. Pick a random angle between 0 and 360 degrees
 	var random_angle: float = randf() * TAU
 	
 	# 3. Use Trigonometry to convert the angle and radius into X and Y offsets
 	var offset = Vector2(cos(random_angle), sin(random_angle)) * spawn_radius
 	
-	# 4. Add the offset to the player's current position
-	return player.global_position + offset
-
+	# 4. Calculate the raw target spawn position relative to the player
+	var raw_spawn_pos = player.global_position + offset
+	
+	# 5. Get the global navigation map RID (Resource ID)
+	var map_rid: RID = get_world_2d().get_navigation_map()
+	
+	# 6. Safety Snap: Force the position onto the closest valid navigation point
+	var safe_spawn_pos: Vector2 = NavigationServer2D.map_get_closest_point(map_rid, raw_spawn_pos)
+	
+	return safe_spawn_pos
 # --- EXISTING FUNCTIONS ---
 
 func _on_player_leveled_up(_new_level: int):

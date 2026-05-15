@@ -93,7 +93,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_cf774")
 }],
-"loop": true,
+"loop": false,
 "name": &"shoot",
 "speed": 5.0
 }, {
@@ -113,7 +113,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_8t4dv")
 }],
-"loop": true,
+"loop": false,
 "name": &"take_damage",
 "speed": 5.0
 }]
@@ -127,7 +127,8 @@ size = Vector2(82.00489, 83.72258)
 
 [node name="RangedEnemy" type="CharacterBody2D" groups=["enemy"]]
 collision_layer = 2
-collision_mask = 3
+collision_mask = 7
+safe_margin = 0.4
 script = ExtResource("1_3lp7d")
 projectile_scene = ExtResource("2_egasa")
 
@@ -139,9 +140,8 @@ scale = Vector2(3.2370427, 3.2370427)
 position = Vector2(0, -1)
 scale = Vector2(0.118843034, 0.118843034)
 sprite_frames = SubResource("SpriteFrames_owx42")
-animation = &"shoot"
+animation = &"run"
 autoplay = "run"
-frame_progress = 0.3457046
 
 [node name="Sound" type="Node2D" parent="."]
 scale = Vector2(1.4878578, 1.4878578)

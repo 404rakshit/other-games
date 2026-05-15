@@ -129,7 +129,8 @@ radius = 160.0
 
 [node name="DetonatorEnemy" type="CharacterBody2D" groups=["enemy"]]
 collision_layer = 2
-collision_mask = 3
+collision_mask = 7
+safe_margin = 0.4
 script = ExtResource("1_q3djr")
 
 [node name="Visuals" type="Node2D" parent="."]

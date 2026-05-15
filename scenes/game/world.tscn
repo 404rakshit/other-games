@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://6wubinngqbf8"]
+[gd_scene load_steps=17 format=3 uid="uid://6wubinngqbf8"]
 
 [ext_resource type="Script" uid="uid://cw8g2bodtrtdp" path="res://scripts/game/world.gd" id="1_d8brc"]
 [ext_resource type="PackedScene" uid="uid://d1w5ccem33kle" path="res://scenes/player/player.tscn" id="1_g5t8f"]
@@ -16,11 +16,13 @@
 [ext_resource type="PackedScene" uid="uid://cw4t72wv8hmte" path="res://scenes/map/desert/cactus.tscn" id="14_iby7u"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_wcixa"]
-vertices = PackedVector2Array(44450.92, 43501.33, -43640.758, 42350.64, -43257.22, -38703.29, 44323.07, -41004.67)
+vertices = PackedVector2Array(7968, 8949.172, -6984.8125, 9001.82, -6931.172, -5948, 7969.992, -5949.992)
 polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
-outlines = Array[PackedVector2Array]([PackedVector2Array(-43307, -38752, -43691, 42400, 44501, 43552, 44373, -41056)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-6981, -5998, 8020, -6000, 8018, 8999, -6984, 9001)])
 cell_size = 4.0
 agent_radius = 50.0
+
+[sub_resource type="GDScript" id="GDScript_7jg8g"]
 
 [node name="World" type="Node2D"]
 y_sort_enabled = true
@@ -54,20 +56,36 @@ bus = &"Music"
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 navigation_polygon = SubResource("NavigationPolygon_wcixa")
+script = SubResource("GDScript_7jg8g")
 
 [node name="TextureRect" type="TextureRect" parent="NavigationRegion2D"]
 z_index = -2
-offset_left = -50526.65
-offset_top = -49110.0
-offset_right = 50389.203
-offset_bottom = 48354.0
+offset_left = -6983.0
+offset_top = -6000.9995
+offset_right = 8017.0
+offset_bottom = 8999.0
 scale = Vector2(1.0000771, 0.99997)
 texture = ExtResource("2_sexec")
 stretch_mode = 1
 
-[node name="EnvironmentManager" parent="." node_paths=PackedStringArray("nav_region") instance=ExtResource("11_wcixa")]
+[node name="EnvironmentManager" parent="." node_paths=PackedStringArray("nav_region", "boundary_body") instance=ExtResource("11_wcixa")]
 environment_objects = Array[PackedScene]([ExtResource("3_ry5kt"), ExtResource("12_7jg8g"), ExtResource("13_740o0"), ExtResource("14_iby7u")])
 nav_region = NodePath("../NavigationRegion2D")
+boundary_body = NodePath("../DynamicMapBoundary")
+
+[node name="DynamicMapBoundary" type="StaticBody2D" parent="."]
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DynamicMapBoundary"]
+
+[node name="BG" type="ColorRect" parent="."]
+z_index = -10
+offset_left = -10193.0
+offset_top = -7971.0
+offset_right = 10739.0
+offset_bottom = 11157.0
+color = Color(0.103743516, 0.10374353, 0.103743516, 1)
 
 [connection signal="leveled_up" from="Player" to="." method="_on_player_leveled_up"]
 [connection signal="player_died" from="Player" to="." method="_on_player_player_died"]

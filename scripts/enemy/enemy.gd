@@ -43,8 +43,6 @@ func _ready() -> void:
 	var random_shade = randf_range(0.8, 1.2)
 	modulate = Color(random_shade, random_shade, random_shade, 1.0)
 	
-	navigation_agent.velocity_computed.connect(_on_velocity_computed)
-	
 	navigation_agent.path_desired_distance = 15.0
 	navigation_agent.target_desired_distance = 15.0
 	
@@ -97,33 +95,15 @@ func process_chasing():
 		var next_path_pos = navigation_agent.get_next_path_position()
 		var direction = global_position.direction_to(next_path_pos)
 		
-		var intended_velocity = direction * speed
+		velocity = direction * speed
 		change_dir(direction)
-		
-		navigation_agent.set_velocity(intended_velocity)
 	
 	move_and_slide()
 	
 	# Attack Trigger
 	if is_player_in_range() and cooldown_timer.is_stopped():
 		start_attack()
-
-func _on_velocity_computed(safe_velocity: Vector2):
-	if current_state != State.CHASING:
-		return
 		
-	# ANTI-STUCK CROWD RECOVERY: 
-	# If navigation gets confused by a tight squeeze and drops velocity to zero, 
-	# force a gentle push toward the path target to resolve the physics overlap.
-	if safe_velocity.length() < 10.0 and not navigation_agent.is_navigation_finished():
-		var next_path_pos = navigation_agent.get_next_path_position()
-		var recovery_dir = global_position.direction_to(next_path_pos)
-		velocity = recovery_dir * (speed * 0.4) 
-	else:
-		velocity = safe_velocity
-		
-	move_and_slide()
-
 func is_player_in_range() -> bool:
 	var overlapping_bodies = damage_zone.get_overlapping_bodies()
 	return player in overlapping_bodies
