@@ -1,0 +1,88 @@
+[gd_scene load_steps=13 format=3 uid="uid://ca55nvfi4j57s"]
+
+[ext_resource type="Script" uid="uid://cw8g2bodtrtdp" path="res://scripts/game/world.gd" id="1_yilf0"]
+[ext_resource type="PackedScene" uid="uid://r7xccx21navk" path="res://scenes/game/hud.tscn" id="2_evnnp"]
+[ext_resource type="PackedScene" uid="uid://d1w5ccem33kle" path="res://scenes/player/player.tscn" id="3_6hb38"]
+[ext_resource type="PackedScene" uid="uid://b3drmsj7pkxmw" path="res://scenes/game/level_up_screen.tscn" id="4_s41b0"]
+[ext_resource type="PackedScene" uid="uid://sb4722pdh5mj" path="res://scenes/game/game_over_screen.tscn" id="5_nkkxh"]
+[ext_resource type="PackedScene" uid="uid://b6s6irqp7cw2m" path="res://scenes/game/pause_menu_screen.tscn" id="6_4h56p"]
+[ext_resource type="AudioStream" uid="uid://frxafl712lf1" path="res://assets/audio/void-audio.mp3" id="7_tbwmu"]
+[ext_resource type="PackedScene" uid="uid://c3xf1nti60pf6" path="res://scenes/game/stopwatch.tscn" id="8_6nnr5"]
+[ext_resource type="Texture2D" uid="uid://cc5egkkh4tir5" path="res://assets/map/ship-bg-small.jpg" id="9_tbwmu"]
+[ext_resource type="PackedScene" uid="uid://y2yaodsr4aht" path="res://scripts/map/environment_manager.tscn" id="10_rogcs"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_wcixa"]
+vertices = PackedVector2Array(7968, 8949.172, -6984.8125, 9001.82, -6931.172, -5948, 7969.992, -5949.992)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-6981, -5998, 8020, -6000, 8018, 8999, -6984, 9001)])
+cell_size = 4.0
+agent_radius = 50.0
+
+[sub_resource type="GDScript" id="GDScript_7jg8g"]
+
+[node name="World" type="Node2D"]
+y_sort_enabled = true
+script = ExtResource("1_yilf0")
+
+[node name="HUD" parent="." instance=ExtResource("2_evnnp")]
+
+[node name="Player" parent="." instance=ExtResource("3_6hb38")]
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+autostart = true
+
+[node name="LevelUpScreen" parent="." instance=ExtResource("4_s41b0")]
+visible = false
+
+[node name="GameOverScreen" parent="." instance=ExtResource("5_nkkxh")]
+visible = false
+
+[node name="PauseMenuScreen" parent="." instance=ExtResource("6_4h56p")]
+
+[node name="Sound" type="Node2D" parent="."]
+
+[node name="ThemeMusic" type="AudioStreamPlayer" parent="Sound"]
+stream = ExtResource("7_tbwmu")
+autoplay = true
+bus = &"Music"
+
+[node name="Stopwatch" parent="." groups=["stopwatch"] instance=ExtResource("8_6nnr5")]
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("NavigationPolygon_wcixa")
+script = SubResource("GDScript_7jg8g")
+
+[node name="TextureRect" type="TextureRect" parent="NavigationRegion2D"]
+z_index = -2
+offset_left = -6983.0
+offset_top = -6000.9995
+offset_right = 8017.0
+offset_bottom = 8999.0
+scale = Vector2(1.0000771, 0.99997)
+texture = ExtResource("9_tbwmu")
+stretch_mode = 1
+
+[node name="EnvironmentManager" parent="." node_paths=PackedStringArray("nav_region", "boundary_body") instance=ExtResource("10_rogcs")]
+spawn_count = 0
+nav_region = NodePath("../NavigationRegion2D")
+boundary_body = NodePath("../DynamicMapBoundary")
+
+[node name="DynamicMapBoundary" type="StaticBody2D" parent="."]
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="DynamicMapBoundary"]
+
+[node name="BG" type="ColorRect" parent="."]
+z_index = -10
+offset_left = -10193.0
+offset_top = -7971.0
+offset_right = 10739.0
+offset_bottom = 11157.0
+color = Color(0.103743516, 0.10374353, 0.103743516, 1)
+
+[connection signal="leveled_up" from="Player" to="." method="_on_player_leveled_up"]
+[connection signal="player_died" from="Player" to="." method="_on_player_player_died"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="upgrade_selected" from="LevelUpScreen" to="." method="_on_level_up_screen_upgrade_selected"]

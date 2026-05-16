@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 # exports
-@export var speed: float = 150.0
+@export var speed: float = 200.0
 @export var damage_amount: int = 10
 @export var attack_windup_time: float = 0.3 # Time before damage hits
 @export var attack_cooldown_time: float = 1.0 # Time between attacks
@@ -13,6 +13,9 @@ const player_group_name = "player"
 # ENUM for State Machine
 enum State { CHASING, ATTACKING, STUNNED }
 var current_state: State = State.CHASING
+
+var path_update_timer: float = 0.0
+var path_update_interval: float = 0.15 # Update ~6 times a second
 
 # components
 @onready var health_component = $HealthComponent
@@ -68,13 +71,13 @@ func setup_timers():
 	#cooldown_timer.timeout.connect(_on_cooldown_timer_timeout)
 	add_child(cooldown_timer)
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if not player:
 		return
 		
 	match current_state:
 		State.CHASING:
-			process_chasing()
+			process_chasing(delta)
 		State.ATTACKING:
 			# Stop moving while attacking
 			velocity = Vector2.ZERO
@@ -83,15 +86,23 @@ func _physics_process(_delta: float) -> void:
 			velocity = Vector2.ZERO 
 			move_and_slide()
 
-func process_chasing():
-	# 1. Update the navigation target to the player's current position
-	navigation_agent.target_position = player.global_position
+func process_chasing(delta: float):
+	# 1. Attack Trigger (Early Exit)
+	if is_player_in_range() and cooldown_timer.is_stopped():
+		velocity = Vector2.ZERO # Stop moving before attacking
+		start_attack()
+		return # Skip all movement math if we are attacking
+		
+	# 2. Path Update Timer (Counts down instead of up)
+	path_update_timer -= delta
+	if path_update_timer <= 0.0:
+		path_update_timer = path_update_interval
+		navigation_agent.target_position = player.global_position
 	
-	# 2. Check if we are already close enough or the path is finished
+	# 3. Navigation and Movement
 	if navigation_agent.is_navigation_finished():
 		velocity = Vector2.ZERO
 	else:
-		# 3. Calculate direction toward the NEXT point in the path
 		var next_path_pos = navigation_agent.get_next_path_position()
 		var direction = global_position.direction_to(next_path_pos)
 		
@@ -99,10 +110,6 @@ func process_chasing():
 		change_dir(direction)
 	
 	move_and_slide()
-	
-	# Attack Trigger
-	if is_player_in_range() and cooldown_timer.is_stopped():
-		start_attack()
 		
 func is_player_in_range() -> bool:
 	var overlapping_bodies = damage_zone.get_overlapping_bodies()

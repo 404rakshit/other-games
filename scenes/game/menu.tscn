@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://c3dt08w8ymumm" path="res://assets/logo/logoshadow.png" id="2_37mct"]
 [ext_resource type="Script" uid="uid://bkhd0hw4tldyq" path="res://scripts/game/menu.gd" id="2_rnkyv"]
 [ext_resource type="Texture2D" uid="uid://cxlc4vojl41mn" path="res://assets/menu/desert-cover.webp" id="4_5rkwa"]
-[ext_resource type="Texture2D" uid="uid://cuhj67g05p2vj" path="res://assets/menu/forest-cover.webp" id="5_tbgai"]
+[ext_resource type="Texture2D" uid="uid://b8hpw82aq2uvk" path="res://assets/map/ship.webp" id="5_rnkyv"]
 
 [node name="CanvasLayer" type="CanvasLayer"]
 
@@ -60,7 +60,6 @@ theme_override_font_sizes/font_size = 28
 text = "Exit"
 
 [node name="LevelSelection" type="VBoxContainer" parent="Control/CenterContainer"]
-visible = false
 layout_mode = 2
 theme_override_constants/separation = 15
 alignment = 1
@@ -87,7 +86,7 @@ stretch_mode = 5
 [node name="ForestMap" type="TextureButton" parent="Control/CenterContainer/LevelSelection/MapSelection/PanelContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
-texture_normal = ExtResource("5_tbgai")
+texture_normal = ExtResource("5_rnkyv")
 ignore_texture_size = true
 stretch_mode = 5
 

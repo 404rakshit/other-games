@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://kixbm1ob1e7s" path="res://scripts/enemy/enemy.gd" id="1_a3pup"]
 [ext_resource type="PackedScene" uid="uid://c16gcgs04xwm8" path="res://scenes/comp/health_component.tscn" id="3_40wdo"]
 [ext_resource type="Texture2D" uid="uid://dn38k5a7jbic2" path="res://assets/enemy/melee-group.png" id="3_nbhyu"]
-[ext_resource type="Texture2D" uid="uid://c5jlbmrkomjes" path="res://assets/enemy/running-sprite.png" id="4_13gj6"]
+[ext_resource type="Texture2D" uid="uid://1p05k4karaya" path="res://assets/enemy/running-sprite-new.png" id="4_13gj6"]
 [ext_resource type="Texture2D" uid="uid://n32qcaosd2vw" path="res://assets/enemy/melee-hit-sprite.png" id="5_13gj6"]
 [ext_resource type="AudioStream" uid="uid://mxyxintr0s1d" path="res://assets/enemy/death_groan.wav" id="5_cwlon"]
 [ext_resource type="AudioStream" uid="uid://ttpgef4e7gu7" path="res://assets/enemy/hit.wav" id="6_nbhyu"]
@@ -201,6 +201,7 @@ path_desired_distance = 30.0
 target_desired_distance = 30.0
 avoidance_enabled = true
 radius = 160.0
-neighbor_distance = 200.0
+neighbor_distance = 100.0
+max_neighbors = 6
 
 [connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]

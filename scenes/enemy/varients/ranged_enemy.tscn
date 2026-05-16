@@ -131,6 +131,7 @@ collision_mask = 7
 safe_margin = 0.4
 script = ExtResource("1_3lp7d")
 projectile_scene = ExtResource("2_egasa")
+speed = 140.0
 
 [node name="Visuals" type="Node2D" parent="."]
 position = Vector2(0, -1)
@@ -183,6 +184,7 @@ path_desired_distance = 30.0
 target_desired_distance = 30.0
 avoidance_enabled = true
 radius = 160.0
-neighbor_distance = 200.0
+neighbor_distance = 100.0
+max_neighbors = 6
 
 [connection signal="died" from="HealthComponent" to="." method="_on_health_component_died"]

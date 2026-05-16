@@ -30,6 +30,7 @@ func _process_attack_state(_delta: float):
 	# Check if the player ran away out of range
 	if distance_to_player > shoot_range:
 		current_state = State.CHASING # Go back to chasing them!
+		animated_sprite.play("run") 
 		return
 		
 	# Make sure the enemy still faces the player while standing still and shooting

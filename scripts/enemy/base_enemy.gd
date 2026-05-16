@@ -28,7 +28,7 @@ const GEM_SCENE = preload("res://scenes/map/desert/gem.tscn")
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group(player_group_name)
-	# Set health component to max health
+	
 	if health_component and health_component.has_method("set_max_health"):
 		health_component.set_max_health(max_health)
 	
@@ -40,7 +40,6 @@ func setup_nav_agent():
 	if nav_agent:
 		nav_agent.path_desired_distance = 15.0
 		nav_agent.target_desired_distance = 15.0
-		# Optional: Avoidance makes them move around each other
 		nav_agent.avoidance_enabled = true
 
 func _physics_process(delta: float) -> void:
@@ -49,23 +48,32 @@ func _physics_process(delta: float) -> void:
 		
 	match current_state:
 		State.CHASING:
-			_process_movement(delta)
+			# OPTIMIZATION 1: Check attacks BEFORE moving!
 			_check_attack_triggers()
+			
+			# If the trigger changed our state to ATTACKING, we skip moving entirely
+			if current_state == State.CHASING:
+				_process_movement(delta)
+				
 		State.ATTACKING:
 			_process_attack_state(delta)
+			
 		State.STUNNED:
+			# Call the virtual function first in case child classes add knockback logic
+			_process_stunned_state(delta)
 			velocity = Vector2.ZERO 
 			move_and_slide()
 
 # --- BASE BEHAVIORS ---
 
 func _process_movement(delta: float):
-	# Optimization: Only recalculate the path occasionally
-	path_timer += delta
-	if path_timer >= path_update_interval:
+	# OPTIMIZATION 2: Countdown Timer (Slightly faster than checking bounds and resetting)
+	path_timer -= delta
+	if path_timer <= 0.0:
+		path_timer = path_update_interval
 		nav_agent.target_position = player.global_position
-		path_timer = 0.0
 
+	# OPTIMIZATION 3: Early exit if we reached the player
 	if nav_agent.is_navigation_finished():
 		velocity = Vector2.ZERO
 		return
@@ -110,7 +118,6 @@ func _on_health_component_died() -> void:
 func drop_exp_gem():
 	var new_gem: Area2D = GEM_SCENE.instantiate()
 	new_gem.global_position = global_position
-	#new_gem.rotate(randf_range(1.57, 1.84))
 	new_gem.z_index = -1
 	get_parent().call_deferred("add_child", new_gem)
 
@@ -127,13 +134,13 @@ func _on_stun_timer_timeout():
 # --- VIRTUAL FUNCTIONS (To be overridden by child classes) ---
 
 func _custom_setup():
-	pass # Override in child to setup timers or specific variables
+	pass
 
 func _check_attack_triggers():
-	pass # Override in child to check distances or cooldowns
+	pass 
 
 func _process_attack_state(_delta: float):
-	pass # Override in child to handle the actual attack animation/logic
+	pass 
 
 func _process_stunned_state(_delta: float):
-	pass # Override in child to handle the actual attack animation/logic
+	pass

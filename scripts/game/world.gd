@@ -17,9 +17,9 @@ var stopwatch : Stopwatch
 # --- NEW: Spawn Weights ---
 # Higher number = more common. 
 var enemy_spawn_weights = {
-	ENEMY_SCENE: 75,      
-	RANGED_ENEMY: 20,      
-	DETONATOR_SCENE: 05    
+	ENEMY_SCENE: 80,      
+	RANGED_ENEMY: 19,      
+	DETONATOR_SCENE: 1    
 }
 var total_weight: int = 0
 

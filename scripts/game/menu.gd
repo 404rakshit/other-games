@@ -65,7 +65,7 @@ func _on_desert_map_pressed() -> void:
 
 func _on_forest_map_pressed() -> void:
 	await show_loading__screen()
-	get_tree().change_scene_to_file("res://scenes/game/world-forest.tscn")
+	get_tree().change_scene_to_file("res://scenes/game/world-og.tscn")
 
 
 func _on_bac_pressed() -> void:
