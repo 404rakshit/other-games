@@ -7,6 +7,7 @@
 
 [node name="EnemyProjectile" type="Area2D"]
 scale = Vector2(1.5999969, 1.5999969)
+collision_layer = 8
 script = ExtResource("1_avmsn")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

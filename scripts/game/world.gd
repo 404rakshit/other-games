@@ -109,3 +109,13 @@ func _on_level_up_screen_upgrade_selected(upgrade_item: Upgrade) -> void:
 func _on_player_player_died() -> void:
 	$Sound/ThemeMusic.stop()
 	game_over_screen.game_over()
+
+
+func _on_player_player_took_damage() -> void:
+	if hud and hud.has_method("play_damage_flash"):
+		hud.play_damage_flash()
+
+
+func _on_player_player_dashed(dash_cooldown: float) -> void:
+	if hud and hud.has_method("start_hud_dash_cooldown"):
+		hud.start_hud_dash_cooldown(dash_cooldown)

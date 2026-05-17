@@ -159,7 +159,10 @@ radius = 100.0
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 collision_mask = 6
+safe_margin = 0.8
 script = ExtResource("1_dovo2")
+dash_cooldown = 5.0
+dash_duration = 1.0
 
 [node name="Visuals" type="Node2D" parent="."]
 

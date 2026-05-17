@@ -88,6 +88,8 @@ offset_bottom = 11157.0
 color = Color(0.103743516, 0.10374353, 0.103743516, 1)
 
 [connection signal="leveled_up" from="Player" to="." method="_on_player_leveled_up"]
+[connection signal="player_dashed" from="Player" to="." method="_on_player_player_dashed"]
 [connection signal="player_died" from="Player" to="." method="_on_player_player_died"]
+[connection signal="player_took_damage" from="Player" to="." method="_on_player_player_took_damage"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="upgrade_selected" from="LevelUpScreen" to="." method="_on_level_up_screen_upgrade_selected"]

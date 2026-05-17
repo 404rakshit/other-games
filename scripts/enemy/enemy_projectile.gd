@@ -15,9 +15,10 @@ func _physics_process(delta: float):
 
 # Connect the "body_entered" signal of the Area2D to this function
 func _on_body_entered(body: Node2D):
-	if body.is_in_group("player") and body.has_method("take_damage"):
-		body.take_damage(damage)
-		queue_free() # Destroy the bullet after hitting the player
+	if body.is_in_group("player"):
+		if body.has_method("take_damage"):
+			body.take_damage(damage)
+		queue_free() # Safely dissolve the bullet frame
 
 # Connect the "screen_exited" signal of the VisibleOnScreenNotifier2D to this function
 func _on_visible_on_screen_notifier_2d_screen_exited():

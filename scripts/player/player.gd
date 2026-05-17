@@ -4,11 +4,17 @@ extends CharacterBody2D
 signal experience_gained(current_xp: int, max_xp: int)
 signal leveled_up(new_level: int)
 signal player_died()
+signal player_took_damage()
+signal player_dashed(cooldown: float)
 
 const TIME_MINE_SCENE = preload("res://scenes/deployable/time_mine.tscn")
 
 # exports
 @export var speed : float = 300.0
+
+@export var dash_cooldown: float = 30.0
+@export var dash_duration: float = 0.4
+@export var dash_speed_multiplier: float = 2.5
 
 # comp
 @onready var health_component: HealthComponent = $HealthComponent
@@ -21,6 +27,9 @@ const TIME_MINE_SCENE = preload("res://scenes/deployable/time_mine.tscn")
 enum State { IDLE, RUN, HURT, DEAD }
 
 # states
+var is_dashing: bool = false
+var is_dash_on_cooldown: bool = false
+
 var current_experience: int = 0
 var current_level: int = 1
 var current_state: State = State.IDLE
@@ -38,6 +47,8 @@ func _process(_delta: float) -> void:
 func handle_ability():
 	if Input.is_action_just_pressed("use_ability"):
 		deploy_component.trigger_deployment()
+	if Input.is_action_just_pressed("dash"):
+		trigger_phase_dash()
 
 func set_state(new_state: State):
 	
@@ -122,6 +133,7 @@ func take_damage(amount: int):
 	var tween = create_tween()
 	tween.tween_property(self, "modulate", Color.WHITE, 0.2)
 	
+	player_took_damage.emit()
 	set_state(State.HURT)
 
 func gain_experience(exp_amount: int):
@@ -137,6 +149,44 @@ func gain_experience(exp_amount: int):
 	experience_gained.emit(current_experience, xp_to_next_level)
 
 # signal func triggers
+
+func trigger_phase_dash() -> void:
+	if is_dash_on_cooldown == true:
+		return
+		
+	is_dashing = true
+	is_dash_on_cooldown = true
+	
+	# 1. Disable enemy collision detection (Assuming Enemy is on Layer 2)
+	set_collision_mask_value(2, false)
+	set_collision_layer_value(1, false)
+	
+	# 2. Tell the HUD to start the 30-second filling visual ring
+	player_dashed.emit(dash_cooldown)
+	
+	# 3. Apply the "Ghostly Phasing" visual look by lowering Alpha opacity to 30%
+	var ghost_tween = create_tween()
+	ghost_tween.tween_property(animated_sprite, "modulate:a", 0.3, 0.1)
+	
+	# Boost speed if your movement code multiplies velocity by a base factor
+	# (e.g., inside physics process: speed = base_speed * (dash_multiplier if is_dashing else 1.0))
+	
+	# 4. Wait out the duration of the physical phase pass
+	await get_tree().create_timer(dash_duration).timeout
+	
+	# 5. Restore Solid State
+	set_collision_mask_value(2, true)
+	set_collision_layer_value(1, true)
+	is_dashing = false
+	
+	# Smoothly return player to 100% full opacity
+	var restore_tween = create_tween()
+	restore_tween.tween_property(animated_sprite, "modulate:a", 1.0, 0.1)
+	
+	# 6. Wait out the background cooldown timer before allowing another dash use
+	await get_tree().create_timer(dash_cooldown - dash_duration).timeout
+	is_dash_on_cooldown = false
+	print("Dash ready again!")
 
 func _on_health_component_died() -> void:
 	print("Game Over!")
