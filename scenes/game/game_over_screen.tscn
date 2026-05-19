@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://sb4722pdh5mj"]
+[gd_scene load_steps=5 format=3 uid="uid://sb4722pdh5mj"]
 
 [ext_resource type="Script" uid="uid://dcdftvxecr8gf" path="res://scripts/game/game_over_screen.gd" id="1_vygr2"]
 [ext_resource type="AudioStream" uid="uid://s2kp8glmntyk" path="res://assets/game/gameover.mp3" id="2_6mu64"]
+[ext_resource type="Theme" uid="uid://c26jam44t4fks" path="res://resources/themes/new_theme.tres" id="2_74tcy"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_uqugf"]
 font_size = 40
@@ -17,6 +18,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("2_74tcy")
 color = Color(0.21960784, 0, 0, 0.7058824)
 
 [node name="Menu" type="VBoxContainer" parent="ColorRect"]
@@ -44,9 +46,14 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 22
 text = "Try Again"
 
+[node name="MainMenuButton" type="Button" parent="ColorRect/Menu"]
+layout_mode = 2
+text = "Main menu"
+
 [node name="Music" type="Node2D" parent="."]
 
 [node name="GameOver" type="AudioStreamPlayer" parent="Music"]
 stream = ExtResource("2_6mu64")
 
 [connection signal="pressed" from="ColorRect/Menu/RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="ColorRect/Menu/MainMenuButton" to="." method="_on_main_menu_button_pressed"]

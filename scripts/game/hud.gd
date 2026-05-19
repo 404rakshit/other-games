@@ -4,7 +4,9 @@ extends CanvasLayer
 @onready var xp_bar = $Control/XPBar
 @onready var joystick = $"JoyStick"
 @onready var damage_flash: ColorRect = $DamageFlash
-@onready var dash_progress_bar: TextureProgressBar = $DashButtonProgress
+@onready var dash_progress_bar: TextureProgressBar = $Control2/DashButtonProgress
+
+@onready var dash_touch_button = $Control2/TouchScreenButton
 
 signal menu_paused()
 
@@ -13,10 +15,18 @@ var flash_tween: Tween
 func _ready() -> void:
 	_set_shader_intensity(0.0)
 	dash_progress_bar.value = 100.0
+	
 	if DisplayServer.is_touchscreen_available():
 		joystick.visible = true
 	else:
 		joystick.visible = false
+		
+	if dash_touch_button:
+		dash_touch_button.pressed.connect(_on_dash_button_pressed)
+		
+func _on_dash_button_pressed():
+	# You can pass your exact cooldown time here
+	start_hud_dash_cooldown(1.0)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta: float) -> void:
@@ -77,3 +87,12 @@ func _set_shader_intensity(value: float) -> void:
 
 func _on_button_pressed() -> void:
 	menu_paused.emit()
+
+#func _on_texture_button_pressed() -> void:
+	#Input.action_press("dash")
+	#
+	## 2. Force an internal input flush so the engine registers the 'just_pressed' state
+	#Input.flush_buffered_events()
+	#
+	## 3. Release it instantly so it can be pressed again next time
+	#Input.action_release("dash")

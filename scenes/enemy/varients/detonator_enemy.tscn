@@ -118,8 +118,8 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_goy0e"]
-radius = 28.490072
-height = 93.11998
+radius = 40.83577
+height = 125.50954
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_i7gor"]
 size = Vector2(58, 96)
@@ -132,13 +132,14 @@ collision_layer = 2
 collision_mask = 7
 safe_margin = 0.4
 script = ExtResource("1_q3djr")
+trigger_range = 150.0
 speed = 80.0
 
 [node name="Visuals" type="Node2D" parent="."]
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Visuals"]
 position = Vector2(0, -1)
-scale = Vector2(0.34673366, 0.34673363)
+scale = Vector2(0.43718588, 0.43718585)
 sprite_frames = SubResource("SpriteFrames_owx42")
 animation = &"take_damage"
 autoplay = "run"

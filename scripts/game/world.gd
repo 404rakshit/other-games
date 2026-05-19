@@ -12,7 +12,10 @@ const RANGED_ENEMY = preload("res://scenes/enemy/varients/ranged_enemy.tscn")
 @onready var pause_menu_screen = $PauseMenuScreen
 @onready var navigation_region_2d: NavigationRegion2D = $NavigationRegion2D
 
+@export var max_enemies_on_screen: int = 30
+
 var stopwatch : Stopwatch
+var difficulty_timer: float = 0.0
 
 # --- NEW: Spawn Weights ---
 # Higher number = more common. 
@@ -38,8 +41,19 @@ func _ready() -> void:
 	player.experience_gained.connect(hud.update_xp)
 	#player.leveled_up.connect(_on_player_leveled_up)
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	update_stopwatch_label()
+	increase_difficulty(delta)
+	
+	
+func increase_difficulty(delta: float):
+	difficulty_timer += delta
+	
+	# Every 60 seconds (1 minute), increase the maximum enemy cap by 10
+	if difficulty_timer >= 120.0:
+		difficulty_timer = 0.0
+		max_enemies_on_screen += 10
+		print("Game gets harder! New Enemy Cap is: ", max_enemies_on_screen)
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):
@@ -49,6 +63,12 @@ func update_stopwatch_label():
 	stopwatch_label.text = stopwatch.time_to_str()
 
 func _on_timer_timeout() -> void:
+	
+	var current_enemy_count = get_tree().get_nodes_in_group("enemies").size()
+	
+	if current_enemy_count >= max_enemies_on_screen:
+		return
+	
 	spawn_enemy()
 
 func spawn_enemy():

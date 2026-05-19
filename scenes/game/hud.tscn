@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://r7xccx21navk"]
+[gd_scene load_steps=15 format=3 uid="uid://r7xccx21navk"]
 
 [ext_resource type="Script" uid="uid://bx6mikmxu6hbk" path="res://scripts/game/hud.gd" id="1_kqgwg"]
 [ext_resource type="Theme" uid="uid://c26jam44t4fks" path="res://resources/themes/new_theme.tres" id="2_3k67c"]
@@ -7,7 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://cc6dwm3no8cxq" path="res://assets/menu/pause_small.png" id="5_fecso"]
 [ext_resource type="PackedScene" uid="uid://dgivpdx48bkrl" path="res://scenes/joy_stick.tscn" id="6_fecso"]
 [ext_resource type="Shader" uid="uid://bhh1qfpc31s8p" path="res://shaders/vignette_flash.gdshader" id="7_fecso"]
-[ext_resource type="Texture2D" uid="uid://b6exyb3lj8bdp" path="res://assets/ui/ring.png" id="8_pla3n"]
+[ext_resource type="Texture2D" uid="uid://chqs5w1tjofbk" path="res://assets/ui/invisible-logo-bw.png" id="7_ma2ai"]
+[ext_resource type="Texture2D" uid="uid://buk4pwfix1swp" path="res://assets/ui/invisible-logo.png" id="8_pa45x"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_77e6q"]
 bg_color = Color(0.07284262, 0.072842635, 0.072842576, 1)
@@ -17,6 +18,9 @@ bg_color = Color(0.59207714, 0.002009904, 1.4439226e-07, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kqgwg"]
 bg_color = Color(0.072514154, 0.2430256, 0.99998873, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ma2ai"]
+radius = 60.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pla3n"]
 shader = ExtResource("7_fecso")
@@ -99,6 +103,53 @@ grow_horizontal = 0
 texture_normal = ExtResource("5_fecso")
 
 [node name="JoyStick" parent="." instance=ExtResource("6_fecso")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 0.0
+offset_right = 224.91022
+offset_bottom = 794.5884
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Control2" type="Control" parent="."]
+z_index = 1
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -151.0
+offset_top = -159.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 8
+mouse_filter = 2
+
+[node name="DashButtonProgress" type="TextureProgressBar" parent="Control2"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -60.0
+offset_right = 60.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+fill_mode = 4
+texture_under = ExtResource("7_ma2ai")
+texture_progress = ExtResource("8_pa45x")
+
+[node name="TouchScreenButton" type="TouchScreenButton" parent="Control2"]
+position = Vector2(77, 82)
+shape = SubResource("CircleShape2D_ma2ai")
+action = "dash"
 
 [node name="DamageFlash" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_pla3n")
@@ -107,20 +158,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(0.47843137, 0, 0, 0)
 
-[node name="DashButtonProgress" type="TextureProgressBar" parent="."]
-modulate = Color(0, 0.7713469, 0.77134687, 1)
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -512.0
-offset_top = -512.0
-grow_horizontal = 0
-grow_vertical = 0
-fill_mode = 4
-texture_progress = ExtResource("8_pla3n")
-
 [connection signal="pressed" from="Control/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="Control2/TouchScreenButton" to="." method="_on_texture_button_pressed"]
