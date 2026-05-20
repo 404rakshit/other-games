@@ -177,6 +177,9 @@ func _on_health_component_died() -> void:
 	SoundManager.play_sound(dead_sfx.stream, global_position, get_tree().current_scene)
 	
 	drop_exp_gem()
+	
+	GameEvents.enemy_died.emit()
+	
 	# remove enemy from the tree
 	queue_free()
 

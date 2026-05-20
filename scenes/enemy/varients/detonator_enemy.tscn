@@ -80,7 +80,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"run",
-"speed": 5.0
+"speed": 4.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -141,7 +141,7 @@ speed = 80.0
 position = Vector2(0, -1)
 scale = Vector2(0.43718588, 0.43718585)
 sprite_frames = SubResource("SpriteFrames_owx42")
-animation = &"take_damage"
+animation = &"windup"
 autoplay = "run"
 
 [node name="Sound" type="Node2D" parent="."]

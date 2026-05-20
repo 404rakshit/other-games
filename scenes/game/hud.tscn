@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://r7xccx21navk"]
+[gd_scene load_steps=17 format=3 uid="uid://r7xccx21navk"]
 
 [ext_resource type="Script" uid="uid://bx6mikmxu6hbk" path="res://scripts/game/hud.gd" id="1_kqgwg"]
 [ext_resource type="Theme" uid="uid://c26jam44t4fks" path="res://resources/themes/new_theme.tres" id="2_3k67c"]
@@ -6,8 +6,10 @@
 [ext_resource type="Texture2D" uid="uid://buwkyt05a55mi" path="res://assets/game/exp-logo.png" id="3_xu0sl"]
 [ext_resource type="Texture2D" uid="uid://cc6dwm3no8cxq" path="res://assets/menu/pause_small.png" id="5_fecso"]
 [ext_resource type="PackedScene" uid="uid://dgivpdx48bkrl" path="res://scenes/joy_stick.tscn" id="6_fecso"]
+[ext_resource type="Texture2D" uid="uid://dmcb04p1gi1g7" path="res://assets/ui/clock.png" id="6_ves46"]
 [ext_resource type="Shader" uid="uid://bhh1qfpc31s8p" path="res://shaders/vignette_flash.gdshader" id="7_fecso"]
 [ext_resource type="Texture2D" uid="uid://chqs5w1tjofbk" path="res://assets/ui/invisible-logo-bw.png" id="7_ma2ai"]
+[ext_resource type="Texture2D" uid="uid://cl45o4ki4an3x" path="res://assets/ui/kill.png" id="7_t6voy"]
 [ext_resource type="Texture2D" uid="uid://buk4pwfix1swp" path="res://assets/ui/invisible-logo.png" id="8_pa45x"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_77e6q"]
@@ -77,19 +79,6 @@ offset_right = 54.0
 offset_bottom = 87.0
 texture = ExtResource("3_xu0sl")
 
-[node name="TimerLabel" type="Label" parent="Control"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -43.5
-offset_top = 26.0
-offset_right = 44.5
-offset_bottom = 60.0
-grow_horizontal = 2
-theme_override_font_sizes/font_size = 26
-text = "00:00"
-
 [node name="Button" type="TextureButton" parent="Control"]
 layout_mode = 1
 anchors_preset = 1
@@ -101,6 +90,40 @@ offset_right = -11.0
 offset_bottom = 88.0
 grow_horizontal = 0
 texture_normal = ExtResource("5_fecso")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 105.0
+offset_right = 227.0
+offset_bottom = 164.0
+
+[node name="TextureRect" type="TextureRect" parent="Control/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("6_ves46")
+expand_mode = 2
+
+[node name="TimerLabel" type="Label" parent="Control/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "00:00"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Control"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 159.0
+offset_right = 191.0
+offset_bottom = 217.0
+
+[node name="TextureRect" type="TextureRect" parent="Control/HBoxContainer2"]
+layout_mode = 2
+texture = ExtResource("7_t6voy")
+expand_mode = 2
+
+[node name="KillLabel" type="Label" parent="Control/HBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "0"
 
 [node name="JoyStick" parent="." instance=ExtResource("6_fecso")]
 anchors_preset = 15
@@ -158,6 +181,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_vertical = 4
 mouse_filter = 2
 color = Color(0.47843137, 0, 0, 0)
 

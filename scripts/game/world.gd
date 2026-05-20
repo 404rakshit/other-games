@@ -6,13 +6,16 @@ const RANGED_ENEMY = preload("res://scenes/enemy/varients/ranged_enemy.tscn")
 
 @onready var player = $Player
 @onready var hud = $HUD
-@onready var stopwatch_label: Label = $HUD/Control/TimerLabel
+@onready var stopwatch_label: Label = $HUD/Control/HBoxContainer/TimerLabel
+@onready var kill_count_label: Label = $HUD/Control/HBoxContainer2/KillLabel
 @onready var level_up_screen = $LevelUpScreen
 @onready var game_over_screen = $GameOverScreen
 @onready var pause_menu_screen = $PauseMenuScreen
 @onready var navigation_region_2d: NavigationRegion2D = $NavigationRegion2D
 
 @export var max_enemies_on_screen: int = 30
+
+var kill_count: int = 0
 
 var stopwatch : Stopwatch
 var difficulty_timer: float = 0.0
@@ -39,7 +42,13 @@ func _ready() -> void:
 	
 	player.health_component.health_changed.connect(hud.update_health)
 	player.experience_gained.connect(hud.update_xp)
+	
+	GameEvents.enemy_died.connect(_on_enemy_killed)
 	#player.leveled_up.connect(_on_player_leveled_up)
+
+func _on_enemy_killed() -> void:
+	kill_count += 1
+	kill_count_label.text = str(kill_count)
 
 func _process(delta: float) -> void:
 	update_stopwatch_label()

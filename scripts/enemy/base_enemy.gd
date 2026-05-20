@@ -112,6 +112,8 @@ func _on_health_component_died() -> void:
 	dead_sfx.play()
 	SoundManager.play_sound(dead_sfx.stream, global_position, get_tree().current_scene)
 	
+	GameEvents.enemy_died.emit()
+	
 	drop_exp_gem()
 	queue_free()
 
