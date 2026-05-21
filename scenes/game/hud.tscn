@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://r7xccx21navk"]
+[gd_scene load_steps=20 format=3 uid="uid://r7xccx21navk"]
 
 [ext_resource type="Script" uid="uid://bx6mikmxu6hbk" path="res://scripts/game/hud.gd" id="1_kqgwg"]
 [ext_resource type="Theme" uid="uid://c26jam44t4fks" path="res://resources/themes/new_theme.tres" id="2_3k67c"]
@@ -11,6 +11,8 @@
 [ext_resource type="Texture2D" uid="uid://chqs5w1tjofbk" path="res://assets/ui/invisible-logo-bw.png" id="7_ma2ai"]
 [ext_resource type="Texture2D" uid="uid://cl45o4ki4an3x" path="res://assets/ui/kill.png" id="7_t6voy"]
 [ext_resource type="Texture2D" uid="uid://buk4pwfix1swp" path="res://assets/ui/invisible-logo.png" id="8_pa45x"]
+[ext_resource type="Texture2D" uid="uid://b2koaxjqs6xu5" path="res://assets/ui/nuke-bw.png" id="11_gdx1q"]
+[ext_resource type="Texture2D" uid="uid://dm87pss4bya34" path="res://assets/ui/nuke.png" id="12_kkrim"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_77e6q"]
 bg_color = Color(0.07284262, 0.072842635, 0.072842576, 1)
@@ -23,6 +25,9 @@ bg_color = Color(0.072514154, 0.2430256, 0.99998873, 1)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ma2ai"]
 radius = 60.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xquqv"]
+radius = 45.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pla3n"]
 shader = ExtResource("7_fecso")
@@ -168,17 +173,57 @@ grow_vertical = 2
 fill_mode = 4
 texture_under = ExtResource("7_ma2ai")
 texture_progress = ExtResource("8_pa45x")
+tint_under = Color(1, 1, 1, 0.24705882)
 
 [node name="TouchScreenButton" type="TouchScreenButton" parent="Control2"]
 position = Vector2(77, 82)
 shape = SubResource("CircleShape2D_ma2ai")
 action = "dash"
 
+[node name="Control3" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -137.0
+offset_top = -276.0
+offset_bottom = -142.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="NukeProgressBar" type="TextureProgressBar" parent="Control3"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -60.0
+offset_right = 60.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+fill_mode = 4
+texture_under = ExtResource("11_gdx1q")
+texture_progress = ExtResource("12_kkrim")
+tint_under = Color(1, 1, 1, 0.15686275)
+
+[node name="NukeButton" type="TouchScreenButton" parent="Control3"]
+position = Vector2(69, 67)
+shape = SubResource("CircleShape2D_xquqv")
+
 [node name="DamageFlash" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_pla3n")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -1.0
+offset_bottom = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 4
@@ -187,3 +232,4 @@ color = Color(0.47843137, 0, 0, 0)
 
 [connection signal="pressed" from="Control/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Control2/TouchScreenButton" to="." method="_on_texture_button_pressed"]
+[connection signal="pressed" from="Control3/NukeButton" to="." method="_on_nuke_button_pressed"]

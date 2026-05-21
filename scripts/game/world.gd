@@ -44,7 +44,15 @@ func _ready() -> void:
 	player.experience_gained.connect(hud.update_xp)
 	
 	GameEvents.enemy_died.connect(_on_enemy_killed)
+	
+	hud.nuke_triggered.connect(_execute_nuke)
 	#player.leveled_up.connect(_on_player_leveled_up)
+
+func _execute_nuke() -> void:
+	# This is where your simple print statement goes!
+	print("NUKE INITIATED! Boom!")
+	
+	# Later, you will add the code here to grab all enemies and destroy them.
 
 func _on_enemy_killed() -> void:
 	kill_count += 1

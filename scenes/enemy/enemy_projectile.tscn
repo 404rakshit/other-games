@@ -11,6 +11,7 @@ collision_layer = 8
 script = ExtResource("1_avmsn")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(1, 0.13725491, 0, 1)
 scale = Vector2(0.099999994, 0.10000001)
 texture = ExtResource("2_knyqc")
 

@@ -1,6 +1,6 @@
 extends Area2D
 
-@export var speed: float = 300.0
+@export var speed: float = 400.0
 @export var damage: int = 10
 
 var direction: Vector2 = Vector2.ZERO
@@ -11,7 +11,7 @@ func _ready():
 
 func _physics_process(delta: float):
 	position += direction * speed * delta
-	rotation += rad_to_deg(0.121)
+	rotation += rad_to_deg(0.14)
 
 # Connect the "body_entered" signal of the Area2D to this function
 func _on_body_entered(body: Node2D):
