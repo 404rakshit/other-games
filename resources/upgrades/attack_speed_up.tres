@@ -1,11 +1,13 @@
-[gd_resource type="Resource" script_class="Upgrade" load_steps=2 format=3 uid="uid://djaic2rl8q23r"]
+[gd_resource type="Resource" script_class="Upgrade" load_steps=3 format=3 uid="uid://djaic2rl8q23r"]
 
+[ext_resource type="Texture2D" uid="uid://m4rjblf10xwb" path="res://assets/ui/dual-gun.png" id="1_llian"]
 [ext_resource type="Script" uid="uid://ch7d5opl7bjbg" path="res://scripts/upgrade.gd" id="1_pt3ra"]
 
 [resource]
 script = ExtResource("1_pt3ra")
 title = "Attack Speed"
-description = "It increases the rate of attack by 10%"
+description = "Attack +10%"
 upgrade_id = "attack_rate"
 value = 0.1
+icon = ExtResource("1_llian")
 metadata/_custom_type_script = "uid://ch7d5opl7bjbg"

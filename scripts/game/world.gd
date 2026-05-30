@@ -45,14 +45,8 @@ func _ready() -> void:
 	
 	GameEvents.enemy_died.connect(_on_enemy_killed)
 	
-	hud.nuke_triggered.connect(_execute_nuke)
+	#hud.nuke_triggered.connect(_execute_nuke)
 	#player.leveled_up.connect(_on_player_leveled_up)
-
-func _execute_nuke() -> void:
-	# This is where your simple print statement goes!
-	print("NUKE INITIATED! Boom!")
-	
-	# Later, you will add the code here to grab all enemies and destroy them.
 
 func _on_enemy_killed() -> void:
 	kill_count += 1
@@ -145,7 +139,8 @@ func _on_level_up_screen_upgrade_selected(upgrade_item: Upgrade) -> void:
 
 func _on_player_player_died() -> void:
 	$Sound/ThemeMusic.stop()
-	game_over_screen.game_over()
+	var final_time = stopwatch.time_to_str()
+	game_over_screen.game_over(kill_count, final_time)
 
 
 func _on_player_player_took_damage() -> void:

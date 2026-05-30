@@ -1,18 +1,114 @@
-[gd_scene load_steps=5 format=3 uid="uid://sb4722pdh5mj"]
+[gd_scene load_steps=22 format=3 uid="uid://sb4722pdh5mj"]
 
 [ext_resource type="Script" uid="uid://dcdftvxecr8gf" path="res://scripts/game/game_over_screen.gd" id="1_vygr2"]
 [ext_resource type="AudioStream" uid="uid://s2kp8glmntyk" path="res://assets/game/gameover.mp3" id="2_6mu64"]
 [ext_resource type="Theme" uid="uid://c26jam44t4fks" path="res://resources/themes/new_theme.tres" id="2_74tcy"]
+[ext_resource type="Shader" uid="uid://s8btwe6b1qxh" path="res://scenes/game/game_over_screen.gdshader" id="2_dilvs"]
+[ext_resource type="Texture2D" uid="uid://bbdv0s1eyiycd" path="res://assets/player/over-black-bg.webp" id="4_gqyho"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_gqyho"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_lohbg"]
+noise = SubResource("FastNoiseLite_gqyho")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_35e7h"]
+shader = ExtResource("2_dilvs")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_lohbg")
+shader_parameter/dissolve_amount = 0.0
+shader_parameter/edge_color = Color(0.8, 0.1, 0.1, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_uqugf"]
 font_size = 40
 font_color = Color(0.9333264, 4.813075e-06, 9.62615e-07, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_gqyho"]
+font_size = 25
+font_color = Color(0.93333334, 0, 0, 1)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lohbg"]
+atlas = ExtResource("4_gqyho")
+region = Rect2(0, 0, 340, 340)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_35e7h"]
+atlas = ExtResource("4_gqyho")
+region = Rect2(340, 0, 340, 340)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pxy88"]
+atlas = ExtResource("4_gqyho")
+region = Rect2(680, 0, 340, 340)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8xsqk"]
+atlas = ExtResource("4_gqyho")
+region = Rect2(1020, 0, 340, 340)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mu18a"]
+atlas = ExtResource("4_gqyho")
+region = Rect2(1360, 0, 340, 340)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_td8qg"]
+atlas = ExtResource("4_gqyho")
+region = Rect2(1700, 0, 340, 340)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7vxs3"]
+atlas = ExtResource("4_gqyho")
+region = Rect2(2040, 0, 340, 340)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ponru"]
+atlas = ExtResource("4_gqyho")
+region = Rect2(2380, 0, 340, 340)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lmh6d"]
+atlas = ExtResource("4_gqyho")
+region = Rect2(2720, 0, 340, 340)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jsqx8"]
+atlas = ExtResource("4_gqyho")
+region = Rect2(3060, 0, 340, 340)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8jsfl"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lohbg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_35e7h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pxy88")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8xsqk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mu18a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_td8qg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7vxs3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ponru")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lmh6d")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jsqx8")
+}],
+"loop": false,
+"name": &"default",
+"speed": 3.0
+}]
 
 [node name="GameOverScreen" type="CanvasLayer"]
 process_mode = 2
 script = ExtResource("1_vygr2")
 
 [node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_35e7h")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -41,14 +137,32 @@ text = "GAME OVER"
 label_settings = SubResource("LabelSettings_uqugf")
 horizontal_alignment = 1
 
+[node name="KillLabel" type="Label" parent="ColorRect/Menu"]
+layout_mode = 2
+text = "Kills:"
+label_settings = SubResource("LabelSettings_gqyho")
+horizontal_alignment = 1
+
+[node name="TimeLabel" type="Label" parent="ColorRect/Menu"]
+layout_mode = 2
+text = "Kills:"
+label_settings = SubResource("LabelSettings_gqyho")
+horizontal_alignment = 1
+
 [node name="RestartButton" type="Button" parent="ColorRect/Menu"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 25
 text = "Try Again"
 
 [node name="MainMenuButton" type="Button" parent="ColorRect/Menu"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 25
 text = "Main menu"
+
+[node name="GameOverAnimation" type="AnimatedSprite2D" parent="ColorRect/Menu"]
+position = Vector2(126, -76.5)
+scale = Vector2(0.39411765, 0.39411765)
+sprite_frames = SubResource("SpriteFrames_8jsfl")
 
 [node name="Music" type="Node2D" parent="."]
 

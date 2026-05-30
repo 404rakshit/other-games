@@ -5,3 +5,4 @@ class_name Upgrade
 @export_multiline var description: String = "What does it do?"
 @export var upgrade_id: String = ""
 @export var value: float = 0.0
+@export var icon: Texture2D

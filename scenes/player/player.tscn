@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://d1w5ccem33kle"]
+[gd_scene load_steps=31 format=3 uid="uid://d1w5ccem33kle"]
 
 [ext_resource type="Script" uid="uid://6iyonbfy33sl" path="res://scripts/player/player.gd" id="1_dovo2"]
 [ext_resource type="Texture2D" uid="uid://bwoejmvf6woex" path="res://assets/player/idle.png" id="2_lvxji"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://cd70vfanai682" path="res://assets/player/Levitation-frame1.png" id="4_qek5x"]
 [ext_resource type="Texture2D" uid="uid://baepam54guhc" path="res://assets/player/Levitation-frame 2.png" id="5_5gtgg"]
 [ext_resource type="AudioStream" uid="uid://c5uo0xnhgyvjx" path="res://assets/game/coin.wav" id="7_0owmy"]
+[ext_resource type="Script" uid="uid://dcbt1pfy8mm0l" path="res://scenes/player/camera_shake.gd" id="7_fm80t"]
 [ext_resource type="Script" uid="uid://cq38djn5eahht" path="res://scripts/comp/deploy_component.gd" id="10_je7p5"]
 [ext_resource type="PackedScene" uid="uid://doxvv6btd5ceh" path="res://scenes/deployable/time_mine.tscn" id="11_fm80t"]
 
@@ -183,8 +184,9 @@ offset = Vector2(0, -118)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_p47bc")
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera2D" type="Camera2D" parent="." groups=["camera"]]
 position = Vector2(0, -1)
+script = ExtResource("7_fm80t")
 
 [node name="Gun" parent="." instance=ExtResource("3_gmlin")]
 light_mask = 2

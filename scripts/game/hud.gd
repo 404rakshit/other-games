@@ -10,17 +10,34 @@ extends CanvasLayer
 
 @onready var dash_touch_button: TouchScreenButton = $Control2/TouchScreenButton
 
-@export var kills_for_nuke: int = 1
+@onready var nuke_flash: ColorRect = $NukeFlash # Path to your white screen
+@onready var nuke_sfx: AudioStreamPlayer = $NukeSound
+
+const ASH_PARTICLES_SCENE = preload("res://scenes/enemy/ash_particles.tscn")
+
+@onready var nuke_requirement_label: Label = $Control3/NukeButton/NukeRequirementLabel
+
+@export var kills_for_nuke: int = 70
 var current_nuke_charge: int = 0
+var is_nuke_active: bool = false
 
 signal menu_paused()
-signal nuke_triggered()
+#signal nuke_triggered()
 
 var flash_tween: Tween
 
+# Cache the bus index and effect index for performance
+var music_bus_idx: int
+var lpf_effect_idx: int = 0 # Assuming the LowPassFilter is the first effect (index 0) on the bus
+
+var nuke_pulse_tween: Tween
+
 func _ready() -> void:
 	_set_shader_intensity(0.0)
+	_set_music_muffle(2000)
 	ready_nuke()
+	
+	music_bus_idx = AudioServer.get_bus_index("Music")
 	dash_progress_bar.value = 100.0
 	
 	if DisplayServer.is_touchscreen_available():
@@ -43,16 +60,30 @@ func _on_dash_button_pressed():
 func ready_nuke():
 	nuke_progress_bar.max_value = kills_for_nuke
 	nuke_progress_bar.value = 0
+	is_nuke_active = false
+	update_nuke_ui()
 	
 	GameEvents.enemy_died.connect(_on_enemy_killed)
+
+func update_nuke_ui() -> void:
+	var kills_left = kills_for_nuke - current_nuke_charge
 	
+	if kills_left > 0:
+		nuke_requirement_label.text = str(kills_left) + " Kills"
+
 func _on_enemy_killed() -> void:
+	
+	if is_nuke_active:
+		return
+		
 	# If the nuke is already fully charged, don't keep counting
 	if current_nuke_charge >= kills_for_nuke:
+		nuke_requirement_label.text = "READY!"
 		return
 		
 	# Add charge and update the progress bar visual
 	current_nuke_charge += 1
+	update_nuke_ui()
 	nuke_progress_bar.value = current_nuke_charge
 	
 	# Check if we hit the 100 threshold
@@ -60,11 +91,14 @@ func _on_enemy_killed() -> void:
 		_nuke_ready()
 
 func _nuke_ready() -> void:
-	
-	# Optional: Add a little pulse animation so the player knows it's ready
-	var tween = create_tween().set_loops()
-	tween.tween_property(nuke_button, "modulate", Color(1.5, 0.5, 0.5, 1.0), 0.5)
-	tween.tween_property(nuke_button, "modulate", Color.WHITE, 0.5)
+	# If a pulse is already running, don't start another one
+	if nuke_pulse_tween and nuke_pulse_tween.is_valid():
+		return 
+		
+	# Assign the looping tween to our tracker variable
+	nuke_pulse_tween = create_tween().set_loops()
+	nuke_pulse_tween.tween_property(nuke_button, "modulate", Color(1.5, 0.5, 0.5, 1.0), 0.5)
+	nuke_pulse_tween.tween_property(nuke_button, "modulate", Color.WHITE, 0.5)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta: float) -> void:
@@ -138,12 +172,102 @@ func _on_button_pressed() -> void:
 
 func _on_nuke_button_pressed() -> void:
 	
+	is_nuke_active = true
+	
 	if current_nuke_charge < kills_for_nuke:
 		return
 	# 1. Broadcast to the world that the nuke was fired
-	nuke_triggered.emit()
+	#nuke_triggered.emit()
+	_execute_nuke()
 	
 	# 2. Reset the HUD state
 	current_nuke_charge = 0
+	update_nuke_ui()
 	nuke_progress_bar.value = 0
 	nuke_button.modulate = Color.WHITE # Reset the glowing animation
+
+func _execute_nuke() -> void:
+	# 1. Create a cinematic tween that ignores our slow-mo effect
+	var cinematic = create_tween()
+	cinematic.set_ignore_time_scale(true) 
+	
+	# === PHASE 1: THE INHALATION ===
+	# Instantly drop game speed to 10%
+	Engine.time_scale = 0.1 
+	
+	cinematic.tween_method(_set_music_muffle, 20000.0, 500.0, 0.5).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+	
+	# Wait 0.5 real-time seconds in slow-mo
+	cinematic.tween_interval(0.5) 
+	
+	# === PHASE 2: THE FLASH ===
+	# Instantly turn the screen pure white
+	cinematic.tween_callback(func():
+		nuke_flash.modulate.a = 1.0
+		nuke_sfx.play() # Play the massive boom
+		
+		get_tree().call_group("camera", "add_trauma", 1.0)
+		#await get_tree().create_timer(0.3).timeout
+  		#get_tree().call_group("camera", "trigger_nuke_shake")
+	)
+	
+	# === PHASE 3: THE PURGE ===
+	# While the screen is white, kill everything
+	cinematic.tween_callback(_vaporize_all_enemies)
+	
+	# === PHASE 4: THE RECOVERY ===
+	# Slowly fade the white screen away over 1.5 seconds
+	cinematic.tween_property(nuke_flash, "modulate:a", 0.0, 1.5).set_trans(Tween.TRANS_SINE)
+	
+	cinematic.parallel().tween_property(Engine, "time_scale", 1.0, 0.5)
+	
+	# Restore game speed back to 1.0 safely
+	cinematic.tween_property(Engine, "time_scale", 1.0, 0.5)
+	cinematic.parallel().tween_method(_set_music_muffle, 500.0, 20000.0, 1.5).set_trans(Tween.TRANS_SINE)
+	
+	await cinematic.finished
+	
+	finish_nuke_sequence()
+
+func finish_nuke_sequence() -> void:
+	current_nuke_charge = 0
+	is_nuke_active = false
+	
+	if nuke_pulse_tween and nuke_pulse_tween.is_valid():
+		nuke_pulse_tween.kill() # Instantly stops the loop
+		
+	nuke_progress_bar.value = current_nuke_charge
+	update_nuke_ui()
+
+## Helper function to apply the frequency directly to the audio server
+func _set_music_muffle(freq: float) -> void:
+	# Grab the live effect from the AudioServer
+	var effect = AudioServer.get_bus_effect(music_bus_idx, lpf_effect_idx)
+	
+	# Safety check to ensure we are actually editing a LowPassFilter
+	if effect is AudioEffectLowPassFilter:
+		effect.cutoff_hz = freq
+
+func _vaporize_all_enemies() -> void:
+	var active_enemies = get_tree().get_nodes_in_group("enemy")
+	
+	for enemy in active_enemies:
+		
+		if not enemy is Node2D:
+			continue
+			
+		if enemy.has_method("_on_health_component_died"):
+			enemy._on_health_component_died()
+			
+		# Optional: Spawn an ash/dust particle at enemy.global_position here
+		
+		var ash_effect = ASH_PARTICLES_SCENE.instantiate()
+		
+		# 2. Match its position to the dying enemy
+		ash_effect.global_position = enemy.global_position
+		
+		# 3. Add it to the WORLD (not the enemy) so it survives
+		add_child(ash_effect)
+		
+		# Immediately delete the enemy
+		enemy.queue_free()

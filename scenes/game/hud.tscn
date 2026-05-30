@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://r7xccx21navk"]
+[gd_scene load_steps=22 format=3 uid="uid://r7xccx21navk"]
 
 [ext_resource type="Script" uid="uid://bx6mikmxu6hbk" path="res://scripts/game/hud.gd" id="1_kqgwg"]
 [ext_resource type="Theme" uid="uid://c26jam44t4fks" path="res://resources/themes/new_theme.tres" id="2_3k67c"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://buk4pwfix1swp" path="res://assets/ui/invisible-logo.png" id="8_pa45x"]
 [ext_resource type="Texture2D" uid="uid://b2koaxjqs6xu5" path="res://assets/ui/nuke-bw.png" id="11_gdx1q"]
 [ext_resource type="Texture2D" uid="uid://dm87pss4bya34" path="res://assets/ui/nuke.png" id="12_kkrim"]
+[ext_resource type="AudioStream" uid="uid://jh5xbvp6x2hn" path="res://assets/audio/nuke.mp3" id="14_kkrim"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_77e6q"]
 bg_color = Color(0.07284262, 0.072842635, 0.072842576, 1)
@@ -28,6 +29,22 @@ radius = 60.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_xquqv"]
 radius = 45.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kkrim"]
+bg_color = Color(0.13682574, 0.13682574, 0.13682568, 1)
+skew = Vector2(0.1, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+expand_margin_left = 7.0
+expand_margin_right = 7.0
+shadow_size = 2
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pla3n"]
 shader = ExtResource("7_fecso")
@@ -141,7 +158,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Control2" type="Control" parent="."]
-z_index = 1
 custom_minimum_size = Vector2(100, 100)
 layout_mode = 3
 anchors_preset = 3
@@ -217,6 +233,17 @@ tint_under = Color(1, 1, 1, 0.15686275)
 position = Vector2(69, 67)
 shape = SubResource("CircleShape2D_xquqv")
 
+[node name="NukeRequirementLabel" type="Label" parent="Control3/NukeButton"]
+offset_left = -33.0
+offset_top = 27.0
+offset_right = 37.0
+offset_bottom = 59.0
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_kkrim")
+text = "70 kills"
+horizontal_alignment = 1
+vertical_alignment = 2
+
 [node name="DamageFlash" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_pla3n")
 anchors_preset = 15
@@ -229,6 +256,19 @@ grow_vertical = 2
 size_flags_vertical = 4
 mouse_filter = 2
 color = Color(0.47843137, 0, 0, 0)
+
+[node name="NukeFlash" type="ColorRect" parent="."]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 0.001203289
+mouse_filter = 2
+
+[node name="NukeSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("14_kkrim")
 
 [connection signal="pressed" from="Control/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Control2/TouchScreenButton" to="." method="_on_texture_button_pressed"]

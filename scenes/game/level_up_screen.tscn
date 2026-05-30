@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://b3drmsj7pkxmw"]
+[gd_scene load_steps=7 format=3 uid="uid://b3drmsj7pkxmw"]
 
 [ext_resource type="Script" uid="uid://dn2lhakljd5jk" path="res://scripts/game/level_up_screen.gd" id="1_rx24e"]
 [ext_resource type="Script" uid="uid://ch7d5opl7bjbg" path="res://scripts/upgrade.gd" id="2_cdrbl"]
 [ext_resource type="Resource" uid="uid://b3ejkxqyjubfn" path="res://resources/upgrades/speed_up.tres" id="3_vx056"]
 [ext_resource type="Resource" uid="uid://p7xuxcs8y68h" path="res://resources/upgrades/damage_up.tres" id="4_obf15"]
 [ext_resource type="Resource" uid="uid://djaic2rl8q23r" path="res://resources/upgrades/attack_speed_up.tres" id="5_vx056"]
+[ext_resource type="Theme" uid="uid://c26jam44t4fks" path="res://resources/themes/new_theme.tres" id="6_obf15"]
 
 [node name="LevelUpScreen" type="CanvasLayer"]
 process_mode = 2
@@ -17,6 +18,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("6_obf15")
 color = Color(0.023529412, 0.023529412, 0.023529412, 0.39215687)
 
 [node name="LevelUpMenu" type="VBoxContainer" parent="ColorRect"]
@@ -39,18 +41,23 @@ text = "LEVEL UP!"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Option" type="Button" parent="ColorRect/LevelUpMenu"]
+[node name="HBoxContainer" type="HBoxContainer" parent="ColorRect/LevelUpMenu"]
+layout_mode = 2
+
+[node name="Option" type="Button" parent="ColorRect/LevelUpMenu/HBoxContainer"]
 layout_mode = 2
 text = "Upgrade 1"
+icon_alignment = 1
+vertical_icon_alignment = 0
 
-[node name="Option2" type="Button" parent="ColorRect/LevelUpMenu"]
+[node name="Option2" type="Button" parent="ColorRect/LevelUpMenu/HBoxContainer"]
 layout_mode = 2
 text = "Upgrade 3"
+icon_alignment = 1
+vertical_icon_alignment = 0
 
-[node name="Option3" type="Button" parent="ColorRect/LevelUpMenu"]
+[node name="Option3" type="Button" parent="ColorRect/LevelUpMenu/HBoxContainer"]
 layout_mode = 2
 text = "Upgrade 3"
-
-[connection signal="pressed" from="ColorRect/LevelUpMenu/Option" to="." method="_on_option_pressed"]
-[connection signal="pressed" from="ColorRect/LevelUpMenu/Option2" to="." method="_on_option_2_pressed"]
-[connection signal="pressed" from="ColorRect/LevelUpMenu/Option3" to="." method="_on_option_3_pressed"]
+icon_alignment = 1
+vertical_icon_alignment = 0
