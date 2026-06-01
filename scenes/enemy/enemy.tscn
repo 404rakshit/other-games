@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://drhkcd78218ty"]
+[gd_scene load_steps=28 format=3 uid="uid://drhkcd78218ty"]
 
 [ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://icon.svg" id="1_4a83h"]
 [ext_resource type="Script" uid="uid://kixbm1ob1e7s" path="res://scripts/enemy/enemy.gd" id="1_a3pup"]
@@ -118,6 +118,12 @@ animations = [{
 "speed": 8.0
 }]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_13gj6"]
+bg_color = Color(0.15487596, 0.154876, 0.15487587, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4efjx"]
+bg_color = Color(0.82640916, 0.005963087, 0.08327577, 1)
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_13gj6"]
 radius = 22.080605
 height = 57.9429
@@ -151,6 +157,16 @@ scale = Vector2(0.23305734, 0.23305734)
 sprite_frames = SubResource("SpriteFrames_13gj6")
 animation = &"run"
 autoplay = "run"
+
+[node name="HealthBar" type="ProgressBar" parent="Visuals"]
+offset_left = -7.3602014
+offset_top = -34.347607
+offset_right = 92.6398
+offset_bottom = -7.3476067
+scale = Vector2(0.4256904, 0.3038479)
+theme_override_styles/background = SubResource("StyleBoxFlat_13gj6")
+theme_override_styles/fill = SubResource("StyleBoxFlat_4efjx")
+show_percentage = false
 
 [node name="Sound" type="Node2D" parent="."]
 

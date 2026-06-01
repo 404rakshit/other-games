@@ -33,7 +33,7 @@ var is_dash_on_cooldown: bool = false
 var current_experience: int = 0
 var current_level: int = 1
 var current_state: State = State.IDLE
-var xp_to_next_level: int = 100
+var xp_to_next_level: int = 500
 
 func _process(_delta: float) -> void:
 	
@@ -141,7 +141,7 @@ func gain_experience(exp_amount: int):
 	
 	if current_experience >= xp_to_next_level:
 		current_level += 1
-		xp_to_next_level += 500
+		xp_to_next_level += 1000
 		leveled_up.emit(current_level)
 		print("LEVEL UP")
 	

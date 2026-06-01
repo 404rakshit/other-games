@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://dg1krnv2yg8nw"]
+[gd_scene load_steps=27 format=3 uid="uid://dg1krnv2yg8nw"]
 
 [ext_resource type="Script" uid="uid://bvug83asa7cda" path="res://scripts/enemy/varients/ranged_enemy.gd" id="1_3lp7d"]
 [ext_resource type="PackedScene" uid="uid://gpem0t06s5vp" path="res://scenes/enemy/enemy_projectile.tscn" id="2_egasa"]
@@ -118,6 +118,12 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nqcn2"]
+bg_color = Color(0.15487596, 0.154876, 0.15487587, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tc58x"]
+bg_color = Color(0.82640916, 0.005963087, 0.08327577, 1)
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3lp7d"]
 radius = 8.616463
 height = 19.754818
@@ -143,6 +149,16 @@ scale = Vector2(0.118843034, 0.118843034)
 sprite_frames = SubResource("SpriteFrames_owx42")
 animation = &"run"
 autoplay = "run"
+
+[node name="HealthBar" type="ProgressBar" parent="Visuals"]
+offset_left = -0.6178484
+offset_top = -13.592654
+offset_right = 99.38215
+offset_bottom = 13.407346
+scale = Vector2(0.218657, 0.15607227)
+theme_override_styles/background = SubResource("StyleBoxFlat_nqcn2")
+theme_override_styles/fill = SubResource("StyleBoxFlat_tc58x")
+show_percentage = false
 
 [node name="Sound" type="Node2D" parent="."]
 scale = Vector2(1.4878578, 1.4878578)

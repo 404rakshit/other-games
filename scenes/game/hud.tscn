@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://r7xccx21navk"]
+[gd_scene load_steps=24 format=3 uid="uid://r7xccx21navk"]
 
 [ext_resource type="Script" uid="uid://bx6mikmxu6hbk" path="res://scripts/game/hud.gd" id="1_kqgwg"]
 [ext_resource type="Theme" uid="uid://c26jam44t4fks" path="res://resources/themes/new_theme.tres" id="2_3k67c"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://buk4pwfix1swp" path="res://assets/ui/invisible-logo.png" id="8_pa45x"]
 [ext_resource type="Texture2D" uid="uid://b2koaxjqs6xu5" path="res://assets/ui/nuke-bw.png" id="11_gdx1q"]
 [ext_resource type="Texture2D" uid="uid://dm87pss4bya34" path="res://assets/ui/nuke.png" id="12_kkrim"]
+[ext_resource type="Texture2D" uid="uid://dr6hatsuubirv" path="res://assets/ui/bomb.png" id="13_xquqv"]
 [ext_resource type="AudioStream" uid="uid://jh5xbvp6x2hn" path="res://assets/audio/nuke.mp3" id="14_kkrim"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_77e6q"]
@@ -45,6 +46,9 @@ corner_radius_bottom_left = 12
 expand_margin_left = 7.0
 expand_margin_right = 7.0
 shadow_size = 2
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_md7ig"]
+radius = 45.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_pla3n"]
 shader = ExtResource("7_fecso")
@@ -151,9 +155,10 @@ text = "0"
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 0.0
-offset_right = 224.91022
-offset_bottom = 794.5884
+offset_left = 136.0
+offset_top = 101.0
+offset_right = 360.91016
+offset_bottom = 731.8904
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -165,8 +170,9 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -151.0
+offset_left = -719.0
 offset_top = -159.0
+offset_right = -568.0
 grow_horizontal = 0
 grow_vertical = 0
 size_flags_horizontal = 4
@@ -203,9 +209,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -137.0
-offset_top = -276.0
-offset_bottom = -142.0
+offset_left = -720.0
+offset_top = -389.0
+offset_right = -583.0
+offset_bottom = -255.0
 grow_horizontal = 0
 grow_vertical = 0
 size_flags_horizontal = 4
@@ -244,6 +251,38 @@ text = "70 kills"
 horizontal_alignment = 1
 vertical_alignment = 2
 
+[node name="Control4" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -268.0
+offset_right = 140.0
+offset_bottom = -137.0
+grow_vertical = 0
+
+[node name="BombProgressBar" type="TextureProgressBar" parent="Control4"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -50.0
+offset_top = -50.0
+offset_right = 50.0
+offset_bottom = 50.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_under = ExtResource("13_xquqv")
+texture_progress = ExtResource("13_xquqv")
+tint_under = Color(1, 1, 1, 0.21960784)
+
+[node name="BombButton" type="TouchScreenButton" parent="Control4"]
+position = Vector2(70, 66)
+shape = SubResource("CircleShape2D_md7ig")
+action = "use_ability"
+
 [node name="DamageFlash" type="ColorRect" parent="."]
 material = SubResource("ShaderMaterial_pla3n")
 anchors_preset = 15
@@ -273,3 +312,4 @@ stream = ExtResource("14_kkrim")
 [connection signal="pressed" from="Control/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="Control2/TouchScreenButton" to="." method="_on_texture_button_pressed"]
 [connection signal="pressed" from="Control3/NukeButton" to="." method="_on_nuke_button_pressed"]
+[connection signal="pressed" from="Control4/BombButton" to="." method="_on_bomb_button_pressed"]

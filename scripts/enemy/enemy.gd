@@ -14,11 +14,15 @@ const player_group_name = "player"
 enum State { CHASING, ATTACKING, STUNNED }
 var current_state: State = State.CHASING
 
+@export var max_health: int = 5
+var current_health: int
+
 var path_update_timer: float = 0.0
 var path_update_interval: float = 0.15 # Update ~6 times a second
 
 # components
 @onready var health_component = $HealthComponent
+@onready var health_bar: ProgressBar = $Visuals/HealthBar
 @onready var damage_zone = $DamageZone
 @onready var animated_sprite = $Visuals/AnimatedSprite2D
 @onready var hit_sfx : AudioStreamPlayer2D = $Sound/HitSound
@@ -38,6 +42,7 @@ const GEM_SCENE = preload("res://scenes/map/desert/gem.tscn")
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group(player_group_name)
+	ready_health_bar()
 	
 	# Setup Timers via code so you don't have to add them manually in the editor
 	call_deferred("setup_navigation")
@@ -48,7 +53,17 @@ func _ready() -> void:
 	
 	navigation_agent.path_desired_distance = 15.0
 	navigation_agent.target_desired_distance = 15.0
+
+func ready_health_bar():
+	current_health = max_health
 	
+	# Initialize the health bar
+	health_bar.max_value = max_health
+	health_bar.value = current_health
+	
+	# Optional: Hide the health bar initially so it only shows when damaged
+	health_bar.hide()
+
 func setup_navigation():
 	# Wait for the first physics frame so the map is ready
 	await get_tree().physics_frame
@@ -139,8 +154,16 @@ func change_dir(direction: Vector2):
 		animated_sprite.flip_h = true
 
 func take_damage(amount: int):
+	current_health -= amount
+	
 	health_component.damage(amount)
 	spawn_hit_particles()
+	
+	if health_bar.visible == false:
+		health_bar.show()
+	
+	var health_bar_tween = create_tween()
+	health_bar_tween.tween_property(health_bar, "value", current_health, 0.15).set_trans(Tween.TRANS_SINE)
 	
 	hit_sfx.pitch_scale = randf_range(0.8, 1.2)
 	hit_sfx.play()
@@ -172,6 +195,7 @@ func drop_exp_gem():
 
 func _on_health_component_died() -> void:
 	#dead_sfx.pitch_scale = randf_range(0.8, 1.2)
+	health_bar.hide()
 	dead_sfx.play()
 	
 	SoundManager.play_sound(dead_sfx.stream, global_position, get_tree().current_scene)

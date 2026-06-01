@@ -13,6 +13,9 @@ extends CanvasLayer
 @onready var nuke_flash: ColorRect = $NukeFlash # Path to your white screen
 @onready var nuke_sfx: AudioStreamPlayer = $NukeSound
 
+@onready var bomb_progress_bar: TextureProgressBar = $Control4/BombProgressBar
+@onready var bomb_button: TouchScreenButton = $Control4/BombButton
+
 const ASH_PARTICLES_SCENE = preload("res://scenes/enemy/ash_particles.tscn")
 
 @onready var nuke_requirement_label: Label = $Control3/NukeButton/NukeRequirementLabel
@@ -20,6 +23,10 @@ const ASH_PARTICLES_SCENE = preload("res://scenes/enemy/ash_particles.tscn")
 @export var kills_for_nuke: int = 70
 var current_nuke_charge: int = 0
 var is_nuke_active: bool = false
+
+var is_bomb_ready: bool = true
+var bomb_cooldown_time: float = 30.0
+var bomb_pulse_tween: Tween
 
 signal menu_paused()
 #signal nuke_triggered()
@@ -36,6 +43,7 @@ func _ready() -> void:
 	_set_shader_intensity(0.0)
 	_set_music_muffle(2000)
 	ready_nuke()
+	ready_bomb()
 	
 	music_bus_idx = AudioServer.get_bus_index("Music")
 	dash_progress_bar.value = 100.0
@@ -52,10 +60,63 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("nuke"):
 			_on_nuke_button_pressed()
+	if event.is_action_pressed("use_ability"):
+			_on_bomb_button_pressed()
 			
 func _on_dash_button_pressed():
 	# You can pass your exact cooldown time here
 	start_hud_dash_cooldown(1.0)
+	
+# ==========================================
+# BOMB LOGIC
+# ==========================================
+
+func ready_bomb():
+	# Start the game with the bomb ready
+	bomb_progress_bar.max_value = 100.0
+	bomb_progress_bar.value = 100.0
+	is_bomb_ready = true
+	_bomb_ready_pulse()
+
+func _on_bomb_button_pressed() -> void:
+	if not is_bomb_ready:
+		return # Do nothing if still on cooldown
+
+	# 1. Fire the bomb
+	is_bomb_ready = false
+	
+	# 2. Reset the visuals
+	bomb_button.modulate = Color.WHITE
+	if bomb_pulse_tween and bomb_pulse_tween.is_valid():
+		bomb_pulse_tween.kill()
+		
+	# 3. Start the 30-second cooldown
+	start_bomb_cooldown()
+
+func start_bomb_cooldown() -> void:
+	bomb_progress_bar.value = 0.0
+	
+	var progress_tween = create_tween()
+	
+	# Fill from 0 to 100 over 30 seconds
+	progress_tween.tween_property(bomb_progress_bar, "value", 100.0, bomb_cooldown_time)\
+		.set_trans(Tween.TRANS_LINEAR)\
+		.set_ease(Tween.EASE_IN_OUT)
+		
+	progress_tween.tween_callback(_on_bomb_fully_charged)
+
+func _on_bomb_fully_charged() -> void:
+	is_bomb_ready = true
+	_bomb_ready_pulse()
+
+func _bomb_ready_pulse() -> void:
+	if bomb_pulse_tween and bomb_pulse_tween.is_valid():
+		return 
+		
+	# Create a looping pulse effect (Using a yellowish/orange hue for the bomb)
+	bomb_pulse_tween = create_tween().set_loops()
+	bomb_pulse_tween.tween_property(bomb_button, "modulate", Color(1.5, 1.2, 0.5, 1.0), 0.5)
+	bomb_pulse_tween.tween_property(bomb_button, "modulate", Color.WHITE, 0.5)
 
 func ready_nuke():
 	nuke_progress_bar.max_value = kills_for_nuke
@@ -171,11 +232,11 @@ func _on_button_pressed() -> void:
 
 
 func _on_nuke_button_pressed() -> void:
-	
-	is_nuke_active = true
-	
+		
 	if current_nuke_charge < kills_for_nuke:
 		return
+
+	is_nuke_active = true
 	# 1. Broadcast to the world that the nuke was fired
 	#nuke_triggered.emit()
 	_execute_nuke()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://dfhs6fl1sy43v"]
+[gd_scene load_steps=27 format=3 uid="uid://dfhs6fl1sy43v"]
 
 [ext_resource type="Script" uid="uid://dg7coxl8cj1ry" path="res://scripts/enemy/varients/detonator.gd" id="1_q3djr"]
 [ext_resource type="Texture2D" uid="uid://cdxm3xn3tfj1k" path="res://assets/enemy/bloater-hit-sprite.png" id="3_1gifn"]
@@ -117,6 +117,12 @@ animations = [{
 "speed": 5.0
 }]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_q3djr"]
+bg_color = Color(0.15487596, 0.154876, 0.15487587, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1gifn"]
+bg_color = Color(0.82640916, 0.005963087, 0.08327577, 1)
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_goy0e"]
 radius = 40.83577
 height = 125.50954
@@ -143,6 +149,16 @@ scale = Vector2(0.43718588, 0.43718585)
 sprite_frames = SubResource("SpriteFrames_owx42")
 animation = &"windup"
 autoplay = "run"
+
+[node name="HealthBar" type="ProgressBar" parent="Visuals"]
+offset_left = -20.999998
+offset_top = -89.00001
+offset_right = 79.0
+offset_bottom = -62.000008
+scale = Vector2(0.84830165, 0.5748499)
+theme_override_styles/background = SubResource("StyleBoxFlat_q3djr")
+theme_override_styles/fill = SubResource("StyleBoxFlat_1gifn")
+show_percentage = false
 
 [node name="Sound" type="Node2D" parent="."]
 

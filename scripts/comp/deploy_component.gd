@@ -5,7 +5,7 @@ class_name DeployComponent
 # This allows you to drag-and-drop the specific ability (like TimeMine) 
 # into the Inspector panel in the editor.
 @export var current_deployable: PackedScene
-@export var cooldown: float = 3.0
+@export var cooldown: float = 30.0
 
 # --- State ---
 var is_ready: bool = true

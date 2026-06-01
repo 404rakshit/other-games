@@ -16,10 +16,12 @@ var path_timer: float = 0.0
 # State Machine
 enum State { CHASING, ATTACKING, DEAD, STUNNED }
 var current_state: State = State.CHASING
+var current_health: int
 
 # Components (Assumes these exist in your Base Enemy scene)
 @onready var health_component = $HealthComponent
 @onready var animated_sprite = $Visuals/AnimatedSprite2D
+@onready var health_bar: ProgressBar = $Visuals/HealthBar
 @onready var hit_sfx : AudioStreamPlayer2D = $Sound/HitSound
 @onready var dead_sfx : AudioStreamPlayer2D = $Sound/DeadSound
 @onready var nav_agent: NavigationAgent2D = $NavigationAgent2D
@@ -34,7 +36,18 @@ func _ready() -> void:
 	
 	setup_timers()
 	setup_nav_agent()
+	ready_health_bar()
 	_custom_setup() # A hook for child classes to run their own ready logic
+
+func ready_health_bar():
+	current_health = health_component.max_health
+	
+	# Initialize the health bar
+	health_bar.max_value = health_component.max_health
+	health_bar.value = current_health
+	
+	# Optional: Hide the health bar initially so it only shows when damaged
+	health_bar.hide()
 
 func setup_nav_agent():
 	if nav_agent:
@@ -93,6 +106,14 @@ func _process_movement(delta: float):
 func take_damage(amount: int):
 	if current_state == State.DEAD: return
 	
+	current_health -= amount
+	
+	if health_bar.visible == false:
+		health_bar.show()
+	
+	var health_bar_tween = create_tween()
+	health_bar_tween.tween_property(health_bar, "value", current_health, 0.15).set_trans(Tween.TRANS_SINE)
+	
 	health_component.damage(amount)
 	hit_sfx.pitch_scale = randf_range(0.8, 1.2)
 	hit_sfx.play()
@@ -108,6 +129,7 @@ func take_damage(amount: int):
 	tween.tween_property(self, "modulate", Color.WHITE, 0.1)
 
 func _on_health_component_died() -> void:
+	health_bar.hide()
 	current_state = State.DEAD
 	dead_sfx.play()
 	SoundManager.play_sound(dead_sfx.stream, global_position, get_tree().current_scene)
