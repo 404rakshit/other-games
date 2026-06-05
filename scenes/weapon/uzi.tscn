@@ -1,0 +1,52 @@
+[gd_scene load_steps=7 format=3 uid="uid://dnes0gwm7enjh"]
+
+[ext_resource type="Script" uid="uid://cmhq1686addmk" path="res://scripts/weapon/uzi.gd" id="1_22hi3"]
+[ext_resource type="Texture2D" uid="uid://rayaoscvuq8s" path="res://assets/player/weapons/uzi-gun.png" id="2_22hi3"]
+[ext_resource type="PackedScene" uid="uid://dfgahvjljgyoc" path="res://scenes/weapon/uzi_projectile.tscn" id="2_amcgn"]
+[ext_resource type="Texture2D" uid="uid://bpttgnjxdctm0" path="res://assets/player/weapons/uzi_muzzle_flash.png" id="3_22hi3"]
+[ext_resource type="AudioStream" uid="uid://37ad3kpxmtwy" path="res://assets/player/weapons/uzi_gun_sfx.mp3" id="4_22hi3"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_j0owr"]
+radius = 300.0
+
+[node name="Uzi" type="Node2D"]
+script = ExtResource("1_22hi3")
+bullet_scene = ExtResource("2_amcgn")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.24, 0.24)
+texture = ExtResource("2_22hi3")
+
+[node name="ShootingPoint" type="Marker2D" parent="Sprite2D"]
+light_mask = 2
+visibility_layer = 0
+position = Vector2(-78.79089, 12.465965)
+rotation = 1.1083927
+scale = Vector2(6.072156, 7.6201715)
+skew = -0.84252495
+
+[node name="MuzzleFlash" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(28, -8)
+scale = Vector2(0.028985504, 0.028985523)
+texture = ExtResource("3_22hi3")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[node name="Range" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Range"]
+shape = SubResource("CircleShape2D_j0owr")
+
+[node name="ShootingSound" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_22hi3")
+volume_db = -10.0
+bus = &"SFX"
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="body_entered" from="Range" to="." method="_on_range_body_entered"]
+[connection signal="body_exited" from="Range" to="." method="_on_range_body_exited"]

@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 # exports
 @export var speed: float = 200.0
-@export var damage_amount: int = 10
+@export var damage_amount: float = 10.0
 @export var attack_windup_time: float = 0.3 # Time before damage hits
 @export var attack_cooldown_time: float = 1.0 # Time between attacks
 @export var stun_time: float = 0.2
@@ -14,8 +14,8 @@ const player_group_name = "player"
 enum State { CHASING, ATTACKING, STUNNED }
 var current_state: State = State.CHASING
 
-@export var max_health: int = 5
-var current_health: int
+@export var max_health: float = 5
+var current_health: float
 
 var path_update_timer: float = 0.0
 var path_update_interval: float = 0.15 # Update ~6 times a second
@@ -160,7 +160,7 @@ func flash_damage() -> void:
 		var tween = create_tween()
 		tween.tween_property(animated_sprite.material, "shader_parameter/flash_modifier", 0.0, 0.15)
 
-func take_damage(amount: int):
+func take_damage(amount: float):
 	current_health -= amount
 	
 	health_component.damage(amount)

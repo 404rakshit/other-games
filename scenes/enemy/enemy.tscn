@@ -193,7 +193,7 @@ scale = Vector2(1.2227926, 1.2080859)
 shape = SubResource("CapsuleShape2D_13gj6")
 
 [node name="HealthComponent" parent="." instance=ExtResource("3_40wdo")]
-max_health = 5
+max_health = 5.0
 
 [node name="DamageZone" type="Area2D" parent="."]
 scale = Vector2(1.2227926, 1.2227926)

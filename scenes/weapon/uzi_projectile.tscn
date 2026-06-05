@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=3 uid="uid://dfgahvjljgyoc"]
+
+[ext_resource type="Script" uid="uid://b88k37q8setlx" path="res://scripts/weapon/projectile.gd" id="1_p6nlm"]
+[ext_resource type="Texture2D" uid="uid://dl8thyf23x0c1" path="res://assets/player/weapons/uzi_projectile.png" id="2_p6nlm"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_r0f3c"]
+radius = 3.0
+height = 28.0
+
+[sub_resource type="Gradient" id="Gradient_qg78g"]
+colors = PackedColorArray(0.91764706, 0.101960786, 0, 1, 0.53333336, 0.53333336, 0.53333336, 0)
+
+[node name="Projectile" type="Area2D"]
+collision_layer = 4
+collision_mask = 2
+script = ExtResource("1_p6nlm")
+damage = 0.1
+
+[node name="Visuals" type="Node2D" parent="."]
+
+[node name="Skins" type="Sprite2D" parent="Visuals"]
+modulate = Color(0.6666067, 0.6666064, 7.70092e-07, 1)
+position = Vector2(-1, -1)
+scale = Vector2(0.18867925, 0.18867925)
+texture = ExtResource("2_p6nlm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_r0f3c")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(3, -4)
+rect = Rect2(-22, 1, 37.34, 6.4699993)
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+amount = 10
+gravity = Vector2(0, 0)
+scale_amount_min = 3.0
+scale_amount_max = 3.0
+color_ramp = SubResource("Gradient_qg78g")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_visible_on_screen_notifier_2d_screen_exited"]

@@ -120,7 +120,7 @@ func apply_upgrade(upgrade: Upgrade):
 			if gun:
 				gun.increase_attack_rate(upgrade.value)
 
-func take_damage(amount: int):
+func take_damage(amount: float):
 	if not damage_interval_timer.is_stopped():
 		return
 	

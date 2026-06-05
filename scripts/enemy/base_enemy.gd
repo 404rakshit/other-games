@@ -16,7 +16,7 @@ var path_timer: float = 0.0
 # State Machine
 enum State { CHASING, ATTACKING, DEAD, STUNNED }
 var current_state: State = State.CHASING
-var current_health: int
+var current_health: float
 
 # Components (Assumes these exist in your Base Enemy scene)
 @onready var health_component = $HealthComponent
@@ -103,7 +103,7 @@ func _process_movement(delta: float):
 		
 	move_and_slide()
 	
-func take_damage(amount: int):
+func take_damage(amount: float):
 	if current_state == State.DEAD: return
 	
 	current_health -= amount
