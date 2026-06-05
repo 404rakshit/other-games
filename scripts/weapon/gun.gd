@@ -8,7 +8,7 @@ const BULLET_SCENE = preload("res://scenes/weapon/projectile.tscn")
 @onready var range_area: Area2D = $Range
 @onready var timer: Timer = $Timer
 @onready var shoot_sound: AudioStreamPlayer2D = $ShootingSound
-
+@onready var muzzle_flash: Sprite2D = $MuzzleFlash
 # stats
 var current_damage = 1
 
@@ -87,7 +87,26 @@ func _process(delta: float) -> void:
 
 func _on_timer_timeout() -> void:
 	shoot()
+
+func use_muzzle() -> void:
+	muzzle_flash.show()
+	muzzle_flash.modulate.a = 1.0 # 'a' is Alpha (transparency)
+	muzzle_flash.scale = Vector2(0.5, 0.5) 
 	
+	# 2. Create a Tween to animate it
+	var tween = create_tween()
+	
+	# 3. Animate the scale to get bigger (the "pop")
+	# This takes 0.05 seconds
+	tween.tween_property(muzzle_flash, "scale", Vector2(0.04, 0.04), 0.05)
+	
+	# 4. Animate it fading away
+	# This also takes 0.05 seconds
+	tween.tween_property(muzzle_flash, "modulate:a", 0.0, 0.05)
+	
+	# 5. Hide it completely when the animation finishes
+	tween.tween_callback(muzzle_flash.hide)
+
 func increase_damage(damage_value: float):
 	current_damage += damage_value
 	
@@ -104,6 +123,8 @@ func shoot():
 			return # Exit and wait for next shot
 			
 		current_recoil = recoil_distance
+		
+		use_muzzle()
 		
 		var bullet: Area2D = BULLET_SCENE.instantiate()
 		get_tree().root.add_child(bullet)

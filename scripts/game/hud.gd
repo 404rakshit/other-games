@@ -20,7 +20,7 @@ const ASH_PARTICLES_SCENE = preload("res://scenes/enemy/ash_particles.tscn")
 
 @onready var nuke_requirement_label: Label = $Control3/NukeButton/NukeRequirementLabel
 
-@export var kills_for_nuke: int = 70
+@export var kills_for_nuke: int = 40
 var current_nuke_charge: int = 0
 var is_nuke_active: bool = false
 

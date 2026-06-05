@@ -107,6 +107,7 @@ func take_damage(amount: int):
 	if current_state == State.DEAD: return
 	
 	current_health -= amount
+	flash_damage()
 	
 	if health_bar.visible == false:
 		health_bar.show()
@@ -127,6 +128,13 @@ func take_damage(amount: int):
 	modulate = Color.RED
 	var tween = create_tween()
 	tween.tween_property(self, "modulate", Color.WHITE, 0.1)
+
+func flash_damage() -> void:
+	# Ensure the sprite has our shader material before trying to change it
+	if animated_sprite.material and animated_sprite.material is ShaderMaterial:
+		animated_sprite.material.set_shader_parameter("flash_modifier", 1.0)
+		var tween = create_tween()
+		tween.tween_property(animated_sprite.material, "shader_parameter/flash_modifier", 0.0, 0.15)
 
 func _on_health_component_died() -> void:
 	health_bar.hide()

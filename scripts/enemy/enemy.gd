@@ -153,10 +153,18 @@ func change_dir(direction: Vector2):
 	elif direction.x < 0:
 		animated_sprite.flip_h = true
 
+func flash_damage() -> void:
+	# Ensure the sprite has our shader material before trying to change it
+	if animated_sprite.material and animated_sprite.material is ShaderMaterial:
+		animated_sprite.material.set_shader_parameter("flash_modifier", 1.0)
+		var tween = create_tween()
+		tween.tween_property(animated_sprite.material, "shader_parameter/flash_modifier", 0.0, 0.15)
+
 func take_damage(amount: int):
 	current_health -= amount
 	
 	health_component.damage(amount)
+	flash_damage()
 	spawn_hit_particles()
 	
 	if health_bar.visible == false:
