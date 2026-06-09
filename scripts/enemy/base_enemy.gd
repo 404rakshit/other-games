@@ -107,6 +107,20 @@ func take_damage(amount: float):
 	if current_state == State.DEAD: return
 	
 	current_health -= amount
+	
+	# --- NEW: INSTANT DEATH CHECK ---
+	if current_health <= 0:
+		current_state = State.DEAD # Instantly lock out the other 4 shotgun pellets!
+		current_health = 0 # Clamp health so the UI doesn't show negative numbers
+		
+		# Update the health component ONE time
+		health_component.damage(amount) 
+		
+		# Trigger your actual death logic here (e.g., die(), queue_free(), add score)
+		# Note: If health_component handles the kill count, it will now only trigger once.
+		return # CRITICAL: Exit the function early so the dead enemy doesn't flash or get stunned
+	# --------------------------------
+	
 	flash_damage()
 	
 	if health_bar.visible == false:

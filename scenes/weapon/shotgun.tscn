@@ -1,19 +1,21 @@
-[gd_scene load_steps=6 format=3 uid="uid://bs8eogk6v0q13"]
+[gd_scene load_steps=7 format=3 uid="uid://b30w2se7sh7g"]
 
-[ext_resource type="Script" uid="uid://d2e4qnr7d4cjw" path="res://scripts/weapon/gun.gd" id="1_bym8i"]
-[ext_resource type="Texture2D" uid="uid://bvnslpxnq3t1p" path="res://assets/player/pistol.png" id="2_0nu26"]
-[ext_resource type="Texture2D" uid="uid://b15l2q5ovpfyf" path="res://assets/player/weapons/muzzle_flash.png" id="3_fg0yg"]
-[ext_resource type="AudioStream" uid="uid://camw2o2lq7cgv" path="res://assets/player/weapons/gun-shot-1.mp3" id="4_fg0yg"]
+[ext_resource type="Script" uid="uid://2w35akvlhifb" path="res://scenes/weapon/shotgun.gd" id="1_7245q"]
+[ext_resource type="PackedScene" uid="uid://b5x4j2rskjguc" path="res://scenes/weapon/shotgun_projectile.tscn" id="2_x47sy"]
+[ext_resource type="Texture2D" uid="uid://cmurhstxhf3fx" path="res://assets/player/weapons/shotgun.png" id="3_x47sy"]
+[ext_resource type="Texture2D" uid="uid://cj7li3v3qjmvc" path="res://assets/player/weapons/shotgun muzzle.png" id="4_3ljgj"]
+[ext_resource type="AudioStream" uid="uid://soiylarsp3qv" path="res://assets/player/weapons/shotgun_sfx_new.mp3" id="5_3ljgj"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_j0owr"]
 radius = 300.0
 
-[node name="Gun" type="Node2D"]
-script = ExtResource("1_bym8i")
+[node name="Shotgun" type="Node2D"]
+script = ExtResource("1_7245q")
+bullet_scene = ExtResource("2_x47sy")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.14592484, 0.14592484)
-texture = ExtResource("2_0nu26")
+scale = Vector2(0.11885246, 0.11885245)
+texture = ExtResource("3_x47sy")
 
 [node name="ShootingPoint" type="Marker2D" parent="Sprite2D"]
 light_mask = 2
@@ -25,9 +27,9 @@ skew = -0.84252495
 
 [node name="MuzzleFlash" type="Sprite2D" parent="."]
 visible = false
-position = Vector2(26, -1)
+position = Vector2(40, -4)
 scale = Vector2(0.028985504, 0.028985523)
-texture = ExtResource("3_fg0yg")
+texture = ExtResource("4_3ljgj")
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.5
@@ -41,7 +43,8 @@ collision_mask = 2
 shape = SubResource("CircleShape2D_j0owr")
 
 [node name="ShootingSound" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("4_fg0yg")
+stream = ExtResource("5_3ljgj")
+volume_db = -10.0
 bus = &"SFX"
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

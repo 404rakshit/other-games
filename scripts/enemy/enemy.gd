@@ -11,7 +11,7 @@ extends CharacterBody2D
 const player_group_name = "player"
 
 # ENUM for State Machine
-enum State { CHASING, ATTACKING, STUNNED }
+enum State { CHASING, ATTACKING, STUNNED, DEAD }
 var current_state: State = State.CHASING
 
 @export var max_health: float = 5
@@ -87,7 +87,7 @@ func setup_timers():
 	add_child(cooldown_timer)
 
 func _physics_process(delta: float) -> void:
-	if not player:
+	if not player or current_state == State.DEAD:
 		return
 		
 	match current_state:
@@ -161,7 +161,22 @@ func flash_damage() -> void:
 		tween.tween_property(animated_sprite.material, "shader_parameter/flash_modifier", 0.0, 0.15)
 
 func take_damage(amount: float):
+	if current_state == State.DEAD: return
+	
 	current_health -= amount
+	
+		# --- NEW: INSTANT DEATH CHECK ---
+	if current_health <= 0:
+		current_state = State.DEAD # Instantly lock out the other 4 shotgun pellets!
+		current_health = 0 # Clamp health so the UI doesn't show negative numbers
+		
+		# Update the health component ONE time
+		health_component.damage(amount) 
+		
+		# Trigger your actual death logic here (e.g., die(), queue_free(), add score)
+		# Note: If health_component handles the kill count, it will now only trigger once.
+		return # CRITICAL: Exit the function early so the dead enemy doesn't flash or get stunned
+	# --------------------------------
 	
 	health_component.damage(amount)
 	flash_damage()
@@ -203,6 +218,7 @@ func drop_exp_gem():
 
 func _on_health_component_died() -> void:
 	#dead_sfx.pitch_scale = randf_range(0.8, 1.2)
+	current_state = State.DEAD
 	health_bar.hide()
 	dead_sfx.play()
 	
